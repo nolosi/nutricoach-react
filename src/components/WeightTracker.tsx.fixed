@@ -1,0 +1,312 @@
+import React, { useState } from 'react';
+import {
+  Box,
+  Heading,
+  Text,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  Flex,
+  SimpleGrid,
+  Progress,
+  useColorModeValue,
+  Icon,
+  VStack,
+  HStack,
+} from '@chakra-ui/react';
+import { FiActivity, FiDroplet, FiPieChart, FiHeart } from 'react-icons/fi';
+import { useTranslation } from 'react-i18next';
+import { useUser } from '../contexts/UserContext';
+import { Line } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler,
+} from 'chart.js';
+
+// Chart.js registrieren
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+);
+
+interface WeightEntry {
+  date: string;
+  weight: number;
+  note?: string;
+}
+
+interface MetricCardProps {
+  title: string;
+  value: string;
+  description?: string;
+  color?: string;
+}
+
+// Komponente für Metrikkarten
+const MetricCard: React.FC<MetricCardProps> = ({ title, value, description, color = "brand.500" }) => {
+  const cardBg = useColorModeValue('white', 'gray.800');
+  
+  return (
+    <Box p={4} bg={cardBg} borderRadius="md" boxShadow="sm">
+      <Text fontSize="sm" color="gray.500" mb={1}>{title}</Text>
+      <Text fontSize="2xl" fontWeight="bold" color={color}>{value}</Text>
+      {description && <Text fontSize="xs" color="gray.500">{description}</Text>}
+    </Box>
+  );
+};
+
+// Gewichts-Dashboard-Komponente
+const WeightTracker: React.FC = () => {
+  const { t } = useTranslation();
+  const { user } = useUser();
+  const [activeTab, setActiveTab] = useState<string>('weight');
+  const tabBg = useColorModeValue('white', 'gray.800');
+  
+  // Wir verwenden tatsächliche Benutzerdaten
+  const weightEntries = user?.weightHistory || [] as WeightEntry[];
+  const targetWeight = user?.targetWeight || 90; // Fallback: 90kg als Zielgewicht
+  
+  // Aktuelles Gewicht und Trend
+  const currentWeight = weightEntries.length > 0 ? weightEntries[0].weight : 0;
+  const weightTrend = weightEntries.length > 1 
+    ? (currentWeight - weightEntries[1].weight).toFixed(1) 
+    : '--';
+  const showTrend = weightEntries.length > 1;
+  
+  // Daten für Chart vorbereiten
+  const prepareChartData = () => {
+    // Sortiere die Einträge nach Datum (neueste zuerst) und nimm nur die 10 neuesten
+    const sortedEntries = [...weightEntries]
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      .slice(0, 10)
+      .reverse(); // Umdrehen für Chart-Anzeige (älteste zuerst)
+    
+    const labels = sortedEntries.map(entry => entry.date);
+    const weights = sortedEntries.map(entry => entry.weight);
+    
+    // Min/Max Werte für bessere Y-Achsen-Skalierung
+    const minWeight = Math.min(...weights, targetWeight) - 2;
+    const maxWeight = Math.max(...weights, targetWeight) + 2;
+    
+    return {
+      labels,
+      weights,
+      minWeight,
+      maxWeight
+    };
+  };
+  
+  const { labels, weights, minWeight, maxWeight } = prepareChartData();
+  
+  // Chart.js Konfiguration
+  const chartData = {
+    labels,
+    datasets: [
+      {
+        label: t('tracker.weight', 'Gewicht'),
+        data: weights,
+        borderColor: '#4299E1', // Blau
+        backgroundColor: 'rgba(66, 153, 225, 0.1)',
+        borderWidth: 2,
+        tension: 0.3,
+        fill: true,
+        pointBackgroundColor: '#4299E1',
+        pointRadius: 4,
+        pointHoverRadius: 6,
+      },
+      {
+        label: t('tracker.targetWeight', 'Zielgewicht'),
+        data: Array(labels.length).fill(targetWeight),
+        borderColor: '#E53E3E', // Rot
+        borderWidth: 2,
+        borderDash: [5, 5],
+        pointRadius: 0,
+        tension: 0,
+        fill: false,
+      },
+    ],
+  };
+  
+  // Chart.js Optionen
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        min: minWeight,
+        max: maxWeight,
+        title: {
+          display: true,
+          text: t('tracker.weightKg', 'Gewicht (kg)'),
+        },
+      },
+      x: {
+        title: {
+          display: true,
+          text: t('tracker.date', 'Datum'),
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      tooltip: {
+        mode: 'index' as const,
+        intersect: false,
+      },
+    },
+  };
+  
+  // Ernährungsdaten
+  const nutrition = user?.nutritionStats || {
+    calories: 0,
+    protein: 0,
+    carbs: 0,
+    fat: 0,
+    water: 0,
+  };
+  
+  // Prozentsatz im Vergleich zu den Zielen
+  const caloriePercentage = user?.calorieGoal ? Math.round((nutrition.calories / user.calorieGoal) * 100) : 0;
+  const proteinPercentage = user?.proteinGoal ? Math.round((nutrition.protein / user.proteinGoal) * 100) : 0;
+  const waterPercentage = user?.waterGoal ? Math.round((nutrition.water / user.waterGoal) * 100) : 0;
+  
+  return (
+    <Box>
+      <Heading as="h2" size="lg" mb={4}>
+        {t('tracker.progress', 'Dein Fortschritt')}
+      </Heading>
+      
+      <Tabs 
+        isFitted 
+        variant="soft-rounded" 
+        colorScheme="brand" 
+        onChange={(index) => {
+          const tabNames = ['weight', 'calories', 'water', 'protein'];
+          setActiveTab(tabNames[index]);
+        }}
+        mb={6}
+      >
+        <TabList mb={6}>
+          <Tab><Icon as={FiActivity} mr={2} /> {t('tracker.weight', 'Gewicht')}</Tab>
+          <Tab><Icon as={FiPieChart} mr={2} /> {t('tracker.calories', 'Kalorien')}</Tab>
+          <Tab><Icon as={FiDroplet} mr={2} /> {t('tracker.water', 'Wasser')}</Tab>
+          <Tab><Icon as={FiHeart} mr={2} /> {t('tracker.protein', 'Protein')}</Tab>
+        </TabList>
+        
+        <TabPanels>
+          {/* Gewichts-Tab */}
+          <TabPanel p={0}>
+            <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4} mb={6}>
+              <MetricCard 
+                title={t('tracker.currentWeight', 'Aktuelles Gewicht')}
+                value={`${currentWeight} kg`}
+                description={weightEntries.length > 0 ? weightEntries[0].date : ''}
+              />
+              
+              <MetricCard 
+                title={t('tracker.trend', 'Trend')}
+                value={showTrend ? `${Number(weightTrend) > 0 ? '+' : ''}${weightTrend} kg` : '-- kg'}
+                color={showTrend && Number(weightTrend) < 0 ? 'green.500' : showTrend && Number(weightTrend) > 0 ? 'red.500' : 'gray.500'}
+                description={t('tracker.since', 'Seit letzter Messung')}
+              />
+              
+              <MetricCard 
+                title={t('tracker.target', 'Ziel')}
+                value={`${targetWeight} kg`}
+                color="red.500"
+              />
+            </SimpleGrid>
+            
+            <Box 
+              bg={tabBg} 
+              p={4} 
+              borderRadius="lg" 
+              boxShadow="md" 
+              height="400px"
+            >
+              {weights.length > 0 ? (
+                <Line data={chartData} options={chartOptions} />
+              ) : (
+                <Flex 
+                  justify="center" 
+                  align="center" 
+                  height="100%" 
+                  color="gray.500"
+                >
+                  {t('tracker.noWeightData', 'Keine Gewichtsdaten vorhanden')}
+                </Flex>
+              )}
+            </Box>
+          </TabPanel>
+          
+          {/* Kalorien-Tab */}
+          <TabPanel p={0}>
+            <VStack spacing={6} align="stretch">
+              <Box bg={tabBg} p={4} borderRadius="lg" boxShadow="md">
+                <Flex justify="space-between" mb={2}>
+                  <Text fontWeight="medium">{t('tracker.caloriesAvg', 'Ø Kalorien')}</Text>
+                  <Text fontWeight="bold">{nutrition.calories} / {user?.calorieGoal || '-'} kcal</Text>
+                </Flex>
+                <Progress value={caloriePercentage} colorScheme="green" size="lg" borderRadius="md" />
+                <Text fontSize="sm" color="gray.500" mt={2}>
+                  {caloriePercentage}% {t('tracker.ofGoal', 'deines Ziels')}
+                </Text>
+              </Box>
+            </VStack>
+          </TabPanel>
+          
+          {/* Wasser-Tab */}
+          <TabPanel p={0}>
+            <VStack spacing={6} align="stretch">
+              <Box bg={tabBg} p={4} borderRadius="lg" boxShadow="md">
+                <Flex justify="space-between" mb={2}>
+                  <Text fontWeight="medium">{t('tracker.waterAvg', 'Ø Wasser')}</Text>
+                  <Text fontWeight="bold">{nutrition.water} / {user?.waterGoal || '-'} ml</Text>
+                </Flex>
+                <Progress value={waterPercentage} colorScheme="blue" size="lg" borderRadius="md" />
+                <Text fontSize="sm" color="gray.500" mt={2}>
+                  {waterPercentage}% {t('tracker.ofGoal', 'deines Ziels')}
+                </Text>
+              </Box>
+            </VStack>
+          </TabPanel>
+          
+          {/* Protein-Tab */}
+          <TabPanel p={0}>
+            <VStack spacing={6} align="stretch">
+              <Box bg={tabBg} p={4} borderRadius="lg" boxShadow="md">
+                <Flex justify="space-between" mb={2}>
+                  <Text fontWeight="medium">{t('tracker.proteinAvg', 'Ø Protein')}</Text>
+                  <Text fontWeight="bold">{nutrition.protein} / {user?.proteinGoal || '-'} g</Text>
+                </Flex>
+                <Progress value={proteinPercentage} colorScheme="pink" size="lg" borderRadius="md" />
+                <Text fontSize="sm" color="gray.500" mt={2}>
+                  {proteinPercentage}% {t('tracker.ofGoal', 'deines Ziels')}
+                </Text>
+              </Box>
+            </VStack>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </Box>
+  );
+};
+
+export default WeightTracker; 
