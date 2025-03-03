@@ -169,7 +169,10 @@
       "moderate": "Mäßig aktiv",
       "active": "Aktiv",
       "very-active": "Sehr aktiv"
-    }
+    },
+    "dataManagement": "Datenverwaltung",
+    "dataBackupInfo": "Sichere deine Daten oder stelle sie auf einem anderen Gerät wieder her.",
+    "backupRestore": "Daten sichern & wiederherstellen"
   },
   "gamification": {
     "level": "Level",
@@ -237,5 +240,42 @@
     "waterIntake": "Tägliche Wasseraufnahme",
     "waterDescription": "Optimale Hydration für deinen Körper",
     "waterTip": "Tipp: Verteile deine Wasseraufnahme über den Tag, um optimal hydriert zu bleiben."
+  },
+  "backup": {
+    "title": "Daten sichern & wiederherstellen",
+    "exportTab": "Daten exportieren",
+    "importTab": "Daten importieren",
+    "backupInfo": "Erstelle ein Backup deiner Daten, um sie zu sichern oder auf ein anderes Gerät zu übertragen.",
+    "dataIncluded": "Folgende Daten werden gesichert:",
+    "profileSettings": "Benutzerprofil und Einstellungen",
+    "savedRecipes": "Gespeicherte und eigene Rezepte",
+    "mealPlans": "Mahlzeitenpläne",
+    "customFoods": "Eigene Lebensmittel",
+    "trackingData": "Tracking-Daten",
+    "createBackup": "Backup erstellen",
+    "exporting": "Exportiere...",
+    "restoreInfo": "Importiere ein zuvor erstelltes Backup, um deine Daten wiederherzustellen.",
+    "selectBackupFile": "Backup-Datei auswählen",
+    "loadingFile": "Lade Datei...",
+    "backupLoaded": "Backup-Datei geladen",
+    "backupDate": "Backup vom",
+    "whatToImport": "Was möchtest du importieren?",
+    "importData": "Daten importieren",
+    "importing": "Importiere...",
+    "cancel": "Abbrechen",
+    "close": "Schließen",
+    "backupSuccess": "Backup erfolgreich erstellt",
+    "backupSuccessDesc": "Deine Daten wurden erfolgreich exportiert.",
+    "backupError": "Fehler beim Erstellen des Backups",
+    "backupErrorDesc": "Es ist ein Fehler aufgetreten. Bitte versuche es erneut.",
+    "fileLoadSuccess": "Backup-Datei geladen",
+    "fileLoadSuccessDesc": "Die Backup-Datei wurde erfolgreich geladen. Wähle aus, welche Daten du importieren möchtest.",
+    "fileLoadError": "Fehler beim Lesen der Datei",
+    "fileLoadErrorDesc": "Die ausgewählte Datei konnte nicht als Backup gelesen werden.",
+    "importSuccess": "Import erfolgreich",
+    "importSuccessDesc": "Deine Daten wurden erfolgreich importiert.",
+    "importError": "Fehler beim Import",
+    "importErrorDesc": "Es ist ein Fehler aufgetreten. Bitte versuche es erneut.",
+    "invalidFormat": "Ungültiges Backup-Format"
   }
 } 

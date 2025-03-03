@@ -49,7 +49,7 @@ import {
   Td,
   Icon
 } from '@chakra-ui/react';
-import { FiUser, FiSettings, FiTarget, FiEdit, FiLogOut, FiRefreshCw, FiActivity, FiArrowUp, FiArrowDown } from 'react-icons/fi';
+import { FiUser, FiSettings, FiTarget, FiEdit, FiLogOut, FiRefreshCw, FiActivity, FiArrowUp, FiArrowDown, FiDatabase } from 'react-icons/fi';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../contexts/UserContext';
 import { useNavigate } from 'react-router-dom';
@@ -58,6 +58,7 @@ import {
   NutritionInputData 
 } from '../utils/nutritionCalculator';
 import { recalculateAndUpdateNutritionGoals } from '../contexts/UserContext';
+import BackupRestoreModal from '../components/BackupRestoreModal';
 
 const ProfilePage: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -67,6 +68,9 @@ const ProfilePage: React.FC = () => {
   const cancelRef = React.useRef<HTMLButtonElement>(null);
   const toast = useToast();
   const navigate = useNavigate();
+  
+  // Backup/Restore Modal
+  const { isOpen: isBackupModalOpen, onOpen: onBackupModalOpen, onClose: onBackupModalClose } = useDisclosure();
   
   // Farbwerte für light/dark mode - früher bedingt aufgerufen
   const nutritionGreenBg = useColorModeValue('green.50', 'green.900');
@@ -844,19 +848,41 @@ const ProfilePage: React.FC = () => {
                 </Flex>
               </VStack>
             ) : (
-              <SimpleGrid columns={{base: 1, md: 2}} spacing={6}>
-                <Stat>
-                  <StatLabel>{t('profile.language', 'Sprache')}</StatLabel>
-                  <StatNumber fontSize="md">
-                    {user?.language === 'de' ? t('profile.german', 'Deutsch') : 
-                     user?.language === 'en' ? t('profile.english', 'Englisch') : '-'}
-                  </StatNumber>
-                </Stat>
-              </SimpleGrid>
+              <VStack spacing={6} align="stretch">
+                <SimpleGrid columns={{base: 1, md: 2}} spacing={6}>
+                  <Stat>
+                    <StatLabel>{t('profile.language', 'Sprache')}</StatLabel>
+                    <StatNumber fontSize="md">
+                      {user?.language === 'de' ? t('profile.german', 'Deutsch') : 
+                       user?.language === 'en' ? t('profile.english', 'Englisch') : '-'}
+                    </StatNumber>
+                  </Stat>
+                </SimpleGrid>
+                
+                <Divider my={4} />
+                
+                <Box>
+                  <Heading size="md" mb={4}>{t('profile.dataManagement', 'Datenverwaltung')}</Heading>
+                  <Text mb={4}>
+                    {t('profile.dataBackupInfo', 'Sichere deine Daten oder stelle sie auf einem anderen Gerät wieder her.')}
+                  </Text>
+                  <Button 
+                    leftIcon={<FiDatabase />} 
+                    colorScheme="blue" 
+                    onClick={onBackupModalOpen}
+                    mb={2}
+                  >
+                    {t('profile.backupRestore', 'Daten sichern & wiederherstellen')}
+                  </Button>
+                </Box>
+              </VStack>
             )}
           </TabPanel>
         </TabPanels>
       </Tabs>
+      
+      {/* Backup/Restore Modal */}
+      <BackupRestoreModal isOpen={isBackupModalOpen} onClose={onBackupModalClose} />
     </Container>
   );
 };

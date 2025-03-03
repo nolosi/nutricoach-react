@@ -154,7 +154,10 @@
       "moderate": "Moderately Active",
       "active": "Active",
       "very-active": "Very Active"
-    }
+    },
+    "dataManagement": "Data Management",
+    "dataBackupInfo": "Backup your data or restore it on another device.",
+    "backupRestore": "Backup & Restore Data"
   },
   "gamification": {
     "level": "Level",
@@ -230,5 +233,42 @@
     "waterIntake": "Daily Water Intake",
     "waterDescription": "Optimal hydration for your body",
     "waterTip": "Tip: Distribute your water intake throughout the day to stay optimally hydrated."
+  },
+  "backup": {
+    "title": "Backup & Restore Data",
+    "exportTab": "Export Data",
+    "importTab": "Import Data",
+    "backupInfo": "Create a backup of your data to save it or transfer it to another device.",
+    "dataIncluded": "The following data will be backed up:",
+    "profileSettings": "User profile and settings",
+    "savedRecipes": "Saved and custom recipes",
+    "mealPlans": "Meal plans",
+    "customFoods": "Custom foods",
+    "trackingData": "Tracking data",
+    "createBackup": "Create Backup",
+    "exporting": "Exporting...",
+    "restoreInfo": "Import a previously created backup to restore your data.",
+    "selectBackupFile": "Select Backup File",
+    "loadingFile": "Loading File...",
+    "backupLoaded": "Backup File Loaded",
+    "backupDate": "Backup from",
+    "whatToImport": "What would you like to import?",
+    "importData": "Import Data",
+    "importing": "Importing...",
+    "cancel": "Cancel",
+    "close": "Close",
+    "backupSuccess": "Backup Created Successfully",
+    "backupSuccessDesc": "Your data has been successfully exported.",
+    "backupError": "Error Creating Backup",
+    "backupErrorDesc": "An error occurred. Please try again.",
+    "fileLoadSuccess": "Backup File Loaded",
+    "fileLoadSuccessDesc": "The backup file has been successfully loaded. Choose what data you want to import.",
+    "fileLoadError": "Error Reading File",
+    "fileLoadErrorDesc": "The selected file could not be read as a backup.",
+    "importSuccess": "Import Successful",
+    "importSuccessDesc": "Your data has been successfully imported.",
+    "importError": "Import Error",
+    "importErrorDesc": "An error occurred. Please try again.",
+    "invalidFormat": "Invalid Backup Format"
   }
 } 
