@@ -33,7 +33,7 @@ const mockRecipes: Recipe[] = [
   {
     id: '1',
     title: 'Protein Pancakes',
-    image: 'https://images.unsplash.com/photo-1575853121743-60c24f0a7502?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGFuY2FrZXN8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60',
+    image: 'https://images.unsplash.com/photo-1528207776546-365bb710ee93?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
     difficulty: 'easy',
     prepTime: 15,
     servings: 2,
@@ -59,7 +59,7 @@ const mockRecipes: Recipe[] = [
   {
     id: '2',
     title: 'Griechischer Salat',
-    image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Z3JlZWslMjBzYWxhZHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
+    image: 'https://images.unsplash.com/photo-1551248429-40975aa4de74?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
     difficulty: 'easy',
     prepTime: 10,
     servings: 2,
@@ -87,7 +87,7 @@ const mockRecipes: Recipe[] = [
   {
     id: '3',
     title: 'Hähnchen-Quinoa-Bowl',
-    image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Ym93bHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
+    image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
     difficulty: 'medium',
     prepTime: 30,
     servings: 2,
@@ -113,7 +113,7 @@ const mockRecipes: Recipe[] = [
   {
     id: '4',
     title: 'Schokoladen-Protein-Smoothie',
-    image: 'https://images.unsplash.com/photo-1629704792095-78194586bb26?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Y2hvY29sYXRlJTIwc21vb3RoaWV8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60',
+    image: 'https://images.unsplash.com/photo-1577805947697-89e18249d767?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
     difficulty: 'easy',
     prepTime: 5,
     servings: 1,
@@ -138,7 +138,7 @@ const mockRecipes: Recipe[] = [
   {
     id: '5',
     title: 'Gemüsesuppe',
-    image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dmVnZXRhYmxlJTIwc291cHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
+    image: 'https://images.unsplash.com/photo-1605291535361-c90ca7696400?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
     difficulty: 'medium',
     prepTime: 45,
     servings: 4,
@@ -165,7 +165,7 @@ const mockRecipes: Recipe[] = [
   {
     id: '6',
     title: 'Avocado-Toast',
-    image: 'https://images.unsplash.com/photo-1588137378633-dea1336ce1e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGF2b2NhZG8lMjB0b2FzdHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
+    image: 'https://images.unsplash.com/photo-1541519227354-08fa5d50c44d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
     difficulty: 'easy',
     prepTime: 10,
     servings: 1,
@@ -192,7 +192,7 @@ const mockRecipes: Recipe[] = [
   {
     id: '20',
     title: 'Gesunder Schokoshake',
-    image: 'https://images.unsplash.com/photo-1563882144693-324dd7a93f9c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2hvY29sYXRlJTIwc2hha2V8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60',
+    image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
     difficulty: 'easy',
     prepTime: 5,
     servings: 1,
@@ -218,7 +218,7 @@ const mockRecipes: Recipe[] = [
   {
     id: '21',
     title: 'Rührei mit Spinat und Feta',
-    image: 'https://images.unsplash.com/photo-1483214864955-326b5b60c0d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2NyYW1ibGVkJTIwZWdnc3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
+    image: 'https://images.unsplash.com/photo-1510693206972-df098062cb71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
     difficulty: 'easy',
     prepTime: 12,
     servings: 1,
@@ -246,7 +246,7 @@ const mockRecipes: Recipe[] = [
   {
     id: '22',
     title: 'Tomaten-Mozzarella-Salat',
-    image: 'https://images.unsplash.com/photo-1563945204347-98791880d0ad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2FwcmVzZSUyMHNhbGFkfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60',
+    image: 'https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
     difficulty: 'easy',
     prepTime: 10,
     servings: 2,
@@ -274,7 +274,7 @@ const mockRecipes: Recipe[] = [
   {
     id: '23',
     title: 'Vollkorn-Wrap mit Huhn',
-    image: 'https://images.unsplash.com/photo-1638388893338-f45d714000b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8d3JhcHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
+    image: 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
     difficulty: 'easy',
     prepTime: 15,
     servings: 2,
@@ -306,7 +306,7 @@ const mockRecipes: Recipe[] = [
   {
     id: '24',
     title: 'Brokkoli-Quinoa-Auflauf',
-    image: 'https://images.unsplash.com/photo-1622119991607-80b80a958c3d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8YnJvY2NvbGklMjBjYXNzZXJvbGV8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60',
+    image: 'https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
     difficulty: 'medium',
     prepTime: 40,
     servings: 4,
@@ -340,7 +340,7 @@ const mockRecipes: Recipe[] = [
   {
     id: '25',
     title: 'Kürbissuppe mit Kokosmilch',
-    image: 'https://images.unsplash.com/photo-1547592166-5731fafc5792?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHVtcGtpbiUyMHNvdXB8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60',
+    image: 'https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
     difficulty: 'medium',
     prepTime: 35,
     servings: 4,
@@ -375,7 +375,7 @@ const mockRecipes: Recipe[] = [
   {
     id: '26',
     title: 'Mandel-Honig-Granola',
-    image: 'https://images.unsplash.com/photo-1553787499-6f9133872512?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Z3Jhbm9sYXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
+    image: 'https://images.unsplash.com/photo-1517093157656-b9eccef91cb1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
     difficulty: 'easy',
     prepTime: 30,
     servings: 10,
@@ -408,7 +408,7 @@ const mockRecipes: Recipe[] = [
   {
     id: '27',
     title: 'Gefüllte Süßkartoffeln mit Kichererbsen',
-    image: 'https://images.unsplash.com/photo-1601695481719-6335a594d36d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c3R1ZmZlZCUyMHN3ZWV0JTIwcG90YXRvfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60',
+    image: 'https://images.unsplash.com/photo-1596951609925-e868fdf877a7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
     difficulty: 'medium',
     prepTime: 50,
     servings: 2,
@@ -446,7 +446,7 @@ const mockRecipes: Recipe[] = [
   {
     id: '28',
     title: 'Apfel-Zimt-Porridge',
-    image: 'https://images.unsplash.com/photo-1517673132405-a56a62b18caf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YXBwbGUlMjBjaW5uYW1vbiUyMHBvcnJpZGdlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60',
+    image: 'https://images.unsplash.com/photo-1586511925558-a4c6376fe65f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
     difficulty: 'easy',
     prepTime: 15,
     servings: 1,
@@ -475,7 +475,7 @@ const mockRecipes: Recipe[] = [
   {
     id: '29',
     title: 'Tofu-Gemüse-Pfanne mit Teriyaki-Sauce',
-    image: 'https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8dG9mdSUyMHN0aXIlMjBmcnl8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60',
+    image: 'https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
     difficulty: 'medium',
     prepTime: 25,
     servings: 2,
