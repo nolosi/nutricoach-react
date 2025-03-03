@@ -24,6 +24,9 @@ import Layout from './components/common/Layout';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import LoadingSpinner from './components/common/LoadingSpinner';
 
+// Hooks
+import useAutoBackup from './hooks/useAutoBackup';
+
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 
@@ -31,6 +34,9 @@ import i18n from './i18n';
 const AppContent: React.FC = () => {
   const { user, isLoading: userLoading } = useUser();
   const [isInitialLoading, setIsInitialLoading] = useState(true);
+  
+  // Automatische Backups
+  useAutoBackup();
 
   useEffect(() => {
     // Zeige die Ladeanimation für mindestens 1.5 Sekunden
@@ -128,4 +134,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App; 
+export default App;

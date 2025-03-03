@@ -43,9 +43,10 @@ import {
   StatNumber,
   StatHelpText,
   useBreakpointValue,
-  Center
+  Center,
+  useDisclosure
 } from '@chakra-ui/react';
-import { FiArrowRight, FiArrowLeft, FiUser, FiTarget, FiActivity, FiHeart, FiCheck } from 'react-icons/fi';
+import { FiArrowRight, FiArrowLeft, FiUser, FiTarget, FiActivity, FiHeart, FiCheck, FiUpload } from 'react-icons/fi';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../contexts/UserContext';
 import { 
@@ -58,11 +59,22 @@ import {
 } from '../utils/nutritionCalculator';
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
+import BackupRestoreModal from '../components/BackupRestoreModal';
 
 // Begrüßungskomponente
 const WelcomeStep: React.FC<{ onNext: () => void }> = ({ onNext }) => {
   const { t } = useTranslation();
   const bgColor = useColorModeValue('brand.50', 'gray.800');
+  const navigate = useNavigate();
+  
+  // Für das Backup/Restore Modal
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  
+  // Callback für erfolgreichen Import
+  const handleImportSuccess = () => {
+    // Nach erfolgreichem Import direkt zur Hauptseite navigieren
+    navigate('/');
+  };
   
   return (
     <VStack spacing={8} textAlign="center" py={8}>
@@ -99,14 +111,40 @@ const WelcomeStep: React.FC<{ onNext: () => void }> = ({ onNext }) => {
         </VStack>
       </Box>
       
-      <Button 
-        rightIcon={<FiArrowRight />} 
-        colorScheme="brand" 
-        size="lg" 
-        onClick={onNext}
-      >
-        {t('onboarding.getStarted', 'Loslegen')}
-      </Button>
+      <VStack spacing={4} width="100%" maxW="md">
+        <Button 
+          rightIcon={<FiArrowRight />} 
+          colorScheme="brand" 
+          size="lg" 
+          width="100%"
+          onClick={onNext}
+        >
+          {t('onboarding.getStarted', 'Loslegen')}
+        </Button>
+        
+        <Text fontSize="sm" color="gray.500" mt={2}>
+          {t('onboarding.alreadyHaveBackup', 'Du hast bereits ein Backup deiner Daten?')}
+        </Text>
+        
+        <Button 
+          leftIcon={<FiUpload />} 
+          variant="outline" 
+          colorScheme="blue"
+          size="md"
+          width="100%"
+          onClick={onOpen}
+        >
+          {t('onboarding.importBackup', 'Backup importieren')}
+        </Button>
+      </VStack>
+      
+      {/* Backup/Restore Modal */}
+      <BackupRestoreModal 
+        isOpen={isOpen} 
+        onClose={onClose} 
+        defaultTab={1} // Öffne direkt den Import-Tab
+        onImportSuccess={handleImportSuccess}
+      />
     </VStack>
   );
 };

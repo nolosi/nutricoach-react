@@ -10,7 +10,9 @@ const STORAGE_KEYS = {
   USER_RECIPES: 'nutricoach_user_recipes',
   DAILY_MEALS: 'nutricoach_daily_meals',
   FOOD_DATABASE: 'nutricoach_food_database',
-  RECENT_FOODS: 'nutricoach_recent_foods'
+  RECENT_FOODS: 'nutricoach_recent_foods',
+  AUTO_BACKUP: 'nutricoach_auto_backup',
+  LAST_BACKUP_DATE: 'nutricoach_last_backup_date'
 };
 
 // Interface für die Backup-Daten
@@ -24,6 +26,13 @@ export interface BackupData {
   dailyMeals: any;
   customFoods: any;
   recentFoods: any;
+}
+
+// Interface für die Backup-Einstellungen
+export interface BackupSettings {
+  autoBackupEnabled: boolean;
+  backupFrequency: 'daily' | 'weekly' | 'monthly';
+  lastBackupDate: string | null;
 }
 
 /**
@@ -198,5 +207,101 @@ export const BackupService = {
       
       reader.readAsText(file);
     });
+  },
+
+  /**
+   * Erstellt ein automatisches Backup und speichert es im localStorage
+   * @returns true, wenn das Backup erfolgreich erstellt wurde
+   */
+  createAutoBackup: (): boolean => {
+    try {
+      const backup = BackupService.createBackup();
+      localStorage.setItem(STORAGE_KEYS.AUTO_BACKUP, JSON.stringify(backup));
+      localStorage.setItem(STORAGE_KEYS.LAST_BACKUP_DATE, new Date().toISOString());
+      return true;
+    } catch (error) {
+      console.error('Fehler beim Erstellen des automatischen Backups:', error);
+      return false;
+    }
+  },
+
+  /**
+   * Lädt das automatische Backup aus dem localStorage
+   * @returns Das Backup oder null, wenn keines vorhanden ist
+   */
+  loadAutoBackup: (): BackupData | null => {
+    try {
+      const backupStr = localStorage.getItem(STORAGE_KEYS.AUTO_BACKUP);
+      if (!backupStr) return null;
+      
+      return JSON.parse(backupStr);
+    } catch (error) {
+      console.error('Fehler beim Laden des automatischen Backups:', error);
+      return null;
+    }
+  },
+
+  /**
+   * Prüft, ob ein automatisches Backup erstellt werden sollte
+   * @param settings Die Backup-Einstellungen
+   * @returns true, wenn ein Backup erstellt werden sollte
+   */
+  shouldCreateBackup: (settings: BackupSettings): boolean => {
+    if (!settings.autoBackupEnabled || !settings.lastBackupDate) {
+      return settings.autoBackupEnabled; // Wenn aktiviert aber noch kein Backup, dann ja
+    }
+
+    const lastBackup = new Date(settings.lastBackupDate);
+    const now = new Date();
+    const diffDays = Math.floor((now.getTime() - lastBackup.getTime()) / (1000 * 60 * 60 * 24));
+
+    switch (settings.backupFrequency) {
+      case 'daily':
+        return diffDays >= 1;
+      case 'weekly':
+        return diffDays >= 7;
+      case 'monthly':
+        return diffDays >= 30;
+      default:
+        return false;
+    }
+  },
+
+  /**
+   * Lädt die Backup-Einstellungen aus dem localStorage
+   * @returns Die Backup-Einstellungen
+   */
+  getBackupSettings: (): BackupSettings => {
+    try {
+      const lastBackupDate = localStorage.getItem(STORAGE_KEYS.LAST_BACKUP_DATE);
+      
+      // Standardeinstellungen
+      const defaultSettings: BackupSettings = {
+        autoBackupEnabled: false,
+        backupFrequency: 'weekly',
+        lastBackupDate: lastBackupDate
+      };
+      
+      return defaultSettings;
+    } catch (error) {
+      console.error('Fehler beim Laden der Backup-Einstellungen:', error);
+      return {
+        autoBackupEnabled: false,
+        backupFrequency: 'weekly',
+        lastBackupDate: null
+      };
+    }
+  },
+
+  /**
+   * Speichert die Backup-Einstellungen im localStorage
+   * @param settings Die zu speichernden Einstellungen
+   */
+  saveBackupSettings: (settings: BackupSettings): void => {
+    try {
+      localStorage.setItem(STORAGE_KEYS.LAST_BACKUP_DATE, settings.lastBackupDate || '');
+    } catch (error) {
+      console.error('Fehler beim Speichern der Backup-Einstellungen:', error);
+    }
   }
 }; 

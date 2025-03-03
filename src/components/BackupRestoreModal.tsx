@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -24,24 +24,37 @@ import {
   AlertDescription,
   Box,
   Progress,
-  Divider
+  Divider,
+  Switch,
+  FormControl,
+  FormLabel,
+  Select,
+  Badge
 } from '@chakra-ui/react';
-import { DownloadIcon } from '@chakra-ui/icons';
-import { FiUpload } from 'react-icons/fi';
+import { DownloadIcon, SettingsIcon } from '@chakra-ui/icons';
+import { FiUpload, FiClock } from 'react-icons/fi';
 import { useTranslation } from 'react-i18next';
-import { BackupService, BackupData } from '../services/BackupService';
+import { BackupService, BackupData, BackupSettings } from '../services/BackupService';
 
 interface BackupRestoreModalProps {
   isOpen: boolean;
   onClose: () => void;
+  defaultTab?: number; // 0 für Export, 1 für Import, 2 für Einstellungen
+  onImportSuccess?: () => void; // Callback für erfolgreichen Import
 }
 
-const BackupRestoreModal: React.FC<BackupRestoreModalProps> = ({ isOpen, onClose }) => {
+const BackupRestoreModal: React.FC<BackupRestoreModalProps> = ({ 
+  isOpen, 
+  onClose, 
+  defaultTab = 0,
+  onImportSuccess 
+}) => {
   const { t } = useTranslation();
   const toast = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [backupData, setBackupData] = useState<BackupData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [tabIndex, setTabIndex] = useState(defaultTab);
   const [importOptions, setImportOptions] = useState({
     importUserData: true,
     importMealPlan: true,
@@ -49,6 +62,26 @@ const BackupRestoreModal: React.FC<BackupRestoreModalProps> = ({ isOpen, onClose
     importMeals: true,
     importCustomFoods: true
   });
+  
+  // State für automatische Backup-Einstellungen
+  const [backupSettings, setBackupSettings] = useState<BackupSettings>({
+    autoBackupEnabled: false,
+    backupFrequency: 'weekly',
+    lastBackupDate: null
+  });
+
+  // Lade die Backup-Einstellungen beim Öffnen des Modals
+  useEffect(() => {
+    if (isOpen) {
+      const settings = BackupService.getBackupSettings();
+      setBackupSettings(settings);
+    }
+  }, [isOpen]);
+
+  // Setze den Tab-Index, wenn sich defaultTab ändert
+  useEffect(() => {
+    setTabIndex(defaultTab);
+  }, [defaultTab]);
 
   // Handler für den Export-Button
   const handleExport = () => {
@@ -129,6 +162,12 @@ const BackupRestoreModal: React.FC<BackupRestoreModalProps> = ({ isOpen, onClose
           isClosable: true,
         });
         setBackupData(null);
+        
+        // Rufe den onImportSuccess-Callback auf, wenn vorhanden
+        if (onImportSuccess) {
+          onImportSuccess();
+        }
+        
         onClose();
       } else {
         toast({
@@ -160,6 +199,52 @@ const BackupRestoreModal: React.FC<BackupRestoreModalProps> = ({ isOpen, onClose
       [option]: !prev[option]
     }));
   };
+  
+  // Handler für Änderungen an den Backup-Einstellungen
+  const handleBackupSettingsChange = (field: keyof BackupSettings, value: any) => {
+    setBackupSettings(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+  
+  // Handler für das Speichern der Backup-Einstellungen
+  const handleSaveBackupSettings = () => {
+    try {
+      setIsLoading(true);
+      
+      // Wenn automatische Backups aktiviert wurden, erstelle sofort ein Backup
+      if (backupSettings.autoBackupEnabled) {
+        const success = BackupService.createAutoBackup();
+        if (success) {
+          // Aktualisiere das Datum des letzten Backups
+          backupSettings.lastBackupDate = new Date().toISOString();
+        }
+      }
+      
+      // Speichere die Einstellungen
+      BackupService.saveBackupSettings(backupSettings);
+      
+      toast({
+        title: t('backup.settingsSaved'),
+        description: t('backup.settingsSavedDesc'),
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: t('backup.settingsError'),
+        description: t('backup.settingsErrorDesc'),
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      console.error('Fehler beim Speichern der Backup-Einstellungen:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg">
@@ -169,10 +254,11 @@ const BackupRestoreModal: React.FC<BackupRestoreModalProps> = ({ isOpen, onClose
         <ModalCloseButton />
         
         <ModalBody>
-          <Tabs isFitted variant="enclosed">
+          <Tabs isFitted variant="enclosed" index={tabIndex} onChange={setTabIndex}>
             <TabList mb="1em">
               <Tab>{t('backup.exportTab')}</Tab>
               <Tab>{t('backup.importTab')}</Tab>
+              <Tab>{t('backup.settingsTab')}</Tab>
             </TabList>
             
             <TabPanels>
@@ -310,6 +396,80 @@ const BackupRestoreModal: React.FC<BackupRestoreModalProps> = ({ isOpen, onClose
                       </HStack>
                     </>
                   )}
+                </VStack>
+              </TabPanel>
+              
+              {/* Einstellungen-Tab */}
+              <TabPanel>
+                <VStack spacing={4} align="stretch">
+                  <Alert status="info" borderRadius="md">
+                    <AlertIcon />
+                    <Box>
+                      <AlertTitle>{t('backup.autoBackupTitle')}</AlertTitle>
+                      <AlertDescription>
+                        {t('backup.autoBackupDesc')}
+                      </AlertDescription>
+                    </Box>
+                  </Alert>
+                  
+                  <FormControl display="flex" alignItems="center">
+                    <FormLabel htmlFor="auto-backup-switch" mb="0">
+                      {t('backup.enableAutoBackup')}
+                    </FormLabel>
+                    <Switch 
+                      id="auto-backup-switch" 
+                      colorScheme="brand"
+                      isChecked={backupSettings.autoBackupEnabled}
+                      onChange={(e) => handleBackupSettingsChange('autoBackupEnabled', e.target.checked)}
+                    />
+                  </FormControl>
+                  
+                  {backupSettings.autoBackupEnabled && (
+                    <>
+                      <FormControl mt={4}>
+                        <FormLabel>{t('backup.backupFrequency')}</FormLabel>
+                        <Select 
+                          value={backupSettings.backupFrequency}
+                          onChange={(e) => handleBackupSettingsChange('backupFrequency', e.target.value)}
+                        >
+                          <option value="daily">{t('backup.daily')}</option>
+                          <option value="weekly">{t('backup.weekly')}</option>
+                          <option value="monthly">{t('backup.monthly')}</option>
+                        </Select>
+                      </FormControl>
+                      
+                      <Box mt={4}>
+                        <Text fontWeight="bold" mb={2}>{t('backup.lastBackup')}</Text>
+                        {backupSettings.lastBackupDate ? (
+                          <Text>
+                            {new Date(backupSettings.lastBackupDate).toLocaleString()}
+                          </Text>
+                        ) : (
+                          <Badge colorScheme="yellow">{t('backup.noBackupYet')}</Badge>
+                        )}
+                      </Box>
+                      
+                      <Alert status="warning" borderRadius="md" mt={4} size="sm">
+                        <AlertIcon />
+                        <Box fontSize="sm">
+                          <AlertDescription>
+                            {t('backup.autoBackupWarning')}
+                          </AlertDescription>
+                        </Box>
+                      </Alert>
+                    </>
+                  )}
+                  
+                  <Button 
+                    leftIcon={<SettingsIcon />} 
+                    colorScheme="blue" 
+                    onClick={handleSaveBackupSettings}
+                    isLoading={isLoading}
+                    loadingText={t('backup.savingSettings')}
+                    mt={4}
+                  >
+                    {t('backup.saveSettings')}
+                  </Button>
                 </VStack>
               </TabPanel>
             </TabPanels>
