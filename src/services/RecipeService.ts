@@ -113,7 +113,7 @@ const mockRecipes: Recipe[] = [
   {
     id: '4',
     title: 'Schokoladen-Protein-Smoothie',
-    image: 'https://images.unsplash.com/photo-1553530666-ba11a7da3888?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
+    image: 'https://images.unsplash.com/photo-1629704792095-78194586bb26?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Y2hvY29sYXRlJTIwc21vb3RoaWV8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60',
     difficulty: 'easy',
     prepTime: 5,
     servings: 1,
@@ -223,32 +223,34 @@ const mockRecipes: Recipe[] = [
   {
     id: '27',
     title: 'Gefüllte Süßkartoffeln mit Kichererbsen',
-    image: 'https://images.unsplash.com/photo-1604332762023-0df3b3e8fc70?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
+    image: 'https://images.unsplash.com/photo-1586111893496-d4c0a4f40c1a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
     difficulty: 'medium',
-    prepTime: 20,
-    servings: 2,
+    prepTime: 30,
+    servings: 4,
     categories: ['dinner', 'vegetarian', 'meal-prep'],
     ingredients: [
-      '2 Süßkartoffeln',
-      '100g Kichererbsen',
+      '4 Süßkartoffeln',
       '1 Zwiebel',
-      '2 Knoblauchzehen',
+      '1 Knoblauchzehe',
+      '100g Kichererbsen',
       '1 EL Olivenöl',
       'Salz und Pfeffer',
       'Kräuter nach Geschmack'
     ],
     instructions: [
       'Süßkartoffeln schälen und in mundgerechte Stücke schneiden',
-      'Kichererbsen nach Packungsanweisung kochen',
-      'Zwiebeln und Knoblauchzehen klein schneiden',
-      'Gemüse und Zwiebeln anbraten',
-      'Kichererbsen hinzufügen',
-      'Mit Olivenöl, Salz und Pfeffer abschmecken',
-      'Süßkartoffeln mit Kichererbsen füllen'
+      'Zwiebel und Knoblauch fein hacken',
+      'Kichererbsen abspülen',
+      'Öl in einem großen Topf erhitzen',
+      'Süßkartoffeln und Zwiebeln anbraten',
+      'Knoblauch hinzufügen und kurz anbraten',
+      'Kichererbsen hinzufügen und anbraten',
+      'Mit Salz und Pfeffer abschmecken',
+      'In die Süßkartoffeln füllen'
     ],
-    calories: 250,
-    protein: 8,
-    carbs: 30,
+    calories: 300,
+    protein: 10,
+    carbs: 40,
     fat: 10
   }
 ];
