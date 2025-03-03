@@ -113,7 +113,7 @@ const mockRecipes: Recipe[] = [
   {
     id: '4',
     title: 'Schokoladen-Protein-Smoothie',
-    image: 'https://images.unsplash.com/photo-1629704792095-78194586bb26?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Y2hvY29sYXRlJTIwc21vb3RoaWV8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60',
+    image: 'https://images.unsplash.com/photo-1577805947697-89e18249d767?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
     difficulty: 'easy',
     prepTime: 5,
     servings: 1,
