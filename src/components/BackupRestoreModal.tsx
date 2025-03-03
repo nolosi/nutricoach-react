@@ -169,13 +169,18 @@ const BackupRestoreModal: React.FC<BackupRestoreModalProps> = ({
       const result = BackupService.importBackup(backupData, importOptions);
       
       if (result.success) {
-        toast({
-          title: t('backup.importSuccess'),
-          description: t('backup.importSuccessDesc'),
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
-        });
+        // Zeige die Erfolgsmeldung nur an, wenn wir nicht im Onboarding-Modus sind
+        // Im Onboarding-Modus wird die Meldung vom Callback angezeigt
+        if (!onboardingMode) {
+          toast({
+            title: t('backup.importSuccess'),
+            description: t('backup.importSuccessDesc'),
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+          });
+        }
+        
         setBackupData(null);
         
         // Rufe den onImportSuccess-Callback auf, wenn vorhanden
