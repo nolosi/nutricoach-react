@@ -235,13 +235,13 @@ const RecipesPage: React.FC = () => {
       const recipesToImport: Recipe[] = JSON.parse(jsonContent);
       
       if (!Array.isArray(recipesToImport)) {
-        throw new Error(t('recipes.invalidFormat', 'Ungültiges Format. Eine Array von Rezepten wird erwartet') as string);
+        throw new Error(t('recipes.invalidFormat', 'Ungültiges Format. Eine Array von Rezepten wird erwartet') || 'Ungültiges Format. Eine Array von Rezepten wird erwartet');
       }
       
       // Validiere jedes Rezept
       recipesToImport.forEach(recipe => {
         if (!recipe.title || !recipe.id || !recipe.ingredients || !recipe.instructions) {
-          throw new Error(t('recipes.invalidRecipeFormat', 'Ungültiges Rezeptformat. Einige erforderliche Felder fehlen') as string);
+          throw new Error(t('recipes.invalidRecipeFormat', 'Ungültiges Rezeptformat. Einige erforderliche Felder fehlen') || 'Ungültiges Rezeptformat. Einige erforderliche Felder fehlen');
         }
       });
       

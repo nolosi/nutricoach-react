@@ -29,6 +29,8 @@ class TrackingService {
   ): void {
     if (!user) return;
     
+    console.log(`TrackingService: Aktualisiere ${metricType} mit Wert ${value}`, { date, note });
+    
     // Verwende das aktuelle Datum, wenn keines angegeben ist
     const entryDate = date || new Date().toISOString().split('T')[0];
     
@@ -52,13 +54,17 @@ class TrackingService {
     // Prüfe, ob es bereits einen Eintrag für das angegebene Datum gibt
     const existingEntryIndex = historyArray.findIndex(entry => entry.date === entryDate);
     
+    console.log(`TrackingService: Für ${metricType} besteht ${existingEntryIndex >= 0 ? 'bereits ein Eintrag' : 'noch kein Eintrag'} für das Datum ${entryDate}`);
+    
     if (existingEntryIndex >= 0) {
       // Aktualisiere den bestehenden Eintrag
+      const oldValue = historyArray[existingEntryIndex].value;
       historyArray[existingEntryIndex] = {
         ...historyArray[existingEntryIndex],
         value,
         note: note || historyArray[existingEntryIndex].note
       };
+      console.log(`TrackingService: Wert für ${metricType} von ${oldValue} auf ${value} aktualisiert`);
     } else {
       // Füge einen neuen Eintrag hinzu
       historyArray.push({
@@ -66,6 +72,7 @@ class TrackingService {
         value,
         note
       });
+      console.log(`TrackingService: Neuer Eintrag für ${metricType} mit Wert ${value} hinzugefügt`);
     }
     
     // Sortiere die Historie nach Datum (neueste zuerst)

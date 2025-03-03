@@ -18,10 +18,16 @@ import RecipeCreatePage from './pages/RecipeCreatePage';
 import NutritionGoalsPage from './pages/NutritionGoalsPage';
 import NotFoundPage from './pages/NotFoundPage';
 import WaterTrackingPage from './pages/WaterTrackingPage';
+// LoginPage und RegisterPage werden derzeit nicht verwendet
+// import LoginPage from './pages/LoginPage';
+// import RegisterPage from './pages/RegisterPage';
 
 // Components
 import Layout from './components/common/Layout';
 import ProtectedRoute from './components/common/ProtectedRoute';
+// Header und Sidebar werden derzeit nicht verwendet
+// import Header from './components/Header';
+// import Sidebar from './components/Sidebar';
 
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';

@@ -296,11 +296,11 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
     
     // Aktualisiere den Benutzer mit den aktualisierten Missionen
-    updateUser({
-      ...user,
-      dailyMissions: updatedMissions
-    });
-    
+      updateUser({
+        ...user,
+        dailyMissions: updatedMissions
+      });
+      
     // Gib XP für die abgeschlossene Mission
     const completedMission = user.dailyMissions.find(m => m.id === missionId);
     if (completedMission) {
@@ -309,13 +309,17 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   // NEU: Funktion zum Abschließen einer Mahlzeit
-  const completeMeal = (mealId: string) => {
-    const meal = FoodService.getMealById(mealId);
-    if (!meal) {
-      return false;
-    }
+  const completeMeal = (mealId: string): boolean => {
+    if (!user) return false;
     
-    // Mahlzeit als abgeschlossen markieren
+    // Finde die Mahlzeit in der Speicherung
+    const meal = FoodService.getMealById(mealId);
+    if (!meal) return false;
+    
+    console.log('UserContext: Mahlzeit zum Abschließen gefunden:', meal);
+    console.log('UserContext: Aktuelle dailyProgress-Werte:', user.dailyProgress);
+    
+    // Aktualisiere die Mahlzeit als abgeschlossen
     const updatedMeal = {
       ...meal,
       isCompleted: true
@@ -336,6 +340,37 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         fat: (user.dailyProgress?.fat || 0) + meal.totalFat,
         water: user.dailyProgress?.water || 0
       };
+      
+      console.log('UserContext: Aktualisierte dailyProgress-Werte:', updatedDailyProgress);
+
+      // Benutzer direkt und sofort aktualisieren, ohne auf Missionsabschluss zu warten
+      const updatedUser = {
+        ...user,
+        dailyProgress: updatedDailyProgress
+      };
+      
+      // Aktualisiere die Tracking-Historie für Kalorien und Protein
+      if (meal.totalCalories > 0) {
+        TrackingService.updateMetric(
+          updatedUser, // Verwende den aktualisierter Benutzer
+          updateUser,
+          'calories',
+          updatedDailyProgress.calories,
+          `Mahlzeit: ${meal.mealType}`,
+          meal.date
+        );
+      }
+      
+      if (meal.totalProtein > 0) {
+        TrackingService.updateMetric(
+          updatedUser, // Verwende den aktualisierter Benutzer
+          updateUser,
+          'protein',
+          updatedDailyProgress.protein,
+          `Mahlzeit: ${meal.mealType}`,
+          meal.date
+        );
+      }
       
       // Finde die entsprechende Mission für diese Mahlzeit
       if (user.dailyMissions) {
@@ -379,81 +414,29 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
           
           // Benutzer mit allen Änderungen auf einmal aktualisieren
           updateUser({
-            ...user,
+            ...updatedUser,
             dailyMissions: updatedMissions,
             experiencePoints: newXP,
-            level: newLevel,
-            dailyProgress: updatedDailyProgress
+            level: newLevel
           });
-          
-          // Aktualisiere die Tracking-Historie für Kalorien und Protein
-          if (meal.totalCalories > 0) {
-            TrackingService.updateMetric(
-              user,
-              updateUser,
-              'calories',
-              updatedDailyProgress.calories,
-              undefined,
-              meal.date
-            );
-          }
-          
-          if (meal.totalProtein > 0) {
-            TrackingService.updateMetric(
-              user,
-              updateUser,
-              'protein',
-              updatedDailyProgress.protein,
-              undefined,
-              meal.date
-            );
-          }
           
           return true; // Mission wurde abgeschlossen
         } else {
           // Wenn keine Mission abgeschlossen wurde, trotzdem die täglichen Fortschritte aktualisieren
-          updateUser({
-            ...user,
-            dailyProgress: updatedDailyProgress
-          });
-          
-          // Aktualisiere die Tracking-Historie für Kalorien und Protein
-          if (meal.totalCalories > 0) {
-            TrackingService.updateMetric(
-              user,
-              updateUser,
-              'calories',
-              updatedDailyProgress.calories,
-              undefined,
-              meal.date
-            );
-          }
-          
-          if (meal.totalProtein > 0) {
-            TrackingService.updateMetric(
-              user,
-              updateUser,
-              'protein',
-              updatedDailyProgress.protein,
-              undefined,
-              meal.date
-            );
-          }
+          updateUser(updatedUser);
           
           if (matchingMission && matchingMission.completed) {
             // Mission bereits abgeschlossen
             return false;
-          } else {
-            // Keine passende Mission gefunden
-            return false;
           }
         }
+      } else {
+        // Wenn keine Missionen vorhanden sind, trotzdem die täglichen Fortschritte aktualisieren
+        updateUser(updatedUser);
       }
     }
     
-    // Zusätzlich noch allgemeine Missionen überprüfen
-    const missionsCompletedResult = checkAndCompleteMissions();
-    return missionsCompletedResult; // Gib zurück, ob Missionen abgeschlossen wurden
+    return false; // Keine Mission wurde abgeschlossen
   };
 
   // Funktion zum Überprüfen und automatischen Abschließen von Missionen
@@ -511,16 +494,16 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
           break;
         case 'food':
           // Nahrungsmission: Überprüfe, ob spezifische Mahlzeiten eingetragen und abgeschlossen wurden
-          if (mission.title.includes('Frühstück')) {
+            if (mission.title.includes('Frühstück')) {
             // Prüfe, ob Frühstück für heute eingetragen und abgeschlossen wurde
             shouldComplete = hasBreakfast;
-          } else if (mission.title.includes('Mittagessen')) {
+            } else if (mission.title.includes('Mittagessen')) {
             // Prüfe, ob Mittagessen für heute eingetragen und abgeschlossen wurde
             shouldComplete = hasLunch;
-          } else if (mission.title.includes('Abendessen')) {
+            } else if (mission.title.includes('Abendessen')) {
             // Prüfe, ob Abendessen für heute eingetragen und abgeschlossen wurde
             shouldComplete = hasDinner;
-          } else {
+            } else {
             // Allgemeine Nahrungsmission - nur als erledigt markieren, wenn mind. eine Mahlzeit abgeschlossen wurde
             shouldComplete = completedMealTypes.length > 0;
           }
@@ -787,7 +770,7 @@ export const recalculateAndUpdateNutritionGoals = (userData: UserData, updateUse
     console.warn('Unvollständige Benutzerdaten für die Ernährungszielberechnung');
     return;
   }
-  
+
   const inputData: NutritionInputData = {
     gender: userData.gender,
     weight: userData.weight,
@@ -796,9 +779,9 @@ export const recalculateAndUpdateNutritionGoals = (userData: UserData, updateUse
     activityLevel: userData.activityLevel as any || 'moderate',
     weightGoal: userData.weightGoal || 'maintain'
   };
-  
+
   const goals = calculateNutritionGoals(inputData);
-  
+
   // Aktualisiere die Ziele des Benutzers
   updateUserFunc({
     calorieGoal: goals.calorieGoal,

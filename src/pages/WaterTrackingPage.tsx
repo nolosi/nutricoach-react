@@ -35,7 +35,7 @@ import { UserData } from '../contexts/UserContext';
 const WaterTrackingPage: React.FC = () => {
   const { t } = useTranslation();
   const toast = useToast();
-  const { user, updateUser, addXP, checkAndCompleteMissions } = useUser();
+  const { user, updateUser, addXP, completeDaily, checkAndCompleteMissions } = useUser();
   const colorMode = useColorMode();
   
   // Farbschemata basierend auf dem Farbmodus

@@ -274,12 +274,41 @@ const FoodTrackingView: React.FC<{ initialDate?: string }> = ({ initialDate }) =
     });
   };
   
-  // Berechne die Gesamtnährwerte für den Tag
-  const dailyTotals = FoodService.calculateDailyTotals(selectedDate);
+  // Berechne die täglichen Gesamtwerte
+  const calculateDailyTotals = () => {
+    let totalCalories = 0;
+    let totalProtein = 0;
+    let totalCarbs = 0;
+    let totalFat = 0;
+    
+    // Nur abgeschlossene Mahlzeiten einbeziehen
+    meals.filter(meal => meal.isCompleted).forEach(meal => {
+      totalCalories += meal.totalCalories;
+      totalProtein += meal.totalProtein;
+      totalCarbs += meal.totalCarbs;
+      totalFat += meal.totalFat;
+    });
+    
+    return { calories: totalCalories, protein: totalProtein, carbs: totalCarbs, fat: totalFat };
+  };
   
-  // Aktualisiere die Benutzerdaten mit den Nährwerten
+  // Tägliche Gesamtwerte
+  const dailyTotals = calculateDailyTotals();
+  
+  // Aktualisiere die täglichen Fortschritte
   useEffect(() => {
+    // HINWEIS: Diese useEffect-Funktion und die completeMeal-Funktion im UserContext 
+    // könnten potenziell beide die dailyProgress-Werte aktualisieren, was zu Doppelzählungen führen kann.
+    // Aktualisiere nur Fortschritte, wenn keine Mahlzeit kürzlich abgeschlossen wurde
     if (user) {
+      console.log('FoodTrackingView: Berechnete Gesamtwerte für den Tag:', dailyTotals);
+      
+      // WICHTIG: Wir aktualisieren die täglichen Fortschritte nicht automatisch hier,
+      // da die completeMeal-Funktion die Werte bereits aktualisiert, wenn Mahlzeiten als abgeschlossen markiert werden.
+      // Diese useEffect-Funktion ist nur für die Aktualisierung der Anzeige verantwortlich.
+      
+      // Der folgende Code wurde auskommentiert, um Doppelzählungen zu vermeiden:
+      /*
       updateUser({
         ...user,
         dailyProgress: {
@@ -313,6 +342,7 @@ const FoodTrackingView: React.FC<{ initialDate?: string }> = ({ initialDate }) =
           selectedDate
         );
       }
+      */
     }
   }, [dailyTotals, user, updateUser, selectedDate]);
   
@@ -566,8 +596,18 @@ const FoodTrackingView: React.FC<{ initialDate?: string }> = ({ initialDate }) =
   
   // Funktion zum Abschließen einer Mahlzeit
   const handleCompleteMeal = (mealId: string, mealType: string) => {
+    // Finde die Mahlzeit zur Überprüfung
+    const mealToComplete = meals.find(meal => meal.id === mealId);
+    if (!mealToComplete) {
+      console.error('Mahlzeit zum Abschließen nicht gefunden:', mealId);
+      return;
+    }
+    
+    console.log('FoodTrackingView: Mahlzeit zum Abschließen:', mealToComplete);
+    
     // Rufe completeMeal auf, um die Mahlzeit abzuschließen und überprüfe, ob Missionen abgeschlossen wurden
     const missionResult = completeMeal(mealId);
+    console.log('FoodTrackingView: Mahlzeit abgeschlossen, Ergebnis:', missionResult);
     
     // Aktualisiere den lokalen State, um die UI sofort zu aktualisieren
     setMeals(prevMeals => prevMeals.map(meal => 
@@ -586,11 +626,12 @@ const FoodTrackingView: React.FC<{ initialDate?: string }> = ({ initialDate }) =
     // Wenn Missionen abgeschlossen wurden, zusätzliche Benachrichtigung anzeigen
     if (missionResult) {
       toast({
-        title: t('water.missionCompleted', 'Mission abgeschlossen!'),
-        description: t('meals.missionCompletedDesc', 'Du hast deine Mahlzeiten-Mission erfüllt und 20 XP erhalten!'),
+        title: t('missions.completed', 'Mission abgeschlossen!'),
+        description: t('missions.xpEarned', { xp: 20 }),
         status: 'success',
         duration: 3000,
         isClosable: true,
+        position: 'top',
       });
     }
   };
