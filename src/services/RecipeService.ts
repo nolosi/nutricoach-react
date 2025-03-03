@@ -113,7 +113,7 @@ const mockRecipes: Recipe[] = [
   {
     id: '4',
     title: 'Schokoladen-Protein-Smoothie',
-    image: 'https://images.unsplash.com/photo-1629704792095-78194586bb26?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Y2hvY29sYXRlJTIwc21vb3RoaWV8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60',
+    image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     difficulty: 'easy',
     prepTime: 5,
     servings: 1,
@@ -223,7 +223,7 @@ const mockRecipes: Recipe[] = [
   {
     id: '27',
     title: 'Gefüllte Süßkartoffeln mit Kichererbsen',
-    image: 'https://images.unsplash.com/photo-1586111893496-d4c0a4f40c1a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
+    image: 'https://plus.unsplash.com/premium_photo-1713088501689-517b74d9a68b?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     difficulty: 'medium',
     prepTime: 30,
     servings: 4,
