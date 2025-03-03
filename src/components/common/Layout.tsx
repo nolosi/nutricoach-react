@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Container, useColorModeValue } from '@chakra-ui/react';
 import Header from './Header';
 import Navigation from './Navigation';
-import Footer from './Footer';
+import Footer from '../Footer';
 import { useLocation, Outlet } from 'react-router-dom';
 
 interface LayoutProps {
