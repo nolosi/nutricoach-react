@@ -66,14 +66,29 @@ const WelcomeStep: React.FC<{ onNext: () => void }> = ({ onNext }) => {
   const { t } = useTranslation();
   const bgColor = useColorModeValue('brand.50', 'gray.800');
   const navigate = useNavigate();
+  const { updateUser } = useUser();
   
   // Für das Backup/Restore Modal
   const { isOpen, onOpen, onClose } = useDisclosure();
   
   // Callback für erfolgreichen Import
   const handleImportSuccess = () => {
-    // Nach erfolgreichem Import direkt zur Hauptseite navigieren
-    navigate('/');
+    // Nach erfolgreichem Import den Benutzer als eingeloggt markieren und Onboarding als abgeschlossen setzen
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      const parsedUserData = JSON.parse(userData);
+      // Stelle sicher, dass das Onboarding als abgeschlossen markiert ist
+      parsedUserData.onboardingCompleted = true;
+      // Aktualisiere die Benutzerdaten
+      localStorage.setItem('userData', JSON.stringify(parsedUserData));
+      // Aktualisiere den Benutzerkontext
+      updateUser(parsedUserData);
+      // Navigiere zur Hauptseite
+      navigate('/');
+    } else {
+      // Falls keine Benutzerdaten gefunden wurden, fahre mit dem normalen Onboarding fort
+      onNext();
+    }
   };
   
   return (
@@ -138,12 +153,13 @@ const WelcomeStep: React.FC<{ onNext: () => void }> = ({ onNext }) => {
         </Button>
       </VStack>
       
-      {/* Backup/Restore Modal */}
+      {/* Backup/Restore Modal - Nur mit Import-Tab */}
       <BackupRestoreModal 
         isOpen={isOpen} 
         onClose={onClose} 
         defaultTab={1} // Öffne direkt den Import-Tab
         onImportSuccess={handleImportSuccess}
+        onboardingMode={true} // Aktiviere den Onboarding-Modus
       />
     </VStack>
   );

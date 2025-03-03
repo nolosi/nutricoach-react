@@ -33,6 +33,7 @@ export interface BackupSettings {
   autoBackupEnabled: boolean;
   backupFrequency: 'daily' | 'weekly' | 'monthly';
   lastBackupDate: string | null;
+  keepBackupsCount: number;
 }
 
 /**
@@ -272,36 +273,29 @@ export const BackupService = {
    * @returns Die Backup-Einstellungen
    */
   getBackupSettings: (): BackupSettings => {
-    try {
-      const lastBackupDate = localStorage.getItem(STORAGE_KEYS.LAST_BACKUP_DATE);
-      
-      // Standardeinstellungen
-      const defaultSettings: BackupSettings = {
-        autoBackupEnabled: false,
-        backupFrequency: 'weekly',
-        lastBackupDate: lastBackupDate
-      };
-      
-      return defaultSettings;
-    } catch (error) {
-      console.error('Fehler beim Laden der Backup-Einstellungen:', error);
-      return {
-        autoBackupEnabled: false,
-        backupFrequency: 'weekly',
-        lastBackupDate: null
-      };
-    }
+    // Lade die gespeicherten Einstellungen
+    const autoBackupEnabled = localStorage.getItem('nutricoach_auto_backup_enabled') === 'true';
+    const backupFrequency = localStorage.getItem('nutricoach_backup_frequency') || 'weekly';
+    const lastBackupDate = localStorage.getItem(STORAGE_KEYS.LAST_BACKUP_DATE);
+    const keepBackupsCount = parseInt(localStorage.getItem('nutricoach_keep_backups_count') || '3', 10);
+    
+    return {
+      autoBackupEnabled,
+      backupFrequency: backupFrequency as 'daily' | 'weekly' | 'monthly',
+      lastBackupDate,
+      keepBackupsCount
+    };
   },
 
   /**
-   * Speichert die Backup-Einstellungen im localStorage
-   * @param settings Die zu speichernden Einstellungen
+   * Speichert die Backup-Einstellungen
    */
   saveBackupSettings: (settings: BackupSettings): void => {
-    try {
-      localStorage.setItem(STORAGE_KEYS.LAST_BACKUP_DATE, settings.lastBackupDate || '');
-    } catch (error) {
-      console.error('Fehler beim Speichern der Backup-Einstellungen:', error);
+    localStorage.setItem('nutricoach_auto_backup_enabled', settings.autoBackupEnabled.toString());
+    localStorage.setItem('nutricoach_backup_frequency', settings.backupFrequency);
+    if (settings.lastBackupDate) {
+      localStorage.setItem(STORAGE_KEYS.LAST_BACKUP_DATE, settings.lastBackupDate);
     }
+    localStorage.setItem('nutricoach_keep_backups_count', settings.keepBackupsCount.toString());
   }
 }; 
