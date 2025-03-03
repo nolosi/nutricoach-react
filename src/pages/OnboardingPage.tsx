@@ -74,13 +74,13 @@ const WelcomeStep: React.FC<{ onNext: () => void }> = ({ onNext }) => {
   // Callback für erfolgreichen Import
   const handleImportSuccess = () => {
     // Nach erfolgreichem Import den Benutzer als eingeloggt markieren und Onboarding als abgeschlossen setzen
-    const userData = localStorage.getItem('userData');
+    const userData = localStorage.getItem('nutricoach_user');
     if (userData) {
       const parsedUserData = JSON.parse(userData);
       // Stelle sicher, dass das Onboarding als abgeschlossen markiert ist
       parsedUserData.onboardingCompleted = true;
       // Aktualisiere die Benutzerdaten
-      localStorage.setItem('userData', JSON.stringify(parsedUserData));
+      localStorage.setItem('nutricoach_user', JSON.stringify(parsedUserData));
       // Aktualisiere den Benutzerkontext
       updateUser(parsedUserData);
       // Navigiere zur Hauptseite
