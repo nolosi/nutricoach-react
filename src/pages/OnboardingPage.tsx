@@ -67,6 +67,7 @@ const WelcomeStep: React.FC<{ onNext: () => void }> = ({ onNext }) => {
   const bgColor = useColorModeValue('brand.50', 'gray.800');
   const navigate = useNavigate();
   const { updateUser } = useUser();
+  const toast = useToast();
   
   // Für das Backup/Restore Modal
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -76,15 +77,47 @@ const WelcomeStep: React.FC<{ onNext: () => void }> = ({ onNext }) => {
     // Nach erfolgreichem Import den Benutzer als eingeloggt markieren und Onboarding als abgeschlossen setzen
     const userData = localStorage.getItem('nutricoach_user');
     if (userData) {
-      const parsedUserData = JSON.parse(userData);
-      // Stelle sicher, dass das Onboarding als abgeschlossen markiert ist
-      parsedUserData.onboardingCompleted = true;
-      // Aktualisiere die Benutzerdaten
-      localStorage.setItem('nutricoach_user', JSON.stringify(parsedUserData));
-      // Aktualisiere den Benutzerkontext
-      updateUser(parsedUserData);
-      // Navigiere zur Hauptseite
-      navigate('/');
+      try {
+        const parsedUserData = JSON.parse(userData);
+        
+        // Stelle sicher, dass das Onboarding als abgeschlossen markiert ist
+        parsedUserData.onboardingCompleted = true;
+        
+        // Stelle sicher, dass alle erforderlichen Felder vorhanden sind
+        if (!parsedUserData.uid) {
+          parsedUserData.uid = Math.random().toString(36).substring(2, 15);
+        }
+        
+        if (!parsedUserData.unlockedBadges) {
+          parsedUserData.unlockedBadges = [];
+        }
+        
+        if (!parsedUserData.completedChallenges) {
+          parsedUserData.completedChallenges = [];
+        }
+        
+        // Aktualisiere die Benutzerdaten im localStorage
+        localStorage.setItem('nutricoach_user', JSON.stringify(parsedUserData));
+        
+        // Aktualisiere den Benutzerkontext
+        updateUser(parsedUserData);
+        
+        // Zeige eine Erfolgsmeldung an
+        toast({
+          title: t('onboarding.importSuccess', 'Import erfolgreich'),
+          description: t('onboarding.importSuccessDesc', 'Deine Daten wurden erfolgreich importiert.'),
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+        
+        // Navigiere zur Hauptseite
+        navigate('/');
+      } catch (error) {
+        console.error('Fehler beim Parsen der Benutzerdaten:', error);
+        // Bei einem Fehler mit dem normalen Onboarding fortfahren
+        onNext();
+      }
     } else {
       // Falls keine Benutzerdaten gefunden wurden, fahre mit dem normalen Onboarding fort
       onNext();
