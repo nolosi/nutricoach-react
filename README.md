@@ -30,6 +30,12 @@ NutriCoach ist eine moderne Web-Anwendung, die dir hilft, deine Ernährung und F
   - Visuelle Fortschrittsanzeigen
   - Tägliche, wöchentliche und monatliche Übersichten
 
+- **💾 Datenmanagement:**
+  - Backup und Wiederherstellung aller Benutzerdaten
+  - Import von Daten während des Onboardings
+  - Automatische Backups (täglich, wöchentlich oder monatlich)
+  - Selektiver Import von Daten (Profil, Mahlzeiten, Rezepte, etc.)
+
 ## 🚀 Technologie-Stack
 
 - **Frontend:** React 18 mit TypeScript
@@ -39,6 +45,7 @@ NutriCoach ist eine moderne Web-Anwendung, die dir hilft, deine Ernährung und F
 - **Internationalisierung:** i18next
 - **Diagramme:** Chart.js & Recharts
 - **Animationen:** Framer Motion
+- **Datenspeicherung:** LocalStorage mit JSON-Export/Import
 - **Entwicklungswerkzeuge:** 
   - Create React App
   - ESLint
@@ -75,12 +82,15 @@ Die Anwendung ist dann unter [http://localhost:3000](http://localhost:3000) erre
 src/
 ├── components/     # Wiederverwendbare UI-Komponenten
 ├── contexts/       # React Context für State Management
-├── pages/         # Hauptseiten der Anwendung
-├── services/      # Dienste für Datenverarbeitung
-├── utils/         # Hilfsfunktionen
-├── types/         # TypeScript Definitionen
-├── i18n/          # Übersetzungen
-└── theme/         # Chakra UI Theme Anpassungen
+├── pages/          # Hauptseiten der Anwendung
+├── services/       # Dienste für Datenverarbeitung
+│   ├── BackupService.ts  # Service für Backup und Wiederherstellung
+├── hooks/          # Benutzerdefinierte React Hooks
+│   ├── useAutoBackup.ts  # Hook für automatische Backups
+├── utils/          # Hilfsfunktionen
+├── types/          # TypeScript Definitionen
+├── i18n/           # Übersetzungen
+└── theme/          # Chakra UI Theme Anpassungen
 ```
 
 ## 🔄 Continuous Integration/Deployment
@@ -88,6 +98,31 @@ src/
 - Automatische Deployments auf Netlify
 - Kontinuierliche Integration mit GitHub Actions
 - Automatische Vorschau-Deployments für Pull Requests
+
+## 💾 Backup und Wiederherstellung
+
+NutriCoach bietet umfangreiche Funktionen zum Sichern und Wiederherstellen deiner Daten:
+
+### Manuelles Backup
+- Erstelle jederzeit ein vollständiges Backup deiner Daten
+- Exportiere deine Daten als JSON-Datei zur sicheren Aufbewahrung
+
+### Automatische Backups
+- Konfiguriere automatische Backups (täglich, wöchentlich, monatlich)
+- Lege fest, wie viele Backups aufbewahrt werden sollen
+
+### Datenwiederherstellung
+- Importiere deine Daten aus einer Backup-Datei
+- Wähle aus, welche Daten du wiederherstellen möchtest:
+  - Profilsettings
+  - Mahlzeitenpläne
+  - Gespeicherte Rezepte
+  - Tracking-Daten
+  - Benutzerdefinierte Lebensmittel
+
+### Onboarding mit Backup
+- Starte direkt mit deinen vorhandenen Daten, indem du während des Onboardings ein Backup importierst
+- Überspringe den Onboarding-Prozess durch Import eines vollständigen Backups
 
 ## 🤝 Mitwirken
 
