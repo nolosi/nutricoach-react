@@ -173,19 +173,6 @@ const MealPlanView: React.FC<MealPlanViewProps> = ({ initialDate }) => {
                 align="center"
               >
                 <Heading size="sm">{t(`meals.${mealType}`)}</Heading>
-                {!meal && (
-                  <Button
-                    size="sm"
-                    leftIcon={<FiCalendar />}
-                    onClick={() => handleAddRecipe(mealType)}
-                    colorScheme="teal"
-                    variant="outline"
-                    color="white"
-                    _hover={{ bg: 'teal.600' }}
-                  >
-                    {t('common.add')}
-                  </Button>
-                )}
               </Flex>
               
               {isLoading ? (
