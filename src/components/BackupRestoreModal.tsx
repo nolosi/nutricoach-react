@@ -91,7 +91,18 @@ const BackupRestoreModal: React.FC<BackupRestoreModalProps> = ({
   const handleExport = () => {
     try {
       setIsLoading(true);
-      BackupService.exportBackup();
+      const backup = BackupService.createBackup();
+      const dataStr = JSON.stringify(backup, null, 2);
+      const dataUri = `data:application/json;charset=utf-8,${encodeURIComponent(dataStr)}`;
+      
+      // Erstelle einen temporären Link und klicke ihn an, um den Download zu starten
+      const link = document.createElement('a');
+      link.setAttribute('href', dataUri);
+      link.setAttribute('download', `nutricoach_backup_${new Date().toISOString().split('T')[0]}.json`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
       toast({
         title: t('backup.backupSuccess'),
         description: t('backup.backupSuccessDesc'),
@@ -257,18 +268,117 @@ const BackupRestoreModal: React.FC<BackupRestoreModalProps> = ({
         <ModalHeader>{t('backup.title')}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Tabs index={tabIndex} onChange={setTabIndex} variant="enclosed">
-            {!onboardingMode && (
+          {/* Wenn im Onboarding-Modus, zeige nur den Import-Tab ohne Tabs-Navigation */}
+          {onboardingMode ? (
+            <VStack spacing={4} align="stretch">
+              <Alert status="warning" borderRadius="md">
+                <AlertIcon />
+                <Box>
+                  <AlertTitle>{t('backup.importTab')}</AlertTitle>
+                  <AlertDescription>
+                    {t('backup.restoreInfo')}
+                  </AlertDescription>
+                </Box>
+              </Alert>
+              
+              {!backupData ? (
+                <>
+                  <Text>{t('backup.selectBackupFile')}:</Text>
+                  <input
+                    type="file"
+                    accept=".json"
+                    onChange={handleFileSelect}
+                    ref={fileInputRef}
+                    style={{ display: 'none' }}
+                  />
+                  <Button 
+                    leftIcon={<FiUpload />} 
+                    colorScheme="blue" 
+                    onClick={() => fileInputRef.current?.click()}
+                    isLoading={isLoading}
+                    loadingText={t('backup.loadingFile')}
+                  >
+                    {t('backup.selectBackupFile')}
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Alert status="success" borderRadius="md">
+                    <AlertIcon />
+                    <Box>
+                      <AlertTitle>{t('backup.backupLoaded')}</AlertTitle>
+                      <AlertDescription>
+                        {t('backup.backupDate')} {new Date(backupData.timestamp).toLocaleString()}
+                      </AlertDescription>
+                    </Box>
+                  </Alert>
+                  
+                  <Divider my={2} />
+                  
+                  <Text fontWeight="bold">{t('backup.whatToImport')}</Text>
+                  <VStack align="start" spacing={2}>
+                    <Checkbox 
+                      isChecked={importOptions.importUserData}
+                      onChange={() => handleOptionChange('importUserData')}
+                    >
+                      {t('backup.profileSettings')}
+                    </Checkbox>
+                    <Checkbox 
+                      isChecked={importOptions.importMealPlan}
+                      onChange={() => handleOptionChange('importMealPlan')}
+                    >
+                      {t('backup.mealPlans')}
+                    </Checkbox>
+                    <Checkbox 
+                      isChecked={importOptions.importRecipes}
+                      onChange={() => handleOptionChange('importRecipes')}
+                    >
+                      {t('backup.savedRecipes')}
+                    </Checkbox>
+                    <Checkbox 
+                      isChecked={importOptions.importMeals}
+                      onChange={() => handleOptionChange('importMeals')}
+                    >
+                      {t('backup.trackingData')}
+                    </Checkbox>
+                    <Checkbox 
+                      isChecked={importOptions.importCustomFoods}
+                      onChange={() => handleOptionChange('importCustomFoods')}
+                    >
+                      {t('backup.customFoods')}
+                    </Checkbox>
+                  </VStack>
+                  
+                  <HStack spacing={4} mt={4}>
+                    <Button 
+                      colorScheme="green" 
+                      onClick={handleImport}
+                      isLoading={isLoading}
+                      loadingText={t('backup.importing')}
+                    >
+                      {t('backup.importData')}
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      onClick={() => setBackupData(null)}
+                    >
+                      {t('common.cancel')}
+                    </Button>
+                  </HStack>
+                </>
+              )}
+            </VStack>
+          ) : (
+            // Normaler Modus mit Tabs
+            <Tabs index={tabIndex} onChange={setTabIndex} variant="enclosed">
               <TabList>
                 <Tab>{t('backup.exportTab')}</Tab>
                 <Tab>{t('backup.importTab')}</Tab>
                 <Tab>{t('backup.settingsTab')}</Tab>
               </TabList>
-            )}
-            
-            <TabPanels>
-              {/* Export-Tab - nur anzeigen, wenn nicht im Onboarding-Modus */}
-              {!onboardingMode && (
+              
+              <TabPanels>
+                {/* Export-Tab */}
                 <TabPanel>
                   <VStack spacing={4} align="stretch">
                     <Alert status="info" borderRadius="md">
@@ -286,118 +396,116 @@ const BackupRestoreModal: React.FC<BackupRestoreModalProps> = ({
                       colorScheme="blue" 
                       onClick={handleExport}
                       isLoading={isLoading}
-                      loadingText={t('backup.creatingBackup')}
+                      loadingText={t('backup.exporting')}
                     >
                       {t('backup.createBackup')}
                     </Button>
                   </VStack>
                 </TabPanel>
-              )}
-              
-              {/* Import-Tab - immer anzeigen */}
-              <TabPanel>
-                <VStack spacing={4} align="stretch">
-                  <Alert status="warning" borderRadius="md">
-                    <AlertIcon />
-                    <Box>
-                      <AlertTitle>{t('backup.importTab')}</AlertTitle>
-                      <AlertDescription>
-                        {t('backup.restoreInfo')}
-                      </AlertDescription>
-                    </Box>
-                  </Alert>
-                  
-                  {!backupData ? (
-                    <>
-                      <Text>{t('backup.selectBackupFile')}:</Text>
-                      <input
-                        type="file"
-                        accept=".json"
-                        onChange={handleFileSelect}
-                        ref={fileInputRef}
-                        style={{ display: 'none' }}
-                      />
-                      <Button 
-                        leftIcon={<FiUpload />} 
-                        colorScheme="blue" 
-                        onClick={() => fileInputRef.current?.click()}
-                        isLoading={isLoading}
-                        loadingText={t('backup.loadingFile')}
-                      >
-                        {t('backup.selectBackupFile')}
-                      </Button>
-                    </>
-                  ) : (
-                    <>
-                      <Alert status="success" borderRadius="md">
-                        <AlertIcon />
-                        <Box>
-                          <AlertTitle>{t('backup.backupLoaded')}</AlertTitle>
-                          <AlertDescription>
-                            {t('backup.backupDate')} {new Date(backupData.timestamp).toLocaleString()}
-                          </AlertDescription>
-                        </Box>
-                      </Alert>
-                      
-                      <Divider my={2} />
-                      
-                      <Text fontWeight="bold">{t('backup.whatToImport')}</Text>
-                      <VStack align="start" spacing={2}>
-                        <Checkbox 
-                          isChecked={importOptions.importUserData}
-                          onChange={() => handleOptionChange('importUserData')}
-                        >
-                          {t('backup.profileSettings')}
-                        </Checkbox>
-                        <Checkbox 
-                          isChecked={importOptions.importMealPlan}
-                          onChange={() => handleOptionChange('importMealPlan')}
-                        >
-                          {t('backup.mealPlans')}
-                        </Checkbox>
-                        <Checkbox 
-                          isChecked={importOptions.importRecipes}
-                          onChange={() => handleOptionChange('importRecipes')}
-                        >
-                          {t('backup.savedRecipes')}
-                        </Checkbox>
-                        <Checkbox 
-                          isChecked={importOptions.importMeals}
-                          onChange={() => handleOptionChange('importMeals')}
-                        >
-                          {t('backup.trackingData')}
-                        </Checkbox>
-                        <Checkbox 
-                          isChecked={importOptions.importCustomFoods}
-                          onChange={() => handleOptionChange('importCustomFoods')}
-                        >
-                          {t('backup.customFoods')}
-                        </Checkbox>
-                      </VStack>
-                      
-                      <HStack spacing={4} mt={4}>
+                
+                {/* Import-Tab */}
+                <TabPanel>
+                  <VStack spacing={4} align="stretch">
+                    <Alert status="warning" borderRadius="md">
+                      <AlertIcon />
+                      <Box>
+                        <AlertTitle>{t('backup.importTab')}</AlertTitle>
+                        <AlertDescription>
+                          {t('backup.restoreInfo')}
+                        </AlertDescription>
+                      </Box>
+                    </Alert>
+                    
+                    {!backupData ? (
+                      <>
+                        <Text>{t('backup.selectBackupFile')}:</Text>
+                        <input
+                          type="file"
+                          accept=".json"
+                          onChange={handleFileSelect}
+                          ref={fileInputRef}
+                          style={{ display: 'none' }}
+                        />
                         <Button 
-                          colorScheme="green" 
-                          onClick={handleImport}
+                          leftIcon={<FiUpload />} 
+                          colorScheme="blue" 
+                          onClick={() => fileInputRef.current?.click()}
                           isLoading={isLoading}
-                          loadingText={t('backup.importing')}
+                          loadingText={t('backup.loadingFile')}
                         >
-                          {t('backup.importData')}
+                          {t('backup.selectBackupFile')}
                         </Button>
-                        <Button 
-                          variant="ghost" 
-                          onClick={() => setBackupData(null)}
-                        >
-                          {t('common.cancel')}
-                        </Button>
-                      </HStack>
-                    </>
-                  )}
-                </VStack>
-              </TabPanel>
-              
-              {/* Einstellungen-Tab - nur anzeigen, wenn nicht im Onboarding-Modus */}
-              {!onboardingMode && (
+                      </>
+                    ) : (
+                      <>
+                        <Alert status="success" borderRadius="md">
+                          <AlertIcon />
+                          <Box>
+                            <AlertTitle>{t('backup.backupLoaded')}</AlertTitle>
+                            <AlertDescription>
+                              {t('backup.backupDate')} {new Date(backupData.timestamp).toLocaleString()}
+                            </AlertDescription>
+                          </Box>
+                        </Alert>
+                        
+                        <Divider my={2} />
+                        
+                        <Text fontWeight="bold">{t('backup.whatToImport')}</Text>
+                        <VStack align="start" spacing={2}>
+                          <Checkbox 
+                            isChecked={importOptions.importUserData}
+                            onChange={() => handleOptionChange('importUserData')}
+                          >
+                            {t('backup.profileSettings')}
+                          </Checkbox>
+                          <Checkbox 
+                            isChecked={importOptions.importMealPlan}
+                            onChange={() => handleOptionChange('importMealPlan')}
+                          >
+                            {t('backup.mealPlans')}
+                          </Checkbox>
+                          <Checkbox 
+                            isChecked={importOptions.importRecipes}
+                            onChange={() => handleOptionChange('importRecipes')}
+                          >
+                            {t('backup.savedRecipes')}
+                          </Checkbox>
+                          <Checkbox 
+                            isChecked={importOptions.importMeals}
+                            onChange={() => handleOptionChange('importMeals')}
+                          >
+                            {t('backup.trackingData')}
+                          </Checkbox>
+                          <Checkbox 
+                            isChecked={importOptions.importCustomFoods}
+                            onChange={() => handleOptionChange('importCustomFoods')}
+                          >
+                            {t('backup.customFoods')}
+                          </Checkbox>
+                        </VStack>
+                        
+                        <HStack spacing={4} mt={4}>
+                          <Button 
+                            colorScheme="green" 
+                            onClick={handleImport}
+                            isLoading={isLoading}
+                            loadingText={t('backup.importing')}
+                          >
+                            {t('backup.importData')}
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            onClick={() => setBackupData(null)}
+                          >
+                            {t('common.cancel')}
+                          </Button>
+                        </HStack>
+                      </>
+                    )}
+                  </VStack>
+                </TabPanel>
+                
+                {/* Einstellungen-Tab */}
                 <TabPanel>
                   <VStack spacing={4} align="stretch">
                     <Alert status="info" borderRadius="md">
@@ -405,7 +513,7 @@ const BackupRestoreModal: React.FC<BackupRestoreModalProps> = ({
                       <Box>
                         <AlertTitle>{t('backup.settingsTab')}</AlertTitle>
                         <AlertDescription>
-                          {t('backup.settingsInfo')}
+                          {t('backup.autoBackupDesc')}
                         </AlertDescription>
                       </Box>
                     </Alert>
@@ -466,16 +574,16 @@ const BackupRestoreModal: React.FC<BackupRestoreModalProps> = ({
                       colorScheme="blue" 
                       onClick={handleSaveBackupSettings}
                       isLoading={isLoading}
-                      loadingText={t('backup.saving')}
+                      loadingText={t('backup.savingSettings')}
                       leftIcon={<SettingsIcon />}
                     >
                       {t('backup.saveSettings')}
                     </Button>
                   </VStack>
                 </TabPanel>
-              )}
-            </TabPanels>
-          </Tabs>
+              </TabPanels>
+            </Tabs>
+          )}
           
           {isLoading && <Progress size="xs" isIndeterminate mt={4} />}
         </ModalBody>
