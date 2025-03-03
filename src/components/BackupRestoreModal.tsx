@@ -169,8 +169,7 @@ const BackupRestoreModal: React.FC<BackupRestoreModalProps> = ({
       const result = BackupService.importBackup(backupData, importOptions);
       
       if (result.success) {
-        // Zeige die Erfolgsmeldung nur an, wenn wir nicht im Onboarding-Modus sind
-        // Im Onboarding-Modus wird die Meldung vom Callback angezeigt
+        // Toast-Nachricht nur anzeigen, wenn wir nicht im Onboarding-Modus sind
         if (!onboardingMode) {
           toast({
             title: t('backup.importSuccess'),
