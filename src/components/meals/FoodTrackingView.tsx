@@ -354,7 +354,9 @@ const FoodTrackingView: React.FC<{ initialDate?: string }> = ({ initialDate }) =
   
   // Funktion zum Suchen von Lebensmitteln
   const handleSearch = () => {
+    console.log('Suche nach:', searchQuery);
     const results = FoodService.searchFoods(searchQuery);
+    console.log('Gefundene Ergebnisse:', results.length);
     setSearchResults(results);
   };
   
@@ -1200,7 +1202,7 @@ const FoodTrackingView: React.FC<{ initialDate?: string }> = ({ initialDate }) =
               )}
             </List>
             
-              {/* Ausgewähltes Lebensmittel mit verbessender Darstellung */}
+              {/* Ausgewähltes Lebensmittel mit verbessener Darstellung */}
             {selectedFood && (
                 <Box mt={4} p={4} borderWidth="1px" borderRadius="md" bg={selectedFoodDisplayBg} shadow="md">
                   <Heading size="sm" mb={3}>{selectedFood.name}</Heading>
