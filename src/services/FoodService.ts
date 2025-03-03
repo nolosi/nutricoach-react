@@ -1364,13 +1364,20 @@ export const FoodService = {
    */
   searchFoods: (query: string): Food[] => {
     const foods = FoodService.getAllFoods();
+    console.log('Alle Lebensmittel:', foods.length);
+    
     if (!query) return foods;
     
     const lowerQuery = query.toLowerCase();
-    return foods.filter(food => 
+    console.log('Suche nach:', lowerQuery);
+    
+    const results = foods.filter(food => 
       food.name.toLowerCase().includes(lowerQuery) || 
-      food.category?.toLowerCase().includes(lowerQuery)
+      (food.category && food.category.toLowerCase().includes(lowerQuery))
     );
+    
+    console.log('Gefundene Ergebnisse:', results.length);
+    return results;
   },
 
   /**
