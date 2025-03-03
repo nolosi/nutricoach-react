@@ -6,6 +6,7 @@ import {
   DEFAULT_NUTRITION_GOALS
 } from '../utils/nutritionCalculator';
 import { FoodService, Meal } from '../services/FoodService';
+import TrackingService from '../services/TrackingService';
 
 // Missionstypen
 export interface Mission {
@@ -324,61 +325,129 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     FoodService.deleteMeal(mealId);
     FoodService.addMeal(updatedMeal);
     
-    // Finde die entsprechende Mission für diese Mahlzeit
-    if (user && user.dailyMissions) {
-      const mealType = meal.mealType;
-      let matchingMission: Mission | undefined;
+    // Aktualisiere die täglichen Nährwerte mit den Mahlzeitdaten
+    if (user) {
+      // Aktualisiere die täglichen Fortschritte
+      const updatedDailyProgress = {
+        ...user.dailyProgress,
+        calories: (user.dailyProgress?.calories || 0) + meal.totalCalories,
+        protein: (user.dailyProgress?.protein || 0) + meal.totalProtein,
+        carbs: (user.dailyProgress?.carbs || 0) + meal.totalCarbs,
+        fat: (user.dailyProgress?.fat || 0) + meal.totalFat,
+        water: user.dailyProgress?.water || 0
+      };
       
-      // Exaktere Suche nach der entsprechenden Mission
-      let missionTitle = '';
-      if (mealType === 'breakfast') {
-        missionTitle = 'Frühstück eintragen';
-      } else if (mealType === 'lunch') {
-        missionTitle = 'Mittagessen eintragen';
-      } else if (mealType === 'dinner') {
-        missionTitle = 'Abendessen eintragen';
-      }
-      
-      // Finde die Mission mit dem exakten Titel
-      matchingMission = user.dailyMissions.find(m => m.title === missionTitle);
-      
-      // Wenn eine passende Mission gefunden wurde und diese noch nicht abgeschlossen ist, vergebe XP
-      if (matchingMission && !matchingMission.completed) {
-        // Mission als abgeschlossen markieren
-        const updatedMissions = user.dailyMissions.map(mission => 
-          mission.id === matchingMission?.id ? { ...mission, completed: true } : mission
-        );
+      // Finde die entsprechende Mission für diese Mahlzeit
+      if (user.dailyMissions) {
+        const mealType = meal.mealType;
+        let matchingMission: Mission | undefined;
         
-        // Aktuelle XP-Werte sichern
-        const currentXP = user.experiencePoints || 0;
-        const currentLevel = user.level || 1;
-        
-        // XP berechnen
-        let newXP = currentXP + matchingMission.xp;
-        let newLevel = currentLevel;
-        
-        // Levelaufstieg, wenn genügend XP gesammelt wurden
-        const requiredXP = currentLevel * 100;
-        if (newXP >= requiredXP) {
-          newXP -= requiredXP;
-          newLevel += 1;
+        // Exaktere Suche nach der entsprechenden Mission
+        let missionTitle = '';
+        if (mealType === 'breakfast') {
+          missionTitle = 'Frühstück eintragen';
+        } else if (mealType === 'lunch') {
+          missionTitle = 'Mittagessen eintragen';
+        } else if (mealType === 'dinner') {
+          missionTitle = 'Abendessen eintragen';
         }
         
-        // Benutzer mit allen Änderungen auf einmal aktualisieren
-        updateUser({
-          ...user,
-          dailyMissions: updatedMissions,
-          experiencePoints: newXP,
-          level: newLevel
-        });
+        // Finde die Mission mit dem exakten Titel
+        matchingMission = user.dailyMissions.find(m => m.title === missionTitle);
         
-        return true; // Mission wurde abgeschlossen
-      } else if (matchingMission && matchingMission.completed) {
-        // Mission bereits abgeschlossen
-        return false;
-      } else {
-        // Keine passende Mission gefunden
-        return false;
+        // Wenn eine passende Mission gefunden wurde und diese noch nicht abgeschlossen ist, vergebe XP
+        if (matchingMission && !matchingMission.completed) {
+          // Mission als abgeschlossen markieren
+          const updatedMissions = user.dailyMissions.map(mission => 
+            mission.id === matchingMission?.id ? { ...mission, completed: true } : mission
+          );
+          
+          // Aktuelle XP-Werte sichern
+          const currentXP = user.experiencePoints || 0;
+          const currentLevel = user.level || 1;
+          
+          // XP berechnen
+          let newXP = currentXP + matchingMission.xp;
+          let newLevel = currentLevel;
+          
+          // Levelaufstieg, wenn genügend XP gesammelt wurden
+          const requiredXP = currentLevel * 100;
+          if (newXP >= requiredXP) {
+            newXP -= requiredXP;
+            newLevel += 1;
+          }
+          
+          // Benutzer mit allen Änderungen auf einmal aktualisieren
+          updateUser({
+            ...user,
+            dailyMissions: updatedMissions,
+            experiencePoints: newXP,
+            level: newLevel,
+            dailyProgress: updatedDailyProgress
+          });
+          
+          // Aktualisiere die Tracking-Historie für Kalorien und Protein
+          if (meal.totalCalories > 0) {
+            TrackingService.updateMetric(
+              user,
+              updateUser,
+              'calories',
+              updatedDailyProgress.calories,
+              undefined,
+              meal.date
+            );
+          }
+          
+          if (meal.totalProtein > 0) {
+            TrackingService.updateMetric(
+              user,
+              updateUser,
+              'protein',
+              updatedDailyProgress.protein,
+              undefined,
+              meal.date
+            );
+          }
+          
+          return true; // Mission wurde abgeschlossen
+        } else {
+          // Wenn keine Mission abgeschlossen wurde, trotzdem die täglichen Fortschritte aktualisieren
+          updateUser({
+            ...user,
+            dailyProgress: updatedDailyProgress
+          });
+          
+          // Aktualisiere die Tracking-Historie für Kalorien und Protein
+          if (meal.totalCalories > 0) {
+            TrackingService.updateMetric(
+              user,
+              updateUser,
+              'calories',
+              updatedDailyProgress.calories,
+              undefined,
+              meal.date
+            );
+          }
+          
+          if (meal.totalProtein > 0) {
+            TrackingService.updateMetric(
+              user,
+              updateUser,
+              'protein',
+              updatedDailyProgress.protein,
+              undefined,
+              meal.date
+            );
+          }
+          
+          if (matchingMission && matchingMission.completed) {
+            // Mission bereits abgeschlossen
+            return false;
+          } else {
+            // Keine passende Mission gefunden
+            return false;
+          }
+        }
       }
     }
     
