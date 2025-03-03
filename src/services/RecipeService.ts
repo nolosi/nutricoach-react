@@ -113,7 +113,7 @@ const mockRecipes: Recipe[] = [
   {
     id: '4',
     title: 'Schokoladen-Protein-Smoothie',
-    image: 'https://images.unsplash.com/photo-1577805947697-89e18249d767?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
+    image: 'https://images.unsplash.com/photo-1629704792095-78194586bb26?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Y2hvY29sYXRlJTIwc21vb3RoaWV8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60',
     difficulty: 'easy',
     prepTime: 5,
     servings: 1,
@@ -138,7 +138,7 @@ const mockRecipes: Recipe[] = [
   {
     id: '5',
     title: 'Gemüsesuppe',
-    image: 'https://images.unsplash.com/photo-1616501268209-edfff098fdd2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
+    image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dmVnZXRhYmxlJTIwc291cHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
     difficulty: 'medium',
     prepTime: 45,
     servings: 4,
@@ -192,7 +192,7 @@ const mockRecipes: Recipe[] = [
   {
     id: '24',
     title: 'Brokkoli-Quinoa-Auflauf',
-    image: 'https://images.unsplash.com/photo-1620981210415-c25e9fb1ae00?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
+    image: 'https://images.unsplash.com/photo-1543340713-1bf56d3d1b68?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
     difficulty: 'medium',
     prepTime: 30,
     servings: 4,
@@ -207,9 +207,11 @@ const mockRecipes: Recipe[] = [
     ],
     instructions: [
       'Quinoa nach Packungsanweisung kochen',
-      'Brokkoli und Zwiebeln klein schneiden',
-      'In einem großen Topf anbraten',
+      'Brokkoli in mundgerechte Stücke schneiden',
+      'Zwiebeln und Knoblauchzehen klein schneiden',
+      'Gemüse und Zwiebeln anbraten',
       'Mit Brühe aufgießen',
+      'Quinoa und Brokkoli hinzufügen',
       'Bei niedriger Hitze 30 Minuten köcheln lassen',
       'Mit Gewürzen abschmecken'
     ],
@@ -221,14 +223,14 @@ const mockRecipes: Recipe[] = [
   {
     id: '27',
     title: 'Gefüllte Süßkartoffeln mit Kichererbsen',
-    image: 'https://images.unsplash.com/photo-1640885988938-6de6236a3148?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
+    image: 'https://images.unsplash.com/photo-1633280851056-ed912d92e1d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
     difficulty: 'medium',
     prepTime: 20,
-    servings: 4,
+    servings: 2,
     categories: ['dinner', 'vegetarian', 'meal-prep'],
     ingredients: [
-      '4 Süßkartoffeln',
-      '200g Kichererbsen',
+      '2 Süßkartoffeln',
+      '100g Kichererbsen',
       '1 Zwiebel',
       '2 Knoblauchzehen',
       '1 EL Olivenöl',
@@ -238,15 +240,16 @@ const mockRecipes: Recipe[] = [
     instructions: [
       'Süßkartoffeln schälen und in mundgerechte Stücke schneiden',
       'Kichererbsen nach Packungsanweisung kochen',
-      'Zwiebel und Knoblauch klein schneiden',
-      'In einem großen Topf anbraten',
+      'Zwiebeln und Knoblauchzehen klein schneiden',
+      'Gemüse und Zwiebeln anbraten',
+      'Kichererbsen hinzufügen',
       'Mit Olivenöl, Salz und Pfeffer abschmecken',
-      'Alles in einer Schüssel anrichten'
+      'Süßkartoffeln mit Kichererbsen füllen'
     ],
     calories: 250,
-    protein: 10,
+    protein: 8,
     carbs: 30,
-    fat: 8
+    fat: 10
   }
 ];
 
