@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { useUser, UserProvider } from './contexts/UserContext';
 import theme from './theme';
@@ -18,31 +18,36 @@ import RecipeCreatePage from './pages/RecipeCreatePage';
 import NutritionGoalsPage from './pages/NutritionGoalsPage';
 import NotFoundPage from './pages/NotFoundPage';
 import WaterTrackingPage from './pages/WaterTrackingPage';
-// LoginPage und RegisterPage werden derzeit nicht verwendet
-// import LoginPage from './pages/LoginPage';
-// import RegisterPage from './pages/RegisterPage';
 
 // Components
 import Layout from './components/common/Layout';
 import ProtectedRoute from './components/common/ProtectedRoute';
-// Header und Sidebar werden derzeit nicht verwendet
-// import Header from './components/Header';
-// import Sidebar from './components/Sidebar';
+import LoadingSpinner from './components/common/LoadingSpinner';
 
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 
 // Haupt-App-Komponente, die von UserProvider umschlossen wird
 const AppContent: React.FC = () => {
-  const { user, isLoading } = useUser();
-  
-  if (isLoading) {
-    return <div>Laden...</div>;
+  const { user, isLoading: userLoading } = useUser();
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+
+  useEffect(() => {
+    // Zeige die Ladeanimation für mindestens 1.5 Sekunden
+    const timer = setTimeout(() => {
+      setIsInitialLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isInitialLoading || userLoading) {
+    return <LoadingSpinner />;
   }
-  
+
   // Wenn der Benutzer das Onboarding nicht abgeschlossen hat, leite ihn zur Onboarding-Seite weiter
   const onboardingCompleted = user?.onboardingCompleted;
-  
+
   return (
     <Router>
       <Routes>
