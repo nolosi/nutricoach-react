@@ -294,21 +294,12 @@ const FoodTrackingView: React.FC<{ initialDate?: string }> = ({ initialDate }) =
   
   // Tägliche Gesamtwerte
   const dailyTotals = calculateDailyTotals();
+  console.log('Tägliche Gesamtwerte (aus abgeschlossenen Mahlzeiten):', dailyTotals);
   
   // Aktualisiere die täglichen Fortschritte
   useEffect(() => {
-    // HINWEIS: Diese useEffect-Funktion und die completeMeal-Funktion im UserContext 
-    // könnten potenziell beide die dailyProgress-Werte aktualisieren, was zu Doppelzählungen führen kann.
-    // Aktualisiere nur Fortschritte, wenn keine Mahlzeit kürzlich abgeschlossen wurde
     if (user) {
-      console.log('FoodTrackingView: Berechnete Gesamtwerte für den Tag:', dailyTotals);
-      
-      // WICHTIG: Wir aktualisieren die täglichen Fortschritte nicht automatisch hier,
-      // da die completeMeal-Funktion die Werte bereits aktualisiert, wenn Mahlzeiten als abgeschlossen markiert werden.
-      // Diese useEffect-Funktion ist nur für die Aktualisierung der Anzeige verantwortlich.
-      
-      // Der folgende Code wurde auskommentiert, um Doppelzählungen zu vermeiden:
-      /*
+      console.log('Aktualisiere tägliche Fortschritte mit:', dailyTotals);
       updateUser({
         ...user,
         dailyProgress: {
@@ -342,7 +333,6 @@ const FoodTrackingView: React.FC<{ initialDate?: string }> = ({ initialDate }) =
           selectedDate
         );
       }
-      */
     }
   }, [dailyTotals, user, updateUser, selectedDate]);
   
@@ -370,7 +360,7 @@ const FoodTrackingView: React.FC<{ initialDate?: string }> = ({ initialDate }) =
   
   // Effekt zum Suchen bei Änderung der Suchanfrage
   useEffect(() => {
-    if (searchQuery.length > 2) {
+    if (searchQuery.length > 0) {
       handleSearch();
     } else if (searchQuery.length === 0) {
       setSearchResults(FoodService.getRecentFoods());
@@ -1210,7 +1200,7 @@ const FoodTrackingView: React.FC<{ initialDate?: string }> = ({ initialDate }) =
               )}
             </List>
             
-              {/* Ausgewähltes Lebensmittel mit verbessener Darstellung */}
+              {/* Ausgewähltes Lebensmittel mit verbessender Darstellung */}
             {selectedFood && (
                 <Box mt={4} p={4} borderWidth="1px" borderRadius="md" bg={selectedFoodDisplayBg} shadow="md">
                   <Heading size="sm" mb={3}>{selectedFood.name}</Heading>
