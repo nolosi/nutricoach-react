@@ -26,8 +26,8 @@ export const foodCategories = [
   'Gewürze und Kräuter'
 ];
 
-// Lebensmitteldatenbank
-export const europeanFoods: Food[] = [
+// Lebensmitteldatenbank mit allen Einträgen
+const allEuropeanFoods: Food[] = [
   // Getreideprodukte
   {
     id: 'bread-wheat-whole',
@@ -2196,5 +2196,24 @@ export const europeanFoods: Food[] = [
   }
 ];
 
-// Exportiere alle Lebensmittel als Standardlebensmittel
+// Funktion zum Entfernen von Duplikaten basierend auf dem Namen
+function removeDuplicates(foods: Food[]): Food[] {
+  const uniqueFoods: Food[] = [];
+  const seenNames = new Set<string>();
+  
+  for (const food of foods) {
+    const lowerCaseName = food.name.toLowerCase();
+    if (!seenNames.has(lowerCaseName)) {
+      seenNames.add(lowerCaseName);
+      uniqueFoods.push(food);
+    }
+  }
+  
+  return uniqueFoods;
+}
+
+// Exportiere die bereinigte Liste ohne Duplikate
+export const europeanFoods: Food[] = removeDuplicates(allEuropeanFoods);
+
+// Exportiere alle Lebensmittel als Standardlebensmittel (ohne Duplikate)
 export const defaultFoods: Food[] = europeanFoods; 
