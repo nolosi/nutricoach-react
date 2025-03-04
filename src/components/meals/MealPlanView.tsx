@@ -15,6 +15,8 @@ import {
   Skeleton,
   useToast,
   Input,
+  useBreakpointValue,
+  Icon,
 } from '@chakra-ui/react';
 import { FiCalendar, FiTrash2, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useTranslation } from 'react-i18next';
@@ -29,6 +31,14 @@ const MealPlanView: React.FC<MealPlanViewProps> = ({ initialDate }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const toast = useToast();
+  
+  // Responsive Größen
+  const buttonSize = useBreakpointValue({ base: 'xs', md: 'sm' });
+  const headingSize = useBreakpointValue({ base: 'sm', md: 'md' });
+  const cardPadding = useBreakpointValue({ base: 3, md: 4 });
+  const spacing = useBreakpointValue({ base: 2, md: 4 });
+  const fontSize = useBreakpointValue({ base: 'xs', md: 'sm' });
+  const gridColumns = useBreakpointValue({ base: 1, md: 2, lg: 3 });
   
   // Farben
   const cardBg = useColorModeValue('white', 'gray.700');
@@ -117,124 +127,125 @@ const MealPlanView: React.FC<MealPlanViewProps> = ({ initialDate }) => {
   return (
     <Box>
       {/* Datumsauswahl */}
-      <Flex 
-        justify="space-between" 
-        align="center" 
-        mb={6}
-        borderBottom="1px"
-        borderColor={borderColor}
-        pb={4}
-      >
+      <Flex justifyContent="space-between" alignItems="center" mb={spacing}>
         <IconButton
-          aria-label={t('common.previous')}
+          aria-label={t('common.previousDay', 'Vorheriger Tag')}
           icon={<FiChevronLeft />}
           onClick={() => changeDate(-1)}
-          variant="ghost"
+          size={buttonSize}
         />
         
-        <VStack>
-          <Heading size="md">{formatDate(selectedDate)}</Heading>
-          <Input
-            type="date"
-            value={selectedDate}
-            onChange={(e) => setSelectedDate(e.target.value)}
-            size="sm"
-            width="auto"
-          />
-        </VStack>
+        <Flex alignItems="center">
+          <Icon as={FiCalendar} mr={2} />
+          <Text fontSize={fontSize} fontWeight="medium">
+            {formatDate(selectedDate)}
+          </Text>
+        </Flex>
         
         <IconButton
-          aria-label={t('common.next')}
+          aria-label={t('common.nextDay', 'Nächster Tag')}
           icon={<FiChevronRight />}
           onClick={() => changeDate(1)}
-          variant="ghost"
+          size={buttonSize}
         />
       </Flex>
       
       {/* Essensplan */}
-      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-        {mealTypes.map(mealType => {
-          const meal = mealPlan.find(m => m.mealType === mealType);
-          
-          return (
-            <Box 
-              key={mealType}
-              borderWidth="1px"
-              borderRadius="lg"
-              borderColor={borderColor}
-              overflow="hidden"
-              bg={cardBg}
-            >
-              <Flex 
-                bg="teal.500" 
-                color="white" 
-                p={3} 
-                justify="space-between" 
-                align="center"
+      {isLoading ? (
+        <VStack spacing={spacing} align="stretch">
+          <Skeleton height="100px" />
+          <Skeleton height="100px" />
+          <Skeleton height="100px" />
+        </VStack>
+      ) : mealPlan.length > 0 ? (
+        <SimpleGrid columns={gridColumns} spacing={spacing}>
+          {mealTypes.map(mealType => {
+            const meal = mealPlan.find(m => m.mealType === mealType);
+            
+            return (
+              <Box
+                key={mealType}
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                borderColor={borderColor}
+                bg={cardBg}
               >
-                <Heading size="sm">{t(`meals.${mealType}`)}</Heading>
-              </Flex>
-              
-              {isLoading ? (
-                <Box p={4}>
-                  <Skeleton height="100px" />
-                </Box>
-              ) : meal ? (
-                <Box>
-                  <Flex>
-                    <Image 
-                      src={meal.recipe.image} 
-                      alt={meal.recipe.title}
-                      boxSize="100px"
-                      objectFit="cover"
+                <Box p={cardPadding}>
+                  <Flex justifyContent="space-between" alignItems="center" mb={2}>
+                    <Heading size={headingSize}>{t(`meals.${mealType}`, mealType)}</Heading>
+                    <IconButton
+                      aria-label={t('common.remove', 'Entfernen')}
+                      icon={<FiTrash2 />}
+                      size={buttonSize}
+                      variant="ghost"
+                      onClick={() => handleRemoveFromMealPlan(mealType)}
                     />
-                    <Box p={3} flex="1">
-                      <VStack align="start" spacing={1}>
-                        <Text fontWeight="bold" noOfLines={1}>{meal.recipe.title}</Text>
-                        <HStack>
-                          <Badge colorScheme="green">{meal.recipe.prepTime} {t('common.min')}</Badge>
-                          <Badge colorScheme="purple">{t(`recipes.difficulty.${meal.recipe.difficulty}`)}</Badge>
-                        </HStack>
-                      </VStack>
-                      <Flex justify="space-between" mt={3}>
-                        <Button 
-                          size="sm" 
-                          onClick={() => handleViewRecipe(meal.recipe.id)}
-                          colorScheme="teal"
-                          variant="outline"
-                        >
-                          {t('common.view')}
-                        </Button>
-                        <IconButton
-                          aria-label={t('common.remove')}
-                          icon={<FiTrash2 />}
-                          size="sm"
-                          colorScheme="red"
-                          variant="ghost"
-                          onClick={() => handleRemoveFromMealPlan(mealType)}
-                        />
-                      </Flex>
-                    </Box>
                   </Flex>
+                  
+                  {meal ? (
+                    <VStack align="stretch" spacing={2}>
+                      {meal.recipe.image && (
+                        <Image
+                          src={meal.recipe.image}
+                          alt={meal.recipe.title}
+                          borderRadius="md"
+                          objectFit="cover"
+                          height="120px"
+                        />
+                      )}
+                      
+                      <Heading size="sm" mt={2}>
+                        {meal.recipe.title}
+                      </Heading>
+                      
+                      <HStack spacing={2} mt={1}>
+                        <Badge colorScheme="green">{meal.recipe.prepTime} {t('common.min')}</Badge>
+                        <Badge colorScheme="purple">{t(`recipes.difficulty.${meal.recipe.difficulty}`)}</Badge>
+                      </HStack>
+                      
+                      <Button
+                        size={buttonSize}
+                        variant="outline"
+                        colorScheme="teal"
+                        mt={2}
+                        onClick={() => handleViewRecipe(meal.recipe.id)}
+                      >
+                        {t('common.view')}
+                      </Button>
+                    </VStack>
+                  ) : (
+                    <Box p={6} textAlign="center">
+                      <Text color="gray.500">{t('meals.noMealPlanned')}</Text>
+                      <Button
+                        mt={3}
+                        size={buttonSize}
+                        leftIcon={<FiCalendar />}
+                        onClick={() => handleAddRecipe(mealType)}
+                        colorScheme="teal"
+                      >
+                        {t('meals.addMeal')}
+                      </Button>
+                    </Box>
+                  )}
                 </Box>
-              ) : (
-                <Box p={6} textAlign="center">
-                  <Text color="gray.500">{t('meals.noMealPlanned')}</Text>
-                  <Button
-                    mt={3}
-                    size="sm"
-                    leftIcon={<FiCalendar />}
-                    onClick={() => handleAddRecipe(mealType)}
-                    colorScheme="teal"
-                  >
-                    {t('meals.addMeal')}
-                  </Button>
-                </Box>
-              )}
-            </Box>
-          );
-        })}
-      </SimpleGrid>
+              </Box>
+            );
+          })}
+        </SimpleGrid>
+      ) : (
+        <Box textAlign="center" p={cardPadding} borderWidth="1px" borderRadius="lg" borderColor={borderColor}>
+          <Text fontSize={fontSize}>{t('meals.noMealPlan', 'Kein Essensplan für diesen Tag')}</Text>
+          <Button
+            mt={spacing}
+            colorScheme="teal"
+            size={buttonSize}
+            onClick={() => navigate('/recipes')}
+          >
+            {t('meals.browseRecipes', 'Rezepte durchsuchen')}
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 };

@@ -48,7 +48,8 @@ import {
   Stack,
   FormControl,
   FormLabel,
-  Select
+  Select,
+  useBreakpointValue
 } from '@chakra-ui/react';
 import { 
   FiPlus, 
@@ -79,6 +80,13 @@ const FoodTrackingView: React.FC<{ initialDate?: string }> = ({ initialDate }) =
   const { colorMode } = useColorMode();
   const { user, updateUser, checkAndCompleteMissions, completeMeal } = useUser();
   const navigate = useNavigate();
+  
+  // Responsive Größen basierend auf dem Breakpoint
+  const buttonSize = useBreakpointValue({ base: 'xs', md: 'sm' });
+  const iconSize = useBreakpointValue({ base: 3, md: 4 });
+  const headingSize = useBreakpointValue({ base: 'sm', md: 'md' });
+  const cardPadding = useBreakpointValue({ base: 3, md: 4 });
+  const spacing = useBreakpointValue({ base: 2, md: 4 });
   
   // Farben basierend auf dem Farbmodus
   const cardBg = useColorModeValue('white', 'gray.700');
@@ -836,12 +844,12 @@ const FoodTrackingView: React.FC<{ initialDate?: string }> = ({ initialDate }) =
               key={mealType}
               borderWidth="1px"
           borderRadius="lg"
-          p={4}
-          mb={4}
+          p={cardPadding}
+          mb={spacing}
           bg={meal?.isCompleted ? completedMealBg : cardBg}
         >
           <Flex justifyContent="space-between" alignItems="center" mb={2}>
-            <Heading size="md" mb={2}>
+            <Heading size={headingSize} mb={2}>
               {t(`meals.${mealType}`, mealType)}
                 </Heading>
             <Flex>
@@ -856,7 +864,7 @@ const FoodTrackingView: React.FC<{ initialDate?: string }> = ({ initialDate }) =
                       icon={<FiUnlock />}
                       colorScheme="blue"
                       variant="outline"
-                      size="sm"
+                      size={buttonSize}
                       onClick={() => handleUnlockMeal(meal.id)}
                     />
                   </Tooltip>
@@ -871,7 +879,7 @@ const FoodTrackingView: React.FC<{ initialDate?: string }> = ({ initialDate }) =
                           icon={<FiCheck />}
                           colorScheme="green"
                           variant="outline"
-                          size="sm"
+                          size={buttonSize}
                           mr={2}
                           onClick={() => handleCompleteMeal(meal.id, mealType)}
                         />
@@ -882,7 +890,7 @@ const FoodTrackingView: React.FC<{ initialDate?: string }> = ({ initialDate }) =
                           icon={<FiCamera />}
                           colorScheme="blue"
                           variant="outline"
-                          size="sm"
+                          size={buttonSize}
                           mr={2}
                           onClick={() => {
                             setCurrentMealType(mealType);
@@ -900,7 +908,7 @@ const FoodTrackingView: React.FC<{ initialDate?: string }> = ({ initialDate }) =
                           icon={<FiPlus />}
                           colorScheme="teal"
                           variant="outline"
-                          size="sm"
+                          size={buttonSize}
                           onClick={() => {
                             setCurrentMealType(mealType);
                             onOpen();
@@ -913,7 +921,7 @@ const FoodTrackingView: React.FC<{ initialDate?: string }> = ({ initialDate }) =
                 <Button
                   colorScheme="teal"
                         leftIcon={<FiPlus />}
-                  size="sm"
+                  size={buttonSize}
                         onClick={() => {
                           setCurrentMealType(mealType);
                           onOpen();
@@ -1013,7 +1021,7 @@ const FoodTrackingView: React.FC<{ initialDate?: string }> = ({ initialDate }) =
                         <IconButton
                       aria-label={t('common.delete', 'Löschen')}
                           icon={<FiTrash2 />}
-                          size="sm"
+                          size={buttonSize}
                           variant="ghost"
                           colorScheme="red"
                           onClick={() => handleRemoveFood(meal.id, mealFood.food.id)}
@@ -1061,7 +1069,7 @@ const FoodTrackingView: React.FC<{ initialDate?: string }> = ({ initialDate }) =
                         if (recipeAlreadyAdded) {
                           return (
                             <Button
-                              size="sm"
+                              size={buttonSize}
                               leftIcon={<FiCheck />}
                               colorScheme="green"
                               variant="outline"
@@ -1073,7 +1081,7 @@ const FoodTrackingView: React.FC<{ initialDate?: string }> = ({ initialDate }) =
                         } else {
                           return (
                             <Button
-                              size="sm"
+                              size={buttonSize}
                               leftIcon={<FiPlus />}
                               colorScheme="green"
                               variant="outline"
@@ -1086,7 +1094,7 @@ const FoodTrackingView: React.FC<{ initialDate?: string }> = ({ initialDate }) =
                       })()}
                       {!meal && (
                         <Button
-                          size="sm"
+                          size={buttonSize}
                           leftIcon={<FiPlus />}
                           colorScheme="green"
                           variant="outline"
