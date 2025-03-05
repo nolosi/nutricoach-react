@@ -998,5 +998,62 @@
       "snack3": "Abend-Snack",
       "snack3Desc": "Proteinreicher Snack vor dem Schlafengehen wie Hüttenkäse oder Joghurt"
     }
+  },
+  "calculations": {
+    "bmr": {
+      "title": "Grundumsatz (BMR)",
+      "description": "Der Grundumsatz ist die Energiemenge, die dein Körper in völliger Ruhe benötigt, um lebenswichtige Funktionen aufrechtzuerhalten.",
+      "formula": "Wir verwenden die Harris-Benedict-Formel, die Geschlecht, Gewicht, Größe und Alter berücksichtigt:",
+      "exampleMale": "Für Männer: 66,5 + (13,75 × GEWICHT kg) + (5,003 × GRÖSSE cm) - (6,755 × ALTER Jahre) = BMR kcal",
+      "exampleFemale": "Für Frauen: 655,1 + (9,563 × GEWICHT kg) + (1,85 × GRÖSSE cm) - (4,676 × ALTER Jahre) = BMR kcal"
+    },
+    "tdee": {
+      "title": "Gesamtenergieumsatz (TDEE)",
+      "description": "Der Gesamtenergieumsatz berücksichtigt deine tägliche Aktivität und gibt an, wie viele Kalorien du insgesamt verbrennst.",
+      "formula": "TDEE = BMR × Aktivitätsfaktor",
+      "example": "BMR kcal × Aktivitätsfaktor = TDEE kcal"
+    },
+    "calorieGoal": {
+      "title": "Kalorienziel",
+      "description": "Dein tägliches Kalorienziel basiert auf deinem Gesamtenergieumsatz und deinem Gewichtsziel.",
+      "formulaLose": "TDEE - 500 kcal (für Gewichtsverlust)",
+      "formulaGain": "TDEE + 500 kcal (für Muskelaufbau)",
+      "formulaMaintain": "TDEE (für Gewichtserhaltung)",
+      "exampleLose": "TDEE kcal - 500 kcal = ZIEL kcal",
+      "exampleGain": "TDEE kcal + 500 kcal = ZIEL kcal",
+      "exampleMaintain": "TDEE kcal = ZIEL kcal"
+    },
+    "burnCalorieGoal": {
+      "title": "Zu verbrennende Kalorien",
+      "description": "Die Anzahl der Kalorien, die du täglich durch Bewegung und Sport verbrennen solltest.",
+      "formulaLose": "500 kcal (fester Wert für Gewichtsverlust)",
+      "formulaNormal": "20% deines täglichen Kalorienziels",
+      "exampleLose": "500 kcal",
+      "exampleNormal": "Kalorienziel kcal × 0,2 = ZIEL kcal"
+    },
+    "protein": {
+      "title": "Proteinziel",
+      "description": "Protein ist wichtig für Muskelaufbau und -erhalt. Dein Proteinbedarf hängt von deinem Körpergewicht ab.",
+      "formula": "1,8g Protein pro kg Körpergewicht",
+      "example": "GEWICHT kg × 1,8g = ZIEL g Protein"
+    },
+    "fat": {
+      "title": "Fettziel",
+      "description": "Gesunde Fette sind wichtig für die Hormonproduktion und Zellgesundheit. Wir berechnen 30% deiner Gesamtkalorien als Fett.",
+      "formula": "(Kalorienziel × 0,3) ÷ 9 kcal/g",
+      "example": "(KALORIEN kcal × 0,3) ÷ 9 kcal/g = ZIEL g Fett"
+    },
+    "carbs": {
+      "title": "Kohlenhydratziel",
+      "description": "Kohlenhydrate sind deine Hauptenergiequelle. Wir berechnen sie als die verbleibenden Kalorien nach Protein und Fett.",
+      "formula": "(Kalorienziel - Proteinkalorien - Fettkalorien) ÷ 4 kcal/g",
+      "example": "(KALORIEN kcal - PROTEIN g × 4 kcal/g - FETT g × 9 kcal/g) ÷ 4 kcal/g = ZIEL g Kohlenhydrate"
+    },
+    "water": {
+      "title": "Wasserziel",
+      "description": "Ausreichend Wasser ist wichtig für alle Körperfunktionen. Wir berechnen 35ml pro kg Körpergewicht plus einen Aktivitätsbonus.",
+      "formula": "35ml × Körpergewicht in kg",
+      "example": "35ml × GEWICHT kg = ML ml ≈ LITER Liter"
+    }
   }
 } 
