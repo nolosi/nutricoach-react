@@ -27,11 +27,70 @@ import {
   Badge,
 } from '@chakra-ui/react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { FiCalendar, FiUser, FiActivity, FiList, FiBookOpen, FiCheckCircle, FiCoffee, FiDroplet, FiHeart, FiLayers, FiPieChart, FiChevronRight } from 'react-icons/fi';
+import { FiCalendar, FiUser, FiActivity, FiList, FiBookOpen, FiCheckCircle, FiCoffee, FiDroplet, FiHeart, FiLayers, FiPieChart, FiChevronRight, FiAward } from 'react-icons/fi';
 import { useTranslation } from 'react-i18next';
 import { useUser, recalculateAndUpdateNutritionGoals } from '../contexts/UserContext';
 import { Mission } from '../contexts/UserContext';
 import CoachMessage from '../components/coach/CoachMessage';
+
+// XP-Fortschrittsanzeige Komponente
+const XpProgressBar: React.FC = () => {
+  const { t } = useTranslation();
+  const { user } = useUser();
+  const level = user?.level || 1;
+  const xp = user?.experiencePoints || 0;
+  const nextLevelXp = level * 100;
+  const xpProgress = ((xp % 100) / 100) * 100; // Prozentsatz zum nächsten Level
+  
+  // Farben für Dark/Light Mode
+  const cardBg = useColorModeValue('white', 'gray.800');
+  const progressTrackBg = useColorModeValue('gray.100', 'gray.700');
+  const levelBadgeBg = useColorModeValue('brand.500', 'brand.400');
+  const levelBadgeColor = useColorModeValue('white', 'white');
+  
+  return (
+    <Box p={4} bg={cardBg} borderRadius="lg" boxShadow="md" mb={6}>
+      <Flex justify="space-between" align="center" mb={3}>
+        <Heading size="md" display="flex" alignItems="center">
+          <Icon as={FiAward} mr={2} color="brand.500" />
+          {t('common.yourLevel', 'Dein Level')}
+        </Heading>
+        <Badge 
+          colorScheme="brand" 
+          p={2} 
+          fontSize="md" 
+          borderRadius="md"
+          boxShadow="0px 2px 4px rgba(0,0,0,0.1)"
+        >
+          LEVEL {level}
+        </Badge>
+      </Flex>
+      <Box position="relative" mb={2}>
+        <Progress 
+          value={xpProgress} 
+          colorScheme="brand" 
+          size="md" 
+          borderRadius="full" 
+          bg={progressTrackBg}
+          sx={{
+            '& > div': {
+              background: 'linear-gradient(90deg, brand.400, brand.600)',
+              transition: 'width 0.5s ease-in-out',
+            }
+          }}
+        />
+      </Box>
+      <Flex justify="space-between" align="center">
+        <Text fontWeight="bold" fontSize="sm">
+          {xp} XP
+        </Text>
+        <Text color="gray.500">
+          {t('gamification.nextLevel')}: {nextLevelXp} XP
+        </Text>
+      </Flex>
+    </Box>
+  );
+};
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
@@ -254,17 +313,16 @@ const HomePage: React.FC = () => {
   
   return (
     <Container maxW="container.xl" py={4}>
-      {/* Begrüßung und Level */}
-      <Box mb={6}>
+      {/* Begrüßung */}
+      <Box mb={4}>
         <Heading size="lg" mb={2}>
           {t('home.welcomeBack', { name: user?.name || '' })}
         </Heading>
-        <Text fontSize="lg" color="gray.600">
-          {t('home.yourLevel', 'Niveli Juaj')} {user?.level || 1}
-        </Text>
-        <Progress value={(user?.experiencePoints || 0) % 1000 / 10} size="sm" colorScheme="brand" mt={2} />
       </Box>
-
+      
+      {/* XP Fortschrittsanzeige */}
+      <XpProgressBar />
+      
       {/* Tägliche Ziele */}
       <Heading size="md" mb={4}>
         {t('home.dailyGoals', 'Objektivat e Ditës')}
