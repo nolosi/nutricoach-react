@@ -955,5 +955,48 @@
     "available": "Update verfügbar",
     "newVersion": "Eine neue Version der App ist verfügbar",
     "toUpdate": "zum Aktualisieren"
+  },
+  "mealPlans": {
+    "lose": {
+      "title": "Mahlzeitenplan für Gewichtsabnahme",
+      "breakfast": "Frühstück",
+      "breakfastDesc": "Proteinreiches Frühstück mit Eiweiß und Gemüse",
+      "snack1": "Vormittags-Snack",
+      "snack1Desc": "Proteinreicher Snack wie Joghurt oder Nüsse",
+      "lunch": "Mittagessen",
+      "lunchDesc": "Mageres Protein mit Gemüse und komplexen Kohlenhydraten",
+      "snack2": "Nachmittags-Snack",
+      "snack2Desc": "Leichter Snack wie Obst oder Gemüsesticks",
+      "dinner": "Abendessen",
+      "dinnerDesc": "Leichtes Abendessen mit Protein und Gemüse"
+    },
+    "maintain": {
+      "title": "Mahlzeitenplan für Gewichtserhaltung",
+      "breakfast": "Frühstück",
+      "breakfastDesc": "Ausgewogenes Frühstück mit Protein, Kohlenhydraten und gesunden Fetten",
+      "snack1": "Vormittags-Snack",
+      "snack1Desc": "Gesunder Snack wie Obst oder Nüsse",
+      "lunch": "Mittagessen",
+      "lunchDesc": "Ausgewogenes Mittagessen mit magerem Protein, Gemüse und Kohlenhydraten",
+      "snack2": "Nachmittags-Snack",
+      "snack2Desc": "Leichter Snack wie Joghurt oder Vollkorncracker",
+      "dinner": "Abendessen",
+      "dinnerDesc": "Ausgewogenes Abendessen mit Protein, Gemüse und gesunden Fetten"
+    },
+    "gain": {
+      "title": "Mahlzeitenplan für Gewichtszunahme",
+      "breakfast": "Frühstück",
+      "breakfastDesc": "Kalorienreiches Frühstück mit Eiern, Haferflocken und Früchten",
+      "snack1": "Vormittags-Snack",
+      "snack1Desc": "Kalorienreicher Snack wie Nüsse oder Proteinriegel",
+      "lunch": "Mittagessen",
+      "lunchDesc": "Reichhaltiges Mittagessen mit viel Protein, Kohlenhydraten und gesunden Fetten",
+      "snack2": "Nachmittags-Snack",
+      "snack2Desc": "Proteinshake oder Smoothie mit Früchten und Nüssen",
+      "dinner": "Abendessen",
+      "dinnerDesc": "Proteinreiches Abendessen mit Beilagen",
+      "snack3": "Abend-Snack",
+      "snack3Desc": "Proteinreicher Snack vor dem Schlafengehen wie Hüttenkäse oder Joghurt"
+    }
   }
 } 
