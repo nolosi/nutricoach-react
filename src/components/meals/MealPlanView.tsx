@@ -14,11 +14,11 @@ import {
   useColorModeValue,
   Skeleton,
   useToast,
-  Input,
   useBreakpointValue,
   Icon,
+  Center,
 } from '@chakra-ui/react';
-import { FiCalendar, FiTrash2, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiCalendar, FiTrash2, FiChevronLeft, FiChevronRight, FiPlus } from 'react-icons/fi';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import RecipeService, { Recipe, MealPlanResult } from '../../services/RecipeService';
@@ -33,16 +33,17 @@ const MealPlanView: React.FC<MealPlanViewProps> = ({ initialDate }) => {
   const toast = useToast();
   
   // Responsive Größen
-  const buttonSize = useBreakpointValue({ base: 'xs', md: 'sm' });
+  const buttonSize = useBreakpointValue({ base: 'sm', md: 'md' });
   const headingSize = useBreakpointValue({ base: 'sm', md: 'md' });
-  const cardPadding = useBreakpointValue({ base: 3, md: 4 });
-  const spacing = useBreakpointValue({ base: 2, md: 4 });
-  const fontSize = useBreakpointValue({ base: 'xs', md: 'sm' });
-  const gridColumns = useBreakpointValue({ base: 1, md: 2, lg: 3 });
+  const cardPadding = useBreakpointValue({ base: 4, md: 5 });
+  const spacing = useBreakpointValue({ base: 4, md: 6 });
+  const fontSize = useBreakpointValue({ base: 'sm', md: 'md' });
+  const gridColumns = useBreakpointValue({ base: 1, md: 3 });
   
   // Farben
   const cardBg = useColorModeValue('white', 'gray.700');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const emptyCardBg = useColorModeValue('gray.50', 'gray.700');
   
   // State
   const [selectedDate, setSelectedDate] = useState<string>(
@@ -127,16 +128,24 @@ const MealPlanView: React.FC<MealPlanViewProps> = ({ initialDate }) => {
   return (
     <Box>
       {/* Datumsauswahl */}
-      <Flex justifyContent="space-between" alignItems="center" mb={spacing}>
+      <Flex 
+        justifyContent="space-between" 
+        alignItems="center" 
+        mb={spacing}
+        bg={useColorModeValue('gray.50', 'gray.700')}
+        p={3}
+        borderRadius="md"
+      >
         <IconButton
           aria-label={t('common.previousDay')}
           icon={<FiChevronLeft />}
           onClick={() => changeDate(-1)}
           size={buttonSize}
+          variant="ghost"
         />
         
         <Flex alignItems="center">
-          <Icon as={FiCalendar} mr={2} />
+          <Icon as={FiCalendar} mr={2} color="teal.500" />
           <Text fontSize={fontSize} fontWeight="medium">
             {formatDate(selectedDate)}
           </Text>
@@ -147,17 +156,18 @@ const MealPlanView: React.FC<MealPlanViewProps> = ({ initialDate }) => {
           icon={<FiChevronRight />}
           onClick={() => changeDate(1)}
           size={buttonSize}
+          variant="ghost"
         />
       </Flex>
       
       {/* Essensplan */}
       {isLoading ? (
         <VStack spacing={spacing} align="stretch">
-          <Skeleton height="100px" />
-          <Skeleton height="100px" />
-          <Skeleton height="100px" />
+          <Skeleton height="200px" />
+          <Skeleton height="200px" />
+          <Skeleton height="200px" />
         </VStack>
-      ) : mealPlan.length > 0 ? (
+      ) : (
         <SimpleGrid columns={gridColumns} spacing={spacing}>
           {mealTypes.map(mealType => {
             const meal = mealPlan.find(m => m.mealType === mealType);
@@ -170,81 +180,85 @@ const MealPlanView: React.FC<MealPlanViewProps> = ({ initialDate }) => {
                 overflow="hidden"
                 borderColor={borderColor}
                 bg={cardBg}
+                boxShadow="sm"
+                height="100%"
               >
-                <Box p={cardPadding}>
-                  <Flex justifyContent="space-between" alignItems="center" mb={2}>
+                <Box>
+                  <Flex 
+                    justifyContent="space-between" 
+                    alignItems="center" 
+                    p={3}
+                    borderBottomWidth={meal ? "1px" : "0"}
+                    borderColor={borderColor}
+                    bg={useColorModeValue('gray.50', 'gray.600')}
+                  >
                     <Heading size={headingSize}>{t(`meals.${mealType}`)}</Heading>
-                    <IconButton
-                      aria-label={t('common.remove')}
-                      icon={<FiTrash2 />}
-                      size={buttonSize}
-                      variant="ghost"
-                      onClick={() => handleRemoveFromMealPlan(mealType)}
-                    />
+                    {meal && (
+                      <IconButton
+                        aria-label={t('common.remove')}
+                        icon={<FiTrash2 />}
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => handleRemoveFromMealPlan(mealType)}
+                      />
+                    )}
                   </Flex>
                   
                   {meal ? (
-                    <VStack align="stretch" spacing={2}>
+                    <VStack align="stretch" spacing={0}>
                       {meal.recipe.image && (
-                        <Image
-                          src={meal.recipe.image}
-                          alt={meal.recipe.title}
-                          borderRadius="md"
-                          objectFit="cover"
-                          height="120px"
-                        />
+                        <Box position="relative" height="160px">
+                          <Image
+                            src={meal.recipe.image}
+                            alt={meal.recipe.title}
+                            objectFit="cover"
+                            width="100%"
+                            height="100%"
+                          />
+                        </Box>
                       )}
                       
-                      <Heading size="sm" mt={2}>
-                        {meal.recipe.title}
-                      </Heading>
-                      
-                      <HStack spacing={2} mt={1}>
-                        <Badge colorScheme="green">{meal.recipe.prepTime} {t('common.min')}</Badge>
-                        <Badge colorScheme="purple">{t(`recipes.difficulty.${meal.recipe.difficulty}`)}</Badge>
-                      </HStack>
-                      
-                      <Button
-                        size={buttonSize}
-                        variant="outline"
-                        colorScheme="teal"
-                        mt={2}
-                        onClick={() => handleViewRecipe(meal.recipe.id)}
-                      >
-                        {t('common.view')}
-                      </Button>
+                      <Box p={4}>
+                        <Heading size="md" mb={2}>
+                          {meal.recipe.title}
+                        </Heading>
+                        
+                        <HStack spacing={2} mb={3}>
+                          <Badge colorScheme="green">{meal.recipe.prepTime} {t('common.min')}</Badge>
+                          <Badge colorScheme="purple">{t(`recipes.difficulty.${meal.recipe.difficulty}`)}</Badge>
+                        </HStack>
+                        
+                        <Button
+                          size={buttonSize}
+                          variant="outline"
+                          colorScheme="teal"
+                          width="100%"
+                          onClick={() => handleViewRecipe(meal.recipe.id)}
+                        >
+                          {t('common.view')}
+                        </Button>
+                      </Box>
                     </VStack>
                   ) : (
-                    <Box p={6} textAlign="center">
-                      <Text color="gray.500">{t('meals.noMealPlanned')}</Text>
-                      <Button
-                        mt={3}
-                        size={buttonSize}
-                        leftIcon={<FiCalendar />}
-                        onClick={() => handleAddRecipe(mealType)}
-                        colorScheme="teal"
-                      >
-                        {t('meals.addMeal')}
-                      </Button>
-                    </Box>
+                    <Center p={6} height="200px" bg={emptyCardBg}>
+                      <VStack spacing={3}>
+                        <Text color="gray.500" textAlign="center">{t('meals.noMealPlanned')}</Text>
+                        <Button
+                          size={buttonSize}
+                          leftIcon={<FiPlus />}
+                          onClick={() => handleAddRecipe(mealType)}
+                          colorScheme="teal"
+                        >
+                          {t('meals.addMeal')}
+                        </Button>
+                      </VStack>
+                    </Center>
                   )}
                 </Box>
               </Box>
             );
           })}
         </SimpleGrid>
-      ) : (
-        <Box textAlign="center" p={cardPadding} borderWidth="1px" borderRadius="lg" borderColor={borderColor}>
-          <Text fontSize={fontSize}>{t('meals.noMealPlan')}</Text>
-          <Button
-            mt={spacing}
-            colorScheme="teal"
-            size={buttonSize}
-            onClick={() => navigate('/recipes')}
-          >
-            {t('meals.browseRecipes')}
-          </Button>
-        </Box>
       )}
     </Box>
   );
