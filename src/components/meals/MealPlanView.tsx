@@ -44,6 +44,8 @@ const MealPlanView: React.FC<MealPlanViewProps> = ({ initialDate }) => {
   const cardBg = useColorModeValue('white', 'gray.700');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
   const emptyCardBg = useColorModeValue('gray.50', 'gray.700');
+  const headerBg = useColorModeValue('gray.50', 'gray.600');
+  const dateSelectorBg = useColorModeValue('gray.50', 'gray.700');
   
   // State
   const [selectedDate, setSelectedDate] = useState<string>(
@@ -132,7 +134,7 @@ const MealPlanView: React.FC<MealPlanViewProps> = ({ initialDate }) => {
         justifyContent="space-between" 
         alignItems="center" 
         mb={spacing}
-        bg={useColorModeValue('gray.50', 'gray.700')}
+        bg={dateSelectorBg}
         p={3}
         borderRadius="md"
       >
@@ -190,7 +192,7 @@ const MealPlanView: React.FC<MealPlanViewProps> = ({ initialDate }) => {
                     p={3}
                     borderBottomWidth={meal ? "1px" : "0"}
                     borderColor={borderColor}
-                    bg={useColorModeValue('gray.50', 'gray.600')}
+                    bg={headerBg}
                   >
                     <Heading size={headingSize}>{t(`meals.${mealType}`)}</Heading>
                     {meal && (
