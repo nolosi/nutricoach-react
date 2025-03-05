@@ -23,13 +23,87 @@ import WaterTrackingPage from './pages/WaterTrackingPage';
 import Layout from './components/common/Layout';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import LoadingSpinner from './components/common/LoadingSpinner';
-import UpdateNotification from './components/UpdateNotification';
 
 // Hooks
 import useAutoBackup from './hooks/useAutoBackup';
 
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
+
+// UpdateNotification Komponente
+import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  CloseButton,
+  Box,
+  Link,
+} from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
+
+// Aktuelle Version der App
+const APP_VERSION = '1.0.0'; // Diese sollte bei jedem Update erhöht werden
+
+interface UpdateNotificationProps {
+  onClose: () => void;
+}
+
+const UpdateNotification: React.FC<UpdateNotificationProps> = ({ onClose }) => {
+  const { t } = useTranslation();
+  const [shouldShow, setShouldShow] = useState(true);
+
+  useEffect(() => {
+    // Prüfe, ob der Benutzer bereits die aktuelle Version gesehen hat
+    const lastSeenVersion = localStorage.getItem('lastSeenVersion');
+    if (lastSeenVersion === APP_VERSION) {
+      setShouldShow(false);
+      onClose();
+    }
+  }, [onClose]);
+
+  const handleUpdate = () => {
+    // Speichere die aktuelle Version im localStorage
+    localStorage.setItem('lastSeenVersion', APP_VERSION);
+    // Lade die Seite neu
+    window.location.reload();
+  };
+
+  if (!shouldShow) {
+    return null;
+  }
+
+  return (
+    <Alert status="info" variant="subtle" mb={4}>
+      <AlertIcon />
+      <Box flex="1">
+        <AlertTitle>{t('updates.available', 'Update verfügbar')}</AlertTitle>
+        <AlertDescription display="block">
+          {t('updates.newVersion', 'Eine neue Version der App ist verfügbar.')}
+          <Link
+            color="blue.500"
+            ml={1}
+            onClick={handleUpdate}
+          >
+            {t('updates.updateNow', 'Jetzt aktualisieren')}
+          </Link>
+        </AlertDescription>
+      </Box>
+      <CloseButton
+        alignSelf="flex-start"
+        position="relative"
+        right={-1}
+        top={-1}
+        onClick={() => {
+          // Speichere die aktuelle Version im localStorage, wenn der Benutzer die Benachrichtigung schließt
+          localStorage.setItem('lastSeenVersion', APP_VERSION);
+          onClose();
+          setShouldShow(false);
+        }}
+      />
+    </Alert>
+  );
+};
 
 // Haupt-App-Komponente, die von UserProvider umschlossen wird
 const AppContent: React.FC = () => {
@@ -45,6 +119,12 @@ const AppContent: React.FC = () => {
     const timer = setTimeout(() => {
       setIsInitialLoading(false);
     }, 1500);
+
+    // Prüfe, ob der Benutzer bereits die aktuelle Version gesehen hat
+    const lastSeenVersion = localStorage.getItem('lastSeenVersion');
+    if (lastSeenVersion === APP_VERSION) {
+      setShowUpdateNotification(false);
+    }
 
     return () => clearTimeout(timer);
   }, []);
