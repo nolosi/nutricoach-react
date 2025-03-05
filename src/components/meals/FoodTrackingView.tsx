@@ -626,7 +626,7 @@ const FoodTrackingView: React.FC<{ initialDate?: string }> = ({ initialDate }) =
     // Wenn Missionen abgeschlossen wurden, zusätzliche Benachrichtigung anzeigen
     if (missionResult) {
       toast({
-        title: t('missions.completed', 'Mission abgeschlossen!'),
+        title: t('common.completed'),
         description: t('missions.xpEarned', { xp: 20 }),
         status: 'success',
         duration: 3000,

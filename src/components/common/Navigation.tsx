@@ -103,16 +103,16 @@ const Navigation: React.FC = () => {
   
   // Hauptnavigationspunkte (maximal 4 für die untere Leiste)
   const mainNavItems = [
-    { name: t('nav.home', 'Home'), icon: FiHome, path: '/' },
-    { name: t('nav.meals', 'Mahlzeiten'), icon: FiCoffee, path: '/meals' },
-    { name: t('nav.progress', 'Fortschritt'), icon: FiPieChart, path: '/progress' },
-    { name: t('nav.profile', 'Profil'), icon: FiUser, path: '/profile' },
+    { name: t('nav.home'), icon: FiHome, path: '/' },
+    { name: t('nav.meals'), icon: FiCoffee, path: '/meals' },
+    { name: t('nav.progress'), icon: FiPieChart, path: '/progress' },
+    { name: t('nav.profile'), icon: FiUser, path: '/profile' },
   ];
   
   // Zusätzliche Navigationspunkte für das "Mehr"-Menü
   const secondaryNavItems = [
-    { name: t('nav.water', 'Wasser'), icon: FiDroplet, path: '/track/water' },
-    { name: t('nav.nutrition', 'Ernährung'), icon: FiTarget, path: '/nutrition-goals' },
+    { name: t('nav.water'), icon: FiDroplet, path: '/track/water' },
+    { name: t('nav.nutrition'), icon: FiTarget, path: '/nutrition-goals' },
   ];
   
   const handleClose = () => setIsMoreOpen(false);
@@ -169,7 +169,7 @@ const Navigation: React.FC = () => {
                 as={isMoreOpen ? FiX : FiMoreHorizontal}
                 mb="1"
               />
-              <Text fontSize="xs">{t('nav.more', 'Mehr')}</Text>
+              <Text fontSize="xs">{t('nav.more')}</Text>
             </Flex>
           </PopoverTrigger>
           <PopoverContent width="200px" bg={bgColor} borderColor={borderColor}>

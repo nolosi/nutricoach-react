@@ -144,7 +144,7 @@ const MissionItem: React.FC<{ mission: Mission, onComplete: (id: number) => void
           fontSize="xs"
           fontWeight="bold"
         >
-          {t('progress.completed', 'Erledigt')}
+          {t('common.completed')}
         </Box>
       )}
       <Flex justify="space-between" align="center">
@@ -156,8 +156,8 @@ const MissionItem: React.FC<{ mission: Mission, onComplete: (id: number) => void
             mr={3}
           />
           <Box>
-            <Text fontWeight="bold" color={mission.completed ? "green.600" : ""}>{mission.title}</Text>
-            <Text fontSize="sm" color={mission.completed ? "green.500" : "gray.500"}>{mission.description}</Text>
+            <Text fontWeight="bold" color={mission.completed ? "green.600" : ""}>{t(mission.title)}</Text>
+            <Text fontSize="sm" color={mission.completed ? "green.500" : "gray.500"}>{t(mission.description)}</Text>
             {mission.progress !== undefined && mission.progress > 0 && !mission.completed && (
               <Progress value={mission.progress} size="xs" colorScheme="brand" mt={1} />
             )}
@@ -172,11 +172,11 @@ const MissionItem: React.FC<{ mission: Mission, onComplete: (id: number) => void
               mt={2} 
               leftIcon={<FiCheckCircle />}
               onClick={(e) => {
-                e.stopPropagation(); // Verhindert, dass der Click-Event zum Box-Element propagiert
+                e.stopPropagation();
                 onComplete(mission.id);
               }}
             >
-              Abschließen
+              {t('common.complete')}
             </Button>
           )}
         </Flex>
@@ -201,7 +201,7 @@ const NutritionStats = () => {
   };
   
   // Prozentsatz im Vergleich zu den Zielen
-  const caloriePercentage = user?.calorieGoal ? Math.round((weeklyAvg.calories / user.calorieGoal) * 100) : 0;
+  const weeklyCaloriePercentage = user?.calorieGoal ? Math.round((weeklyAvg.calories / user.calorieGoal) * 100) : 0;
   const proteinPercentage = user?.proteinGoal ? Math.round((weeklyAvg.protein / user.proteinGoal) * 100) : 0;
   const carbsPercentage = user?.carbGoal ? Math.round((weeklyAvg.carbs / user.carbGoal) * 100) : 0;
   const fatPercentage = user?.fatGoal ? Math.round((weeklyAvg.fat / user.fatGoal) * 100) : 0;
@@ -220,8 +220,8 @@ const NutritionStats = () => {
       <Stat p={4} bg={statBg} borderRadius="lg" boxShadow="sm">
         <StatLabel>{t('progress.caloriesAvg', 'Ø Kalorien')}</StatLabel>
         <StatNumber>{weeklyAvg.calories} kcal</StatNumber>
-        <Progress value={caloriePercentage} colorScheme="green" size="sm" mt={2} />
-        <StatHelpText>{caloriePercentage}% {t('progress.ofGoal', 'deines Ziels')}</StatHelpText>
+        <Progress value={weeklyCaloriePercentage} colorScheme="green" size="sm" mt={2} />
+        <StatHelpText>{weeklyCaloriePercentage}% {t('progress.ofGoal', 'deines Ziels')}</StatHelpText>
       </Stat>
       
       <Stat p={4} bg={statBg} borderRadius="lg" boxShadow="sm">
@@ -268,8 +268,8 @@ const XpProgressSummary: React.FC = () => {
   return (
     <Box p={4} bg={cardBg} borderRadius="lg" boxShadow="md">
       <Flex justify="space-between" align="center" mb={2}>
-        <Heading size="md">{t('progress.yourLevel', 'Dein Level')}</Heading>
-        <Badge colorScheme="brand" p={2} fontSize="md">Level {level}</Badge>
+        <Heading size="md">{t('common.yourLevel')}</Heading>
+        <Badge colorScheme="brand" p={2} fontSize="md">LEVEL {level}</Badge>
       </Flex>
       <Progress 
         value={xpProgress} 
@@ -296,10 +296,10 @@ const StreakSummary: React.FC = () => {
     <Box p={4} bg={cardBg} borderRadius="lg" boxShadow="md">
       <Flex justify="space-between" align="center">
         <Box>
-          <Heading size="md" mb={1}>{t('progress.streak', 'Deine Serie')}</Heading>
-          <Heading size="lg">{user?.streakDays || 0} {t('progress.days', 'Tage')}</Heading>
+          <Heading size="md" mb={1}>{t('common.streak', 'Deine Serie')}</Heading>
+          <Heading size="lg">{user?.streakDays || 0} {t('common.days', 'Tage')}</Heading>
           <Text color="gray.500" fontSize="sm">
-            {t('progress.streakDescription', 'Tägliche Anmeldung und Aktivität')}
+            {t('common.streakDescription', 'Tägliche Anmeldung und Aktivität')}
           </Text>
         </Box>
         <Icon as={FiTrendingUp} boxSize={8} color="brand.500" />
@@ -378,8 +378,8 @@ const NutritionSummary: React.FC = () => {
   };
   
   // Prozentsatz im Vergleich zu den Zielen
-  const caloriePercentage = user?.calorieGoal ? Math.round((weeklyAvg.calories / user.calorieGoal) * 100) : 0;
-  const waterPercentage = user?.waterGoal ? Math.round((weeklyAvg.water / user.waterGoal) * 100) : 0;
+  const summaryCaloriePercentage = user?.calorieGoal ? Math.round((weeklyAvg.calories / user.calorieGoal) * 100) : 0;
+  const summaryWaterPercentage = user?.waterGoal ? Math.round((weeklyAvg.water / user.waterGoal) * 100) : 0;
   
   if (!user?.nutritionStats) {
     return null;
@@ -396,15 +396,15 @@ const NutritionSummary: React.FC = () => {
         <Box>
           <Text fontWeight="medium">{t('progress.caloriesAvg', 'Ø Kalorien')}</Text>
           <Text fontSize="xl" fontWeight="bold">{weeklyAvg.calories} kcal</Text>
-          <Progress value={caloriePercentage} colorScheme="green" size="sm" mt={1} mb={1} />
-          <Text fontSize="xs" color="gray.500">{caloriePercentage}% {t('progress.ofGoal', 'deines Ziels')}</Text>
+          <Progress value={summaryCaloriePercentage} colorScheme="green" size="sm" mt={1} mb={1} />
+          <Text fontSize="xs" color="gray.500">{summaryCaloriePercentage}% {t('progress.ofGoal', 'deines Ziels')}</Text>
         </Box>
         
         <Box>
           <Text fontWeight="medium">{t('progress.waterAvg', 'Ø Wasser')}</Text>
           <Text fontSize="xl" fontWeight="bold">{weeklyAvg.water} ml</Text>
-          <Progress value={waterPercentage} colorScheme="cyan" size="sm" mt={1} mb={1} />
-          <Text fontSize="xs" color="gray.500">{waterPercentage}% {t('progress.ofGoal', 'deines Ziels')}</Text>
+          <Progress value={summaryWaterPercentage} colorScheme="cyan" size="sm" mt={1} mb={1} />
+          <Text fontSize="xs" color="gray.500">{summaryWaterPercentage}% {t('progress.ofGoal', 'deines Ziels')}</Text>
         </Box>
       </SimpleGrid>
       
@@ -453,17 +453,17 @@ const DashboardOverview: React.FC = () => {
   
   // Optionen für die Auswahl von Metriken
   const metricOptions = [
-    { value: 'weight', label: t('metrics.weight', 'Gewicht'), unit: 'kg' },
-    { value: 'calories', label: t('metrics.calories', 'Kalorien'), unit: 'kcal' },
-    { value: 'water', label: t('metrics.water', 'Wasser'), unit: 'ml' },
-    { value: 'protein', label: t('metrics.protein', 'Protein'), unit: 'g' }
+    { value: 'weight', label: t('nutrition.weight', 'Gewicht'), unit: 'kg' },
+    { value: 'calories', label: t('nutrition.calories', 'Kalorien'), unit: 'kcal' },
+    { value: 'water', label: t('nutrition.water', 'Wasser'), unit: 'ml' },
+    { value: 'protein', label: t('nutrition.protein', 'Protein'), unit: 'g' }
   ];
   
   // Optionen für die Auswahl des Zeitraums
   const timeRangeOptions = [
-    { value: 'week', label: t('timeRange.week', 'Woche') },
-    { value: 'month', label: t('timeRange.month', 'Monat') },
-    { value: 'year', label: t('timeRange.year', 'Jahr') }
+    { value: 'week', label: t('common.week', 'Woche') },
+    { value: 'month', label: t('common.month', 'Monat') },
+    { value: 'year', label: t('common.year', 'Jahr') }
   ];
   
   // Filtere Daten basierend auf dem ausgewählten Zeitraum
@@ -553,7 +553,7 @@ const DashboardOverview: React.FC = () => {
   
   return (
     <Box mb={8}>
-      <Heading size="md" mb={4}>{t('progress.dashboard', 'Dashboard')}</Heading>
+      <Heading size="md" mb={4}>{t('common.dashboard', 'Dashboard')}</Heading>
       
       {/* Auswahlmöglichkeiten für Metrik und Zeitraum */}
       <Flex justify="space-between" align="center" mb={4}>
@@ -569,7 +569,7 @@ const DashboardOverview: React.FC = () => {
         </Select>
         
         <HStack>
-          <Text fontSize="sm">{t('progress.timeRange', 'Zeitraum')}:</Text>
+          <Text fontSize="sm">{t('common.timeRange', 'Zeitraum')}:</Text>
           <Select 
             value={timeRange} 
             onChange={(e) => setTimeRange(e.target.value)} 
@@ -592,26 +592,26 @@ const DashboardOverview: React.FC = () => {
           borderColor="green.400"
         >
           <Text fontWeight="medium" fontSize="sm" color={greenTextColor}>
-            {t(`progress.current${activeMetric.charAt(0).toUpperCase() + activeMetric.slice(1)}`, `Aktuelles ${currentMetric.label}`)}
+            {t(`common.current${activeMetric.charAt(0).toUpperCase() + activeMetric.slice(1)}`, `Aktuelles ${currentMetric.label}`)}
           </Text>
           <Text fontSize="xl" fontWeight="bold">{latestValue} {currentMetric.unit}</Text>
           <Text fontSize="xs" color="gray.500">{metricData[metricData.length - 1]?.date}</Text>
-            </Box>
+        </Box>
             
         <Box 
           p={3} 
-      borderRadius="md" 
+          borderRadius="md" 
           bg={isPositiveTrend ? blueBoxBg : redBoxBg}
-      borderLeft="4px solid"
+          borderLeft="4px solid"
           borderColor={isPositiveTrend ? 'blue.400' : 'red.400'}
-    >
-            <Flex align="center">
+        >
+          <Flex align="center">
             <Text 
               fontWeight="medium" 
               fontSize="sm" 
               color={isPositiveTrend ? blueTextColor : redTextColor}
             >
-              {t('progress.trend', 'Trend')}
+              {t('common.trend', 'Trend')}
             </Text>
             {metricData.length > 1 && (
               <Icon 
@@ -621,7 +621,7 @@ const DashboardOverview: React.FC = () => {
                 boxSize={4}
               />
             )}
-      </Flex>
+          </Flex>
           {metricData.length > 1 ? (
             <>
               <Text 
@@ -630,16 +630,16 @@ const DashboardOverview: React.FC = () => {
                 color={trendColor}
               >
                 {isPositiveTrend ? '+' : ''}{Math.abs(valueDiff).toFixed(1)} {currentMetric.unit}
-      </Text>
-              <Text fontSize="xs" color="gray.500">{t('progress.overTimeRange', `Über ${timeRangeOptions.find(o => o.value === timeRange)?.label}`)}</Text>
+              </Text>
+              <Text fontSize="xs" color="gray.500">{t('common.overTimeRange', `Über ${timeRangeOptions.find(o => o.value === timeRange)?.label}`)}</Text>
             </>
           ) : (
             <>
               <Text fontSize="xl" fontWeight="bold" color="gray.500">-- {currentMetric.unit}</Text>
-              <Text fontSize="xs" color="gray.500">{t('progress.notEnoughData', 'Nicht genügend Daten')}</Text>
-        </>
-      )}
-    </Box>
+              <Text fontSize="xs" color="gray.500">{t('common.notEnoughData', 'Nicht genügend Daten')}</Text>
+          </>
+        )}
+      </Box>
         
         <Box 
           p={3} 
@@ -649,14 +649,14 @@ const DashboardOverview: React.FC = () => {
           borderColor="purple.400"
         >
           <Text fontWeight="medium" fontSize="sm" color={purpleTextColor}>
-            {t('progress.target', 'Ziel')}
+            {t('common.target', 'Ziel')}
           </Text>
           <Text fontSize="xl" fontWeight="bold">{targetValue} {currentMetric.unit}</Text>
           <Text 
             fontSize="xs" 
             color={activeMetric === 'weight' ? (latestValue > targetValue ? "green.500" : "red.500") : (latestValue < targetValue ? "red.500" : "green.500")}
           >
-            {Math.abs(latestValue - targetValue).toFixed(1)} {currentMetric.unit} {t('progress.fromTarget', 'vom Ziel entfernt')}
+            {Math.abs(latestValue - targetValue).toFixed(1)} {currentMetric.unit} {t('common.fromTarget', 'vom Ziel entfernt')}
           </Text>
         </Box>
       </SimpleGrid>
@@ -795,8 +795,8 @@ const CustomTabPanels: React.FC<{ activeTab: number; handleTabChange: (index: nu
           <Flex justify="space-between" align="center" mt={6} mb={4}>
             <Text fontSize="lg" fontWeight="bold">
               {missionType === 'daily' 
-                ? t('progress.dailyMissions', 'Tägliche Missionen') 
-                : t('progress.weeklyMissions', 'Wöchentliche Missionen')}
+                ? t('progress.dailyMissionsTitle', 'Daily Missions') 
+                : t('progress.weeklyMissions', 'Weekly Missions')}
             </Text>
             <ButtonGroup size="sm" isAttached variant="outline">
               <Button
@@ -805,7 +805,7 @@ const CustomTabPanels: React.FC<{ activeTab: number; handleTabChange: (index: nu
                 colorScheme={missionType === 'daily' ? 'brand' : undefined}
                 variant={missionType === 'daily' ? 'solid' : 'outline'}
               >
-                {t('progress.daily', 'Täglich')}
+                {t('progress.daily', 'Daily')}
               </Button>
               <Button
                 leftIcon={<Icon as={FiTarget} />}
@@ -813,10 +813,10 @@ const CustomTabPanels: React.FC<{ activeTab: number; handleTabChange: (index: nu
                 colorScheme={missionType === 'weekly' ? 'brand' : undefined}
                 variant={missionType === 'weekly' ? 'solid' : 'outline'}
               >
-                {t('progress.weekly', 'Wöchentlich')}
+                {t('progress.weekly', 'Weekly')}
               </Button>
             </ButtonGroup>
-            </Flex>
+          </Flex>
           
           {/* Anzeige der entsprechenden Missionen basierend auf der Auswahl */}
           {missionType === 'daily' ? (
@@ -873,7 +873,7 @@ const ProgressPage: React.FC = () => {
         
           <CustomTabPanels activeTab={activeTab} handleTabChange={handleTabChange} />
         </Tabs>
-                </Flex>
+      </Flex>
     </Container>
   );
 };
@@ -894,7 +894,7 @@ const DailyMissionsContent: React.FC = () => {
       boxShadow="sm"
       gridColumn={{ md: "span 2" }}
     >
-              <Box>
+      <Box>
         {dailyMissions.length === 0 ? (
           <Text textAlign="center" color="gray.500" py={4}>
             {t('progress.noMissions', 'Keine täglichen Missionen gefunden.')}
@@ -906,9 +906,9 @@ const DailyMissionsContent: React.FC = () => {
                 key={mission.id} 
                 mission={mission} 
                 onComplete={completeDaily} 
-                    />
-                  ))}
-            </VStack>
+              />
+            ))}
+          </VStack>
         )}
       </Box>
     </Box>
@@ -944,15 +944,15 @@ const NutritionGoalsContent: React.FC = () => {
   const dailyProgress = user?.dailyProgress || { calories: 0, protein: 0, carbs: 0, fat: 0, water: 0 };
   
   // Berechne die Prozentsätze für die Fortschrittsanzeigen
-  const caloriePercentage = Math.min(100, Math.round((dailyProgress.calories / calorieGoal) * 100) || 0);
-  const proteinPercentage = Math.min(100, Math.round((dailyProgress.protein / proteinGoal) * 100) || 0);
-  const carbPercentage = Math.min(100, Math.round((dailyProgress.carbs / carbGoal) * 100) || 0);
-  const fatPercentage = Math.min(100, Math.round((dailyProgress.fat / fatGoal) * 100) || 0);
-  const waterPercentage = Math.min(100, Math.round((dailyProgress.water / waterGoal) * 100) || 0);
+  const goalCaloriePercentage = Math.min(100, Math.round((dailyProgress.calories / calorieGoal) * 100) || 0);
+  const goalProteinPercentage = Math.min(100, Math.round((dailyProgress.protein / proteinGoal) * 100) || 0);
+  const goalCarbPercentage = Math.min(100, Math.round((dailyProgress.carbs / carbGoal) * 100) || 0);
+  const goalFatPercentage = Math.min(100, Math.round((dailyProgress.fat / fatGoal) * 100) || 0);
+  const goalWaterPercentage = Math.min(100, Math.round((dailyProgress.water / waterGoal) * 100) || 0);
   
   return (
     <Box>
-      <Heading size="md" mb={4}>{t('nutritionGoals.yourGoals', 'Deine Ernährungsziele')}</Heading>
+      <Heading size="md" mb={4}>{t('common.yourNutritionGoals', 'Deine Ernährungsziele')}</Heading>
       
       {/* Kalorienübersicht */}
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} mb={6}>
@@ -967,16 +967,16 @@ const NutritionGoalsContent: React.FC = () => {
           _hover={{ transform: "translateY(-5px)", shadow: "lg" }}
         >
           <Heading size="md" mb={2}>
-            {t('nutritionGoals.dailyCalories', 'Tägliches Kalorienziel')}
+            {t('common.dailyCalories', 'Tägliches Kalorienziel')}
         </Heading>
           <Heading size="xl" mb={2}>
             {calorieGoal} kcal
           </Heading>
           <Text fontSize="sm">
-            {t('nutritionGoals.caloriesDescription', 'Deine optimale tägliche Kalorienzufuhr')}
+            {t('common.caloriesDescription', 'Deine optimale tägliche Kalorienzufuhr')}
         </Text>
-          <Progress value={caloriePercentage} colorScheme="green" size="sm" mt={4} />
-          <Text fontSize="xs" mt={1}>{dailyProgress.calories} / {calorieGoal} kcal ({caloriePercentage}%)</Text>
+          <Progress value={goalCaloriePercentage} colorScheme="green" size="sm" mt={4} />
+          <Text fontSize="xs" mt={1}>{dailyProgress.calories} / {calorieGoal} kcal ({goalCaloriePercentage}%)</Text>
       </Box>
       
         {/* Wasseraufnahme */}
@@ -991,16 +991,16 @@ const NutritionGoalsContent: React.FC = () => {
         >
           <Flex direction="column" align="center">
             <Heading size="md" mb={2}>
-              {t('nutritionGoals.waterIntake', 'Tägliche Wasseraufnahme')}
+              {t('common.waterIntake', 'Tägliche Wasseraufnahme')}
             </Heading>
             <Heading size="xl" mb={2}>
               {waterIntake} Liter
             </Heading>
             <Text fontSize="sm" textAlign="center">
-              {t('nutritionGoals.waterDescription', 'Optimale Hydration für deinen Körper')}
+              {t('common.waterDescription', 'Optimale Hydration für deinen Körper')}
             </Text>
-            <Progress value={waterPercentage} colorScheme="blue" size="sm" mt={4} width="100%" />
-            <Text fontSize="xs" mt={1}>{dailyProgress.water} / {waterGoal} ml ({waterPercentage}%)</Text>
+            <Progress value={goalWaterPercentage} colorScheme="blue" size="sm" mt={4} width="100%" />
+            <Text fontSize="xs" mt={1}>{dailyProgress.water} / {waterGoal} ml ({goalWaterPercentage}%)</Text>
           </Flex>
         </Box>
       </SimpleGrid>
@@ -1012,27 +1012,27 @@ const NutritionGoalsContent: React.FC = () => {
         <Stat p={4} bg={sectionBg} borderRadius="lg" shadow="sm">
           <StatLabel>{t('nutritionGoals.protein', 'Protein')}</StatLabel>
           <StatNumber>{proteinGoal} g</StatNumber>
-          <Progress value={proteinPercentage} colorScheme="purple" size="sm" mt={2} />
-          <Text fontSize="xs" mt={1}>{dailyProgress.protein} / {proteinGoal} g ({proteinPercentage}%)</Text>
+          <Progress value={goalProteinPercentage} colorScheme="purple" size="sm" mt={2} />
+          <Text fontSize="xs" mt={1}>{dailyProgress.protein} / {proteinGoal} g ({goalProteinPercentage}%)</Text>
         </Stat>
         
         {/* Kohlenhydrate */}
         <Stat p={4} bg={sectionBg} borderRadius="lg" shadow="sm">
           <StatLabel>{t('nutritionGoals.carbs', 'Kohlenhydrate')}</StatLabel>
           <StatNumber>{carbGoal} g</StatNumber>
-          <Progress value={carbPercentage} colorScheme="orange" size="sm" mt={2} />
-          <Text fontSize="xs" mt={1}>{dailyProgress.carbs} / {carbGoal} g ({carbPercentage}%)</Text>
+          <Progress value={goalCarbPercentage} colorScheme="orange" size="sm" mt={2} />
+          <Text fontSize="xs" mt={1}>{dailyProgress.carbs} / {carbGoal} g ({goalCarbPercentage}%)</Text>
         </Stat>
         
         {/* Fett */}
         <Stat p={4} bg={sectionBg} borderRadius="lg" shadow="sm">
           <StatLabel>{t('nutritionGoals.fat', 'Fett')}</StatLabel>
           <StatNumber>{fatGoal} g</StatNumber>
-          <Progress value={fatPercentage} colorScheme="yellow" size="sm" mt={2} />
-          <Text fontSize="xs" mt={1}>{dailyProgress.fat} / {fatGoal} g ({fatPercentage}%)</Text>
+          <Progress value={goalFatPercentage} colorScheme="yellow" size="sm" mt={2} />
+          <Text fontSize="xs" mt={1}>{dailyProgress.fat} / {fatGoal} g ({goalFatPercentage}%)</Text>
         </Stat>
-              </SimpleGrid>
-              
+      </SimpleGrid>
+      
       {/* Button zur vollständigen Seite */}
       <Flex justify="center" mt={6}>
         <Button 
@@ -1044,7 +1044,7 @@ const NutritionGoalsContent: React.FC = () => {
           {t('nutritionGoals.adjustGoals', 'Ernährungsziele anpassen')}
         </Button>
       </Flex>
-              </Box>
+    </Box>
   );
 };
 

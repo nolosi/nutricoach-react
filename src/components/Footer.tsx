@@ -1,8 +1,10 @@
 import { Box, Container, Flex, Link, Text, Stack, useColorModeValue } from "@chakra-ui/react";
 import { FaGithub } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 export const Footer = () => {
   const borderColor = useColorModeValue("gray.200", "gray.700");
+  const { t } = useTranslation();
 
   return (
     <Box
@@ -20,7 +22,7 @@ export const Footer = () => {
             align="center"
             gap={2}
           >
-            <Text>Entwickelt mit ❤️ von</Text>
+            <Text>{t('common.developedWith', 'Entwickelt mit ❤️ von')}</Text>
             <Link
               href="https://github.com/nolosi"
               isExternal
@@ -60,7 +62,7 @@ export const Footer = () => {
               isExternal
               color="blue.500"
             >
-              GitHub Repository
+              {t('common.githubRepository', 'GitHub Repository')}
             </Link>
           </Flex>
         </Stack>

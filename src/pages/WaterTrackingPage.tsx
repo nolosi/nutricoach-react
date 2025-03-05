@@ -232,8 +232,8 @@ const WaterTrackingPage: React.FC = () => {
               checkAndCompleteMissions();
               
               toast({
-                title: t('water.missionCompleted', 'Mission abgeschlossen!'),
-                description: t('water.missionCompletedDesc', 'Du hast dein tägliches Wasserziel erreicht.'),
+                title: t('missions.water.missionCompleted', 'Mission abgeschlossen!'),
+                description: t('missions.water.missionCompletedDesc', 'Du hast dein tägliches Wasserziel erreicht.'),
                 status: 'success',
                 duration: 3000,
                 isClosable: true,

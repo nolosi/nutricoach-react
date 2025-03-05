@@ -194,7 +194,7 @@ const HomePage: React.FC = () => {
                   fontSize="xs"
                   fontWeight="bold"
                 >
-                  {t('home.completed', 'Erledigt')}
+                  {t('common.completed')}
                 </Box>
               )}
               <Flex justify="space-between" align="center">
@@ -212,10 +212,10 @@ const HomePage: React.FC = () => {
                   />
                   <Box>
                     <Flex align="center">
-                      <Text fontWeight="medium" color={mission.completed ? completedMissionTitleColor : ""}>{mission.title}</Text>
+                      <Text fontWeight="medium" color={mission.completed ? completedMissionTitleColor : ""}>{t(mission.title)}</Text>
                       {mission.completed && <Icon as={FiCheckCircle} color={completedCheckIconColor} ml={2} />}
                     </Flex>
-                    <Text fontSize="sm" color={mission.completed ? completedMissionTextColor : "gray.500"}>{mission.description}</Text>
+                    <Text fontSize="sm" color={mission.completed ? completedMissionTextColor : "gray.500"}>{t(mission.description)}</Text>
                   </Box>
                 </HStack>
                 <Badge colorScheme={mission.completed ? "green" : "brand"}>+{mission.xp} XP</Badge>
@@ -253,130 +253,27 @@ const HomePage: React.FC = () => {
   }
   
   return (
-    <Container maxW="container.xl" py={8}>
-      <CoachMessage 
-        message={t('home.welcomeBack', 'Willkommen zurück, {{name}}! Hier ist dein täglicher Überblick.', { name: user?.name || t('home.friend', 'Freund') })}
-        coach={user?.selectedCoach || 'sophia'}
-      />
-      
-      <Box mb={10}>
-        {/* Level und Fortschritt - jetzt nach der Begrüßung und vor den täglichen Zielen */}
-        <Box mb={6} p={4} bg={cardBg} boxShadow="md" borderRadius="lg">
-          <Heading as="h3" size="md">{t('home.yourLevel', 'Dein Level')}</Heading>
-          <Text fontWeight="bold">Level {user?.level || 1}</Text>
-          
-          {/* Verbesserte Level-Anzeige, die immer den Fortschritt zum nächsten Level zeigt */}
-          <>
-            <Progress 
-              value={(user?.experiencePoints || 0) / ((user?.level || 1) * 100) * 100} 
-              colorScheme="brand" 
-              size="sm" 
-              mb={2} 
-            />
-            <Flex justify="space-between" fontSize="sm" color="gray.500">
-              <Text>{user?.experiencePoints || 0} XP</Text>
-              <Text>{(user?.level || 1) * 100} XP</Text>
-            </Flex>
-            <Text fontSize="sm" mt={1}>
-              {t('home.xpToNextLevel', '{{remaining}} XP fehlen zum nächsten Level.',
-                { remaining: ((user?.level || 1) * 100) - (user?.experiencePoints || 0) })}
-            </Text>
-          </>
-        </Box>
-        
-        <Heading as="h2" size="md" mb={4}>
-          {t('home.todayGoals', 'Tägliche Ziele')}
-        </Heading>
-        <SimpleGrid columns={{base: 1, md: 3}} spacing={4}>
-          <Stat p={4} bg={statBg} borderRadius="lg" boxShadow="sm">
-            <StatLabel display="flex" alignItems="center">
-              <Icon as={FiPieChart} mr={2} /> {t('home.calories', 'Kalorien')}
-            </StatLabel>
-            <StatNumber>{todayProgress.calories} / {user?.calorieGoal || '-'} kcal</StatNumber>
-            <Progress value={caloriePercentage} colorScheme="green" size="sm" mt={2} />
-            <StatHelpText>{caloriePercentage}% {t('home.completed', 'erreicht')}</StatHelpText>
-          </Stat>
-          
-          <Stat p={4} bg={statBg} borderRadius="lg" boxShadow="sm">
-            <StatLabel display="flex" alignItems="center">
-              <Icon as={FiHeart} mr={2} /> {t('home.protein', 'Protein')}
-            </StatLabel>
-            <StatNumber>{todayProgress.protein} / {user?.proteinGoal || '-'} g</StatNumber>
-            <Progress value={proteinPercentage} colorScheme="pink" size="sm" mt={2} />
-            <StatHelpText>{proteinPercentage}% {t('home.completed', 'erreicht')}</StatHelpText>
-          </Stat>
-          
-          <Stat p={4} bg={statBg} borderRadius="lg" boxShadow="sm">
-            <StatLabel display="flex" alignItems="center">
-              <Icon as={FiLayers} mr={2} /> {t('home.fat', 'Fett')}
-            </StatLabel>
-            <StatNumber>{todayProgress.fat} / {user?.fatGoal || '-'} g</StatNumber>
-            <Progress value={fatPercentage} colorScheme="yellow" size="sm" mt={2} />
-            <StatHelpText>{fatPercentage}% {t('home.completed', 'erreicht')}</StatHelpText>
-          </Stat>
-          
-          <Stat p={4} bg={statBg} borderRadius="lg" boxShadow="sm">
-            <StatLabel display="flex" alignItems="center">
-              <Icon as={FiDroplet} mr={2} /> {t('home.water', 'Wasser')}
-            </StatLabel>
-            <StatNumber>{todayProgress.water} / {user?.waterGoal || '-'} ml</StatNumber>
-            <Progress value={waterPercentage} colorScheme="cyan" size="sm" mt={2} />
-            <StatHelpText>{waterPercentage}% {t('home.completed', 'erreicht')}</StatHelpText>
-          </Stat>
-          
-          <Stat p={4} bg={statBg} borderRadius="lg" boxShadow="sm">
-            <StatLabel display="flex" alignItems="center">
-              <Icon as={FiPieChart} mr={2} /> {t('nutrition.carbs', 'Kohlenhydrate')}
-            </StatLabel>
-            <StatNumber>{todayProgress.carbs} / {user?.carbGoal || '-'} g</StatNumber>
-            <Progress 
-              value={user?.carbGoal ? Math.min(100, Math.round((todayProgress.carbs / (user.carbGoal || 1)) * 100)) : 0} 
-              colorScheme="orange" 
-              size="sm" 
-              mt={2} 
-            />
-            <StatHelpText>
-              {user?.carbGoal ? Math.min(100, Math.round((todayProgress.carbs / (user.carbGoal || 1)) * 100)) : 0}% {t('home.completed', 'erreicht')}
-            </StatHelpText>
-          </Stat>
-          
-          <Stat p={4} bg={statBg} borderRadius="lg" boxShadow="sm">
-            <StatLabel display="flex" alignItems="center">
-              <Icon as={FiActivity} mr={2} /> {t('home.burnedCalories', 'Verbrannte Kalorien')}
-            </StatLabel>
-            <StatNumber>
-              {todayProgress.burnedCalories || 0} / {user?.burnCalorieGoal || 500} kcal
-            </StatNumber>
-            <Progress 
-              value={user ? Math.min(100, Math.round(((todayProgress.burnedCalories || 0) / (user.burnCalorieGoal || 500)) * 100)) : 0} 
-              colorScheme="red" 
-              size="sm" 
-              mt={2} 
-            />
-            <StatHelpText>
-              {user ? Math.min(100, Math.round(((todayProgress.burnedCalories || 0) / (user.burnCalorieGoal || 500)) * 100)) : 0}% {t('home.completed', 'erreicht')}
-            </StatHelpText>
-            <Text fontSize="xs" color="gray.500" mt={1}>
-              {user?.weightGoal === 'lose' 
-                ? t('home.burnCalorieExplanationLose', 'Ziel für Gewichtsreduktion: 500 kcal')
-                : t('home.burnCalorieExplanationNormal', '20% deines täglichen Kalorienziels')}
-            </Text>
-          </Stat>
-        </SimpleGrid>
-      </Box>
-
-      {/* Tägliche Missionen */}
-      <Box mb={10}>
-        <Heading as="h2" size="md" mb={4}>
-          {t('home.dailyMissions', 'Tägliche Missionen')}
-        </Heading>
-        {renderDailyMissions()}
-      </Box>
-
-      {/* Schnellzugriffskarten */}
+    <Container maxW="container.xl" py={4}>
+      {/* Begrüßung und Level */}
       <Box mb={6}>
-        <Heading as="h2" size="md" mb={4}>
-          {t('home.quickAccess', 'Schnellzugriff')}
+        <Heading size="lg" mb={2}>
+          {t('home.welcomeBack', { name: user?.name || '' })}
+        </Heading>
+        <Text fontSize="lg" color="gray.600">
+          {t('home.yourLevel', 'Niveli Juaj')} {user?.level || 1}
+        </Text>
+        <Progress value={(user?.experiencePoints || 0) % 1000 / 10} size="sm" colorScheme="brand" mt={2} />
+      </Box>
+
+      {/* Tägliche Ziele */}
+      <Heading size="md" mb={4}>
+        {t('home.dailyGoals', 'Objektivat e Ditës')}
+      </Heading>
+
+      {/* Quick Access */}
+      <Box mb={8}>
+        <Heading size="md" mb={4}>
+          {t('home.quickAccess', 'Qasje e Shpejtë')}
         </Heading>
         <SimpleGrid columns={{base: 2, md: 4}} spacing={4}>
           <Card as={RouterLink} to="/meals" bg={cardBg} _hover={{ transform: 'translateY(-4px)', shadow: 'md' }} transition="all 0.3s" borderRadius="lg">
@@ -412,11 +309,11 @@ const HomePage: React.FC = () => {
           </Card>
         </SimpleGrid>
       </Box>
-      
-      {/* Zufällige Tipps */}
-      <Box mb={6}>
-        <Heading as="h2" size="md" mb={4}>
-          {t('home.progress', 'Fortschritt')}
+
+      {/* Daily Tip */}
+      <Box mb={8}>
+        <Heading size="md" mb={4}>
+          {t('home.dailyTip', 'Këshilla e Ditës')}
         </Heading>
         <Card bg={cardBg} borderRadius="lg" boxShadow="md">
           <CardBody>
@@ -428,6 +325,97 @@ const HomePage: React.FC = () => {
             </Flex>
           </CardBody>
         </Card>
+      </Box>
+
+      {/* Progress */}
+      <Box mb={8}>
+        <Heading size="md" mb={4}>
+          {t('home.progress', 'Progresi')}
+        </Heading>
+        <SimpleGrid columns={{base: 1, md: 3}} spacing={4}>
+          <Stat p={4} bg={statBg} borderRadius="lg" boxShadow="sm">
+            <StatLabel display="flex" alignItems="center">
+              <Icon as={FiPieChart} mr={2} /> {t('home.calories', 'Kalorien')}
+            </StatLabel>
+            <StatNumber>{todayProgress.calories} / {user?.calorieGoal || '-'} kcal</StatNumber>
+            <Progress value={caloriePercentage} colorScheme="green" size="sm" mt={2} />
+            <StatHelpText>{caloriePercentage}% {t('common.completed')}</StatHelpText>
+          </Stat>
+          
+          <Stat p={4} bg={statBg} borderRadius="lg" boxShadow="sm">
+            <StatLabel display="flex" alignItems="center">
+              <Icon as={FiHeart} mr={2} /> {t('home.protein', 'Protein')}
+            </StatLabel>
+            <StatNumber>{todayProgress.protein} / {user?.proteinGoal || '-'} g</StatNumber>
+            <Progress value={proteinPercentage} colorScheme="pink" size="sm" mt={2} />
+            <StatHelpText>{proteinPercentage}% {t('common.completed')}</StatHelpText>
+          </Stat>
+          
+          <Stat p={4} bg={statBg} borderRadius="lg" boxShadow="sm">
+            <StatLabel display="flex" alignItems="center">
+              <Icon as={FiLayers} mr={2} /> {t('home.fat', 'Fett')}
+            </StatLabel>
+            <StatNumber>{todayProgress.fat} / {user?.fatGoal || '-'} g</StatNumber>
+            <Progress value={fatPercentage} colorScheme="yellow" size="sm" mt={2} />
+            <StatHelpText>{fatPercentage}% {t('common.completed')}</StatHelpText>
+          </Stat>
+          
+          <Stat p={4} bg={statBg} borderRadius="lg" boxShadow="sm">
+            <StatLabel display="flex" alignItems="center">
+              <Icon as={FiDroplet} mr={2} /> {t('home.water', 'Wasser')}
+            </StatLabel>
+            <StatNumber>{todayProgress.water} / {user?.waterGoal || '-'} ml</StatNumber>
+            <Progress value={waterPercentage} colorScheme="cyan" size="sm" mt={2} />
+            <StatHelpText>{waterPercentage}% {t('common.completed')}</StatHelpText>
+          </Stat>
+          
+          <Stat p={4} bg={statBg} borderRadius="lg" boxShadow="sm">
+            <StatLabel display="flex" alignItems="center">
+              <Icon as={FiPieChart} mr={2} /> {t('nutrition.carbs', 'Kohlenhydrate')}
+            </StatLabel>
+            <StatNumber>{todayProgress.carbs} / {user?.carbGoal || '-'} g</StatNumber>
+            <Progress 
+              value={user?.carbGoal ? Math.min(100, Math.round((todayProgress.carbs / (user.carbGoal || 1)) * 100)) : 0} 
+              colorScheme="orange" 
+              size="sm" 
+              mt={2} 
+            />
+            <StatHelpText>
+              {user?.carbGoal ? Math.min(100, Math.round((todayProgress.carbs / (user.carbGoal || 1)) * 100)) : 0}% {t('common.completed')}
+            </StatHelpText>
+          </Stat>
+          
+          <Stat p={4} bg={statBg} borderRadius="lg" boxShadow="sm">
+            <StatLabel display="flex" alignItems="center">
+              <Icon as={FiActivity} mr={2} /> {t('home.burnedCalories', 'Verbrannte Kalorien')}
+            </StatLabel>
+            <StatNumber>
+              {todayProgress.burnedCalories || 0} / {user?.burnCalorieGoal || 500} kcal
+            </StatNumber>
+            <Progress 
+              value={user ? Math.min(100, Math.round(((todayProgress.burnedCalories || 0) / (user.burnCalorieGoal || 500)) * 100)) : 0} 
+              colorScheme="red" 
+              size="sm" 
+              mt={2} 
+            />
+            <StatHelpText>
+              {user ? Math.min(100, Math.round(((todayProgress.burnedCalories || 0) / (user.burnCalorieGoal || 500)) * 100)) : 0}% {t('common.completed')}
+            </StatHelpText>
+            <Text fontSize="xs" color="gray.500" mt={1}>
+              {user?.weightGoal === 'lose' 
+                ? t('home.burnCalorieExplanationLose', 'Ziel für Gewichtsreduktion: 500 kcal')
+                : t('home.burnCalorieExplanationNormal', '20% deines täglichen Kalorienziels')}
+            </Text>
+          </Stat>
+        </SimpleGrid>
+      </Box>
+
+      {/* Tägliche Missionen */}
+      <Box mb={10}>
+        <Heading as="h2" size="md" mb={4}>
+          {t('home.dailyMissions', 'Tägliche Missionen')}
+        </Heading>
+        {renderDailyMissions()}
       </Box>
     </Container>
   );

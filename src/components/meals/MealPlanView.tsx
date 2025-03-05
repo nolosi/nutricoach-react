@@ -129,7 +129,7 @@ const MealPlanView: React.FC<MealPlanViewProps> = ({ initialDate }) => {
       {/* Datumsauswahl */}
       <Flex justifyContent="space-between" alignItems="center" mb={spacing}>
         <IconButton
-          aria-label={t('common.previousDay', 'Vorheriger Tag')}
+          aria-label={t('common.previousDay')}
           icon={<FiChevronLeft />}
           onClick={() => changeDate(-1)}
           size={buttonSize}
@@ -143,7 +143,7 @@ const MealPlanView: React.FC<MealPlanViewProps> = ({ initialDate }) => {
         </Flex>
         
         <IconButton
-          aria-label={t('common.nextDay', 'Nächster Tag')}
+          aria-label={t('common.nextDay')}
           icon={<FiChevronRight />}
           onClick={() => changeDate(1)}
           size={buttonSize}
@@ -173,9 +173,9 @@ const MealPlanView: React.FC<MealPlanViewProps> = ({ initialDate }) => {
               >
                 <Box p={cardPadding}>
                   <Flex justifyContent="space-between" alignItems="center" mb={2}>
-                    <Heading size={headingSize}>{t(`meals.${mealType}`, mealType)}</Heading>
+                    <Heading size={headingSize}>{t(`meals.${mealType}`)}</Heading>
                     <IconButton
-                      aria-label={t('common.remove', 'Entfernen')}
+                      aria-label={t('common.remove')}
                       icon={<FiTrash2 />}
                       size={buttonSize}
                       variant="ghost"
@@ -235,14 +235,14 @@ const MealPlanView: React.FC<MealPlanViewProps> = ({ initialDate }) => {
         </SimpleGrid>
       ) : (
         <Box textAlign="center" p={cardPadding} borderWidth="1px" borderRadius="lg" borderColor={borderColor}>
-          <Text fontSize={fontSize}>{t('meals.noMealPlan', 'Kein Essensplan für diesen Tag')}</Text>
+          <Text fontSize={fontSize}>{t('meals.noMealPlan')}</Text>
           <Button
             mt={spacing}
             colorScheme="teal"
             size={buttonSize}
             onClick={() => navigate('/recipes')}
           >
-            {t('meals.browseRecipes', 'Rezepte durchsuchen')}
+            {t('meals.browseRecipes')}
           </Button>
         </Box>
       )}

@@ -180,8 +180,8 @@ const NutritionGoalsPage: React.FC = () => {
     if (!inputData) {
       // Standard-Tipps, wenn keine Benutzerdaten verfügbar sind
       tips.push({
-        title: t('tips.mealPrep', 'Mahlzeiten vorbereiten'),
-        description: t('tips.mealPrepDesc', 'Plane und bereite deine Mahlzeiten im Voraus zu, um Impulsentscheidungen zu vermeiden und deine Ernährungsziele besser einhalten zu können.'),
+        title: t('tips.mealPrep'),
+        description: t('tips.mealPrepDesc'),
         icon: FiCheckCircle
       });
       
@@ -191,24 +191,24 @@ const NutritionGoalsPage: React.FC = () => {
     // Tipps basierend auf dem Ziel
     if (inputData.weightGoal === 'lose') {
       tips.push({
-        title: t('tips.highProteinDiet', 'Proteinreiche Ernährung'),
-        description: t('tips.highProteinDietDesc', 'Proteine halten länger satt und helfen beim Erhalt der Muskelmasse während einer Diät. Versuche, in jeder Mahlzeit Protein zu integrieren.'),
+        title: t('tips.highProteinDiet'),
+        description: t('tips.highProteinDietDesc'),
         icon: FiHeart
       });
       tips.push({
-        title: t('tips.volumeEating', 'Voluminöses Essen'),
-        description: t('tips.volumeEatingDesc', 'Fülle deinen Teller mit voluminösem, kalorienarmen Gemüse und Protein, um satt zu werden, ohne zu viele Kalorien zu konsumieren.'),
+        title: t('tips.volumeEating'),
+        description: t('tips.volumeEatingDesc'),
         icon: FiMenu
       });
     } else if (inputData.weightGoal === 'gain') {
       tips.push({
-        title: t('tips.calorieDense', 'Kalorienreiches Essen'),
-        description: t('tips.calorieDenseDesc', 'Integriere kalorienreiche, aber nährstoffreiche Lebensmittel wie Nüsse, Avocados und gesunde Öle in deine Ernährung.'),
+        title: t('tips.calorieDense'),
+        description: t('tips.calorieDenseDesc'),
         icon: FiArrowUp
       });
       tips.push({
-        title: t('tips.frequentMeals', 'Häufigere Mahlzeiten'),
-        description: t('tips.frequentMealsDesc', 'Versuche, 4-6 kleinere Mahlzeiten pro Tag zu essen, um deinen Kalorienbedarf zu decken, wenn du Schwierigkeiten hast, genug zu essen.'),
+        title: t('tips.frequentMeals'),
+        description: t('tips.frequentMealsDesc'),
         icon: FiMenu
       });
     }
@@ -216,21 +216,21 @@ const NutritionGoalsPage: React.FC = () => {
     // Tipps basierend auf der Aktivität
     if (['active', 'very_active'].includes(inputData.activityLevel)) {
       tips.push({
-        title: t('tips.postWorkoutNutrition', 'Ernährung nach dem Training'),
-        description: t('tips.postWorkoutNutritionDesc', 'Nimm innerhalb von 30-60 Minuten nach dem Training eine Kombination aus Proteinen und Kohlenhydraten zu dir, um die Erholung zu fördern.'),
+        title: t('tips.postWorkoutNutrition'),
+        description: t('tips.postWorkoutNutritionDesc'),
         icon: FiTarget
       });
       tips.push({
-        title: t('tips.stayHydrated', 'Bleib hydriert'),
-        description: t('tips.stayHydratedDesc', `Trinke mindestens ${getWaterIntakeString()} Liter Wasser täglich, besonders an Trainingstagen, um optimal zu performen.`),
+        title: t('tips.stayHydrated'),
+        description: t('tips.stayHydratedDesc', { amount: getWaterIntakeString() }),
         icon: FiDroplet
       });
     }
     
     // Allgemeine Tipps
     tips.push({
-      title: t('tips.mealPrep', 'Mahlzeiten vorbereiten'),
-      description: t('tips.mealPrepDesc', 'Plane und bereite deine Mahlzeiten im Voraus zu, um Impulsentscheidungen zu vermeiden und deine Ernährungsziele besser einhalten zu können.'),
+      title: t('tips.mealPrep'),
+      description: t('tips.mealPrepDesc'),
       icon: FiCheckCircle
     });
     
@@ -238,74 +238,67 @@ const NutritionGoalsPage: React.FC = () => {
     return tips.slice(0, 4);
   };
   
-  // Detaillierte Erklärungen zu den Makronährstoffen
-  const getMacronutrientExplanations = () => {
-    return {
-      protein: {
-        title: t('macros.protein.title', 'Protein'),
-        description: t('macros.protein.description', 'Proteine sind die Bausteine deines Körpers und unterstützen den Muskelaufbau und die Regeneration. Sie helfen auch, dich länger satt zu halten.'),
-        benefits: [
-          t('macros.protein.benefit1', 'Unterstützt Muskelaufbau und -erhalt'),
-          t('macros.protein.benefit2', 'Fördert Sättigung und reduziert Hunger'),
-          t('macros.protein.benefit3', 'Hilft bei der Gewebereparatur und Erholung')
-        ],
-        sources: [
-          t('macros.protein.source1', 'Mageres Fleisch (Huhn, Pute, Rind)'),
-          t('macros.protein.source2', 'Fisch und Meeresfrüchte'),
-          t('macros.protein.source3', 'Eier und Milchprodukte'),
-          t('macros.protein.source4', 'Hülsenfrüchte, Tofu und Tempeh'),
-          t('macros.protein.source5', 'Nüsse und Samen')
-        ]
-      },
-      carbs: {
-        title: t('macros.carbs.title', 'Kohlenhydrate'),
-        description: t('macros.carbs.description', 'Kohlenhydrate sind deine primäre Energiequelle, besonders für intensive körperliche Aktivitäten und Gehirnfunktionen.'),
-        benefits: [
-          t('macros.carbs.benefit1', 'Liefert schnelle und effiziente Energie'),
-          t('macros.carbs.benefit2', 'Unterstützt Gehirnfunktion und kognitive Leistung'),
-          t('macros.carbs.benefit3', 'Spart Protein für Muskelaufbau statt Energiegewinnung')
-        ],
-        sources: [
-          t('macros.carbs.source1', 'Vollkornprodukte (Brot, Reis, Pasta)'),
-          t('macros.carbs.source2', 'Obst und Gemüse'),
-          t('macros.carbs.source3', 'Hülsenfrüchte und Bohnen'),
-          t('macros.carbs.source4', 'Kartoffeln und Süßkartoffeln'),
-          t('macros.carbs.source5', 'Haferflocken und Quinoa')
-        ]
-      },
-      fats: {
-        title: t('macros.fats.title', 'Fette'),
-        description: t('macros.fats.description', 'Gesunde Fette sind essentiell für Hormonproduktion, Zellgesundheit und die Aufnahme fettlöslicher Vitamine.'),
-        benefits: [
-          t('macros.fats.benefit1', 'Unterstützt Hormonproduktion und -balance'),
-          t('macros.fats.benefit2', 'Fördert Gehirngesundheit und kognitive Funktion'),
-          t('macros.fats.benefit3', 'Hilft bei der Aufnahme der Vitamine A, D, E und K')
-        ],
-        sources: [
-          t('macros.fats.source1', 'Avocados'),
-          t('macros.fats.source2', 'Nüsse und Samen'),
-          t('macros.fats.source3', 'Olivenöl und andere pflanzliche Öle'),
-          t('macros.fats.source4', 'Fetthaltiger Fisch (Lachs, Makrele)'),
-          t('macros.fats.source5', 'Eier und vollfette Milchprodukte in Maßen')
-        ]
-      },
-      water: {
-        title: t('macros.water.title', 'Wasser'),
-        description: t('macros.water.description', 'Wasser ist lebenswichtig für alle Körperfunktionen, von der Verdauung bis zur Temperaturregulierung.'),
-        benefits: [
-          t('macros.water.benefit1', 'Unterstützt Stoffwechsel und Verdauung'),
-          t('macros.water.benefit2', 'Reguliert Körpertemperatur'),
-          t('macros.water.benefit3', 'Verbessert körperliche und geistige Leistung'),
-          t('macros.water.benefit4', 'Hilft bei der Entgiftung des Körpers')
-        ],
-        sources: [
-          t('macros.water.source1', 'Reines Wasser'),
-          t('macros.water.source2', 'Ungesüßter Tee'),
-          t('macros.water.source3', 'Wasserreiches Obst und Gemüse'),
-          t('macros.water.source4', 'Kokoswasser (natürlich, ungesüßt)')
-        ]
-      }
-    };
+  // Makronährstofferklärungen
+  const macroExplanations = {
+    protein: {
+      title: t('nutritionGoals.protein'),
+      description: t('nutritionGoals.proteinDescription'),
+      benefits: [
+        t('nutritionGoals.proteinBenefit1'),
+        t('nutritionGoals.proteinBenefit2'),
+        t('nutritionGoals.proteinBenefit3')
+      ],
+      sources: [
+        t('nutritionGoals.proteinSource1'),
+        t('nutritionGoals.proteinSource2'),
+        t('nutritionGoals.proteinSource3'),
+        t('nutritionGoals.proteinSource4')
+      ]
+    },
+    carbs: {
+      title: t('nutritionGoals.carbs'),
+      description: t('nutritionGoals.carbsDescription'),
+      benefits: [
+        t('nutritionGoals.carbsBenefit1'),
+        t('nutritionGoals.carbsBenefit2'),
+        t('nutritionGoals.carbsBenefit3')
+      ],
+      sources: [
+        t('nutritionGoals.carbsSource1'),
+        t('nutritionGoals.carbsSource2'),
+        t('nutritionGoals.carbsSource3'),
+        t('nutritionGoals.carbsSource4')
+      ]
+    },
+    fats: {
+      title: t('nutritionGoals.fat'),
+      description: t('nutritionGoals.fatDescription'),
+      benefits: [
+        t('nutritionGoals.fatBenefit1'),
+        t('nutritionGoals.fatBenefit2'),
+        t('nutritionGoals.fatBenefit3')
+      ],
+      sources: [
+        t('nutritionGoals.fatSource1'),
+        t('nutritionGoals.fatSource2'),
+        t('nutritionGoals.fatSource3'),
+        t('nutritionGoals.fatSource4')
+      ]
+    },
+    water: {
+      title: t('nutritionGoals.water'),
+      description: t('nutritionGoals.waterDetailDescription'),
+      benefits: [
+        t('nutritionGoals.waterBenefit1'),
+        t('nutritionGoals.waterBenefit2'),
+        t('nutritionGoals.waterBenefit3')
+      ],
+      sources: [
+        t('nutritionGoals.waterSource1'),
+        t('nutritionGoals.waterSource2'),
+        t('nutritionGoals.waterSource3')
+      ]
+    }
   };
   
   // Personalisierte Ernährungsempfehlungen basierend auf Zielen
@@ -316,41 +309,41 @@ const NutritionGoalsPage: React.FC = () => {
     
     // Allgemeine Empfehlungen
     recommendations.push({
-      title: t('recommendations.general.title', 'Ausgewogene Ernährung'),
-      description: t('recommendations.general.description', 'Achte auf eine ausgewogene Ernährung mit vielen Vollwertkost-Lebensmitteln, Gemüse, Obst, magerem Protein und gesunden Fetten.')
+      title: t('recommendations.general.title'),
+      description: t('recommendations.general.description')
     });
     
     // Zielspezifische Empfehlungen
     if (inputData.weightGoal === 'lose') {
       recommendations.push({
-        title: t('recommendations.lose.title', 'Kaloriendefizit'),
-        description: t('recommendations.lose.description', `Ein moderates Kaloriendefizit von etwa 500 kcal pro Tag führt zu einem gesunden Gewichtsverlust von etwa 0,5 kg pro Woche. Dein Ziel liegt bei ${calorieGoal} kcal täglich.`)
+        title: t('recommendations.lose.title'),
+        description: t('recommendations.lose.description', { calorieGoal })
       });
       recommendations.push({
-        title: t('recommendations.lose.protein.title', 'Hoher Proteinkonsum'),
-        description: t('recommendations.lose.protein.description', `Erhöhe deinen Proteinkonsum auf ${proteinGoal}g täglich, um Muskelmasse zu erhalten und Sättigung zu fördern.`)
+        title: t('recommendations.lose.protein.title'),
+        description: t('recommendations.lose.protein.description', { proteinGoal })
       });
     } else if (inputData.weightGoal === 'gain') {
       recommendations.push({
-        title: t('recommendations.gain.title', 'Kalorienüberschuss'),
-        description: t('recommendations.gain.description', `Ein moderater Kalorienüberschuss von etwa 500 kcal pro Tag unterstützt den Muskelaufbau. Dein Ziel liegt bei ${calorieGoal} kcal täglich.`)
+        title: t('recommendations.gain.title'),
+        description: t('recommendations.gain.description', { calorieGoal })
       });
       recommendations.push({
-        title: t('recommendations.gain.protein.title', 'Hoher Proteinkonsum'),
-        description: t('recommendations.gain.protein.description', `Konsumiere etwa ${proteinGoal}g Protein täglich, um den Muskelaufbau optimal zu unterstützen.`)
+        title: t('recommendations.gain.protein.title'),
+        description: t('recommendations.gain.protein.description', { proteinGoal })
       });
     } else {
       recommendations.push({
-        title: t('recommendations.maintain.title', 'Energiebalance'),
-        description: t('recommendations.maintain.description', `Für die Gewichtserhaltung solltest du etwa ${calorieGoal} kcal täglich zu dir nehmen, was deinem Gesamtenergiebedarf entspricht.`)
+        title: t('recommendations.maintain.title'),
+        description: t('recommendations.maintain.description', { calorieGoal })
       });
     }
     
     // Aktivitätsspezifische Empfehlungen
     if (['active', 'very_active'].includes(inputData.activityLevel)) {
       recommendations.push({
-        title: t('recommendations.active.title', 'Sportlerernährung'),
-        description: t('recommendations.active.description', 'Timing deiner Mahlzeiten ist wichtig. Versuche, vor dem Training komplexe Kohlenhydrate zu essen und danach eine Kombination aus Protein und Kohlenhydraten für optimale Erholung.')
+        title: t('recommendations.active.title'),
+        description: t('recommendations.active.description')
       });
     }
     
@@ -377,79 +370,79 @@ const NutritionGoalsPage: React.FC = () => {
     };
     
     if (inputData.weightGoal === 'lose') {
-      mealPlan.title = t('mealPlans.lose.title', 'Beispiel-Mahlzeitenplan für Gewichtsverlust');
+      mealPlan.title = t('mealPlans.lose.title');
       mealPlan.meals = [
         {
-          name: t('mealPlans.lose.breakfast', 'Frühstück'),
-          description: t('mealPlans.lose.breakfastDesc', 'Proteinreiches Omelett mit Gemüse oder Griechischer Joghurt mit Beeren und einem Teelöffel Honig')
+          name: t('mealPlans.lose.breakfast'),
+          description: t('mealPlans.lose.breakfastDesc')
         },
         {
-          name: t('mealPlans.lose.snack1', 'Snack'),
-          description: t('mealPlans.lose.snack1Desc', 'Eine kleine Handvoll Nüsse oder ein Apfel mit einem Esslöffel Mandelmus')
+          name: t('mealPlans.lose.snack1'),
+          description: t('mealPlans.lose.snack1Desc')
         },
         {
-          name: t('mealPlans.lose.lunch', 'Mittagessen'),
-          description: t('mealPlans.lose.lunchDesc', 'Großer Salat mit gegrilltem Hähnchen, Gemüse und Olivenöl-Dressing')
+          name: t('mealPlans.lose.lunch'),
+          description: t('mealPlans.lose.lunchDesc')
         },
         {
-          name: t('mealPlans.lose.snack2', 'Snack'),
-          description: t('mealPlans.lose.snack2Desc', 'Proteinshake oder Hüttenkäse mit Gemüsesticks')
+          name: t('mealPlans.lose.snack2'),
+          description: t('mealPlans.lose.snack2Desc')
         },
         {
-          name: t('mealPlans.lose.dinner', 'Abendessen'),
-          description: t('mealPlans.lose.dinnerDesc', 'Gegrillter Fisch mit gedünstetem Gemüse und einer kleinen Portion Vollkornreis')
+          name: t('mealPlans.lose.dinner'),
+          description: t('mealPlans.lose.dinnerDesc')
         }
       ];
     } else if (inputData.weightGoal === 'gain') {
-      mealPlan.title = t('mealPlans.gain.title', 'Beispiel-Mahlzeitenplan für Muskelaufbau');
+      mealPlan.title = t('mealPlans.gain.title');
       mealPlan.meals = [
         {
-          name: t('mealPlans.gain.breakfast', 'Frühstück'),
-          description: t('mealPlans.gain.breakfastDesc', 'Haferflocken mit Banane, Proteinpulver, Nüssen und Milch')
+          name: t('mealPlans.gain.breakfast'),
+          description: t('mealPlans.gain.breakfastDesc')
         },
         {
-          name: t('mealPlans.gain.snack1', 'Snack'),
-          description: t('mealPlans.gain.snack1Desc', 'Vollkornbrot mit Avocado und gekochten Eiern')
+          name: t('mealPlans.gain.snack1'),
+          description: t('mealPlans.gain.snack1Desc')
         },
         {
-          name: t('mealPlans.gain.lunch', 'Mittagessen'),
-          description: t('mealPlans.gain.lunchDesc', 'Große Portion Hähnchenbrust mit Süßkartoffeln und Gemüse')
+          name: t('mealPlans.gain.lunch'),
+          description: t('mealPlans.gain.lunchDesc')
         },
         {
-          name: t('mealPlans.gain.snack2', 'Snack'),
-          description: t('mealPlans.gain.snack2Desc', 'Proteinshake mit Banane und Erdnussbutter')
+          name: t('mealPlans.gain.snack2'),
+          description: t('mealPlans.gain.snack2Desc')
         },
         {
-          name: t('mealPlans.gain.dinner', 'Abendessen'),
-          description: t('mealPlans.gain.dinnerDesc', 'Rindfleisch oder Tofu mit Vollkornnudeln und Gemüse in Tomatensauce')
+          name: t('mealPlans.gain.dinner'),
+          description: t('mealPlans.gain.dinnerDesc')
         },
         {
-          name: t('mealPlans.gain.snack3', 'Abendsnack'),
-          description: t('mealPlans.gain.snack3Desc', 'Griechischer Joghurt mit Honig und Beeren')
+          name: t('mealPlans.gain.snack3'),
+          description: t('mealPlans.gain.snack3Desc')
         }
       ];
     } else {
-      mealPlan.title = t('mealPlans.maintain.title', 'Beispiel-Mahlzeitenplan für Gewichtserhaltung');
+      mealPlan.title = t('mealPlans.maintain.title');
       mealPlan.meals = [
         {
-          name: t('mealPlans.maintain.breakfast', 'Frühstück'),
-          description: t('mealPlans.maintain.breakfastDesc', 'Vollkornbrot mit Rührei und Avocado oder Müsli mit Joghurt und frischem Obst')
+          name: t('mealPlans.maintain.breakfast'),
+          description: t('mealPlans.maintain.breakfastDesc')
         },
         {
-          name: t('mealPlans.maintain.snack1', 'Snack'),
-          description: t('mealPlans.maintain.snack1Desc', 'Eine Handvoll Nüsse oder ein Stück Obst')
+          name: t('mealPlans.maintain.snack1'),
+          description: t('mealPlans.maintain.snack1Desc')
         },
         {
-          name: t('mealPlans.maintain.lunch', 'Mittagessen'),
-          description: t('mealPlans.maintain.lunchDesc', 'Gemischter Salat mit Protein deiner Wahl und einer Portion Vollkornbrot oder Quinoa')
+          name: t('mealPlans.maintain.lunch'),
+          description: t('mealPlans.maintain.lunchDesc')
         },
         {
-          name: t('mealPlans.maintain.snack2', 'Snack'),
-          description: t('mealPlans.maintain.snack2Desc', 'Joghurt mit Beeren oder Gemüsesticks mit Hummus')
+          name: t('mealPlans.maintain.snack2'),
+          description: t('mealPlans.maintain.snack2Desc')
         },
         {
-          name: t('mealPlans.maintain.dinner', 'Abendessen'),
-          description: t('mealPlans.maintain.dinnerDesc', 'Ausgewogene Mahlzeit mit Protein, Gemüse und einer moderaten Portion Kohlenhydrate')
+          name: t('mealPlans.maintain.dinner'),
+          description: t('mealPlans.maintain.dinnerDesc')
         }
       ];
     }
@@ -463,69 +456,73 @@ const NutritionGoalsPage: React.FC = () => {
     
     return {
       bmr: {
-        title: t('calculations.bmr.title', 'Grundumsatz (BMR)'),
-        description: t('calculations.bmr.description', 'Der Grundumsatz ist die Energiemenge, die dein Körper in völliger Ruhe benötigt, um lebenswichtige Funktionen aufrechtzuerhalten.'),
-        formula: t('calculations.bmr.formula', 'Wir verwenden die Harris-Benedict-Formel, die Geschlecht, Gewicht, Größe und Alter berücksichtigt:'),
+        title: t('calculations.bmr.title'),
+        description: t('calculations.bmr.description'),
+        formula: t('calculations.bmr.formula'),
         example: inputData.gender === 'male' 
-          ? t('calculations.bmr.exampleMale', `Für Männer: 66,5 + (13,75 × ${inputData.weight} kg) + (5,003 × ${inputData.height} cm) - (6,755 × ${inputData.age} Jahre) = ${bmr} kcal`)
-          : t('calculations.bmr.exampleFemale', `Für Frauen: 655,1 + (9,563 × ${inputData.weight} kg) + (1,85 × ${inputData.height} cm) - (4,676 × ${inputData.age} Jahre) = ${bmr} kcal`)
+          ? t('calculations.bmr.exampleMale', { weight: inputData.weight, height: inputData.height, age: inputData.age, bmr })
+          : t('calculations.bmr.exampleFemale', { weight: inputData.weight, height: inputData.height, age: inputData.age, bmr })
       },
       tdee: {
-        title: t('calculations.tdee.title', 'Gesamtumsatz (TDEE)'),
-        description: t('calculations.tdee.description', 'Der Gesamtumsatz berücksichtigt zusätzlich deine tägliche Aktivität und gibt an, wie viele Kalorien du insgesamt verbrauchst.'),
-        formula: t('calculations.tdee.formula', 'TDEE = BMR × Aktivitätsfaktor'),
-        example: t('calculations.tdee.example', `${bmr} kcal × ${inputData.activityLevel === 'sedentary' ? '1,2' : 
-          inputData.activityLevel === 'light' ? '1,375' : 
-          inputData.activityLevel === 'moderate' ? '1,55' : 
-          inputData.activityLevel === 'active' ? '1,725' : '1,9'} = ${tdee} kcal`)
+        title: t('calculations.tdee.title'),
+        description: t('calculations.tdee.description'),
+        formula: t('calculations.tdee.formula'),
+        example: t('calculations.tdee.example', { 
+          bmr,
+          activityFactor: inputData.activityLevel === 'sedentary' ? '1,2' : 
+            inputData.activityLevel === 'light' ? '1,375' : 
+            inputData.activityLevel === 'moderate' ? '1,55' : 
+            inputData.activityLevel === 'active' ? '1,725' : '1,9',
+          tdee
+        })
       },
       calorieGoal: {
-        title: t('calculations.calorieGoal.title', 'Kalorienziel'),
-        description: t('calculations.calorieGoal.description', 'Dein tägliches Kalorienziel basiert auf deinem Gesamtumsatz und deinem Gewichtsziel.'),
+        title: t('calculations.calorieGoal.title'),
+        description: t('calculations.calorieGoal.description'),
         formula: inputData.weightGoal === 'lose' 
-          ? t('calculations.calorieGoal.formulaLose', 'TDEE - 500 kcal (für Gewichtsverlust)')
+          ? t('calculations.calorieGoal.formulaLose')
           : inputData.weightGoal === 'gain'
-            ? t('calculations.calorieGoal.formulaGain', 'TDEE + 500 kcal (für Muskelaufbau)')
-            : t('calculations.calorieGoal.formulaMaintain', 'TDEE (für Gewichtserhaltung)'),
+            ? t('calculations.calorieGoal.formulaGain')
+            : t('calculations.calorieGoal.formulaMaintain'),
         example: inputData.weightGoal === 'lose'
-          ? t('calculations.calorieGoal.exampleLose', `${tdee} kcal - 500 kcal = ${calorieGoal} kcal`)
+          ? t('calculations.calorieGoal.exampleLose', { tdee, calorieGoal })
           : inputData.weightGoal === 'gain'
-            ? t('calculations.calorieGoal.exampleGain', `${tdee} kcal + 500 kcal = ${calorieGoal} kcal`)
-            : t('calculations.calorieGoal.exampleMaintain', `${tdee} kcal = ${calorieGoal} kcal`)
+            ? t('calculations.calorieGoal.exampleGain', { tdee, calorieGoal })
+            : t('calculations.calorieGoal.exampleMaintain', { tdee, calorieGoal })
       },
       burnCalorieGoal: {
-        title: t('calculations.burnCalorieGoal.title', 'Zu verbrennende Kalorien'),
-        description: t('calculations.burnCalorieGoal.description', 'Die Anzahl der Kalorien, die du täglich durch Bewegung und Sport verbrennen solltest.'),
+        title: t('calculations.burnCalorieGoal.title'),
+        description: t('calculations.burnCalorieGoal.description'),
         formula: inputData.weightGoal === 'lose'
-          ? t('calculations.burnCalorieGoal.formulaLose', '500 kcal (fester Wert für Gewichtsverlust)')
-          : t('calculations.burnCalorieGoal.formulaNormal', '20% deines täglichen Kalorienziels'),
+          ? t('calculations.burnCalorieGoal.formulaLose')
+          : t('calculations.burnCalorieGoal.formulaNormal'),
         example: inputData.weightGoal === 'lose'
-          ? t('calculations.burnCalorieGoal.exampleLose', `500 kcal`)
-          : t('calculations.burnCalorieGoal.exampleNormal', `${calorieGoal} kcal × 0,2 = ${additionalBurnRequired} kcal`)
+          ? t('calculations.burnCalorieGoal.exampleLose')
+          : t('calculations.burnCalorieGoal.exampleNormal', { calorieGoal, additionalBurnRequired })
       },
       protein: {
-        title: t('calculations.protein.title', 'Proteinziel'),
-        description: t('calculations.protein.description', 'Protein ist wichtig für Muskelaufbau und -erhalt. Dein Proteinbedarf hängt von deinem Körpergewicht ab.'),
-        formula: t('calculations.protein.formula', '1,8g Protein pro kg Körpergewicht'),
-        example: t('calculations.protein.example', `${inputData.weight} kg × 1,8g = ${proteinGoal}g Protein`)
+        title: t('calculations.protein.title'),
+        description: t('calculations.protein.description'),
+        formula: t('calculations.protein.formula'),
+        example: t('calculations.protein.example', { weight: inputData.weight, proteinGoal })
       },
       fat: {
-        title: t('calculations.fat.title', 'Fettziel'),
-        description: t('calculations.fat.description', 'Gesunde Fette sind wichtig für Hormonproduktion und Zellgesundheit. Wir berechnen 30% deiner Gesamtkalorien als Fett.'),
-        formula: t('calculations.fat.formula', '(Kalorienziel × 0,3) ÷ 9 kcal/g'),
-        example: t('calculations.fat.example', `(${calorieGoal} kcal × 0,3) ÷ 9 kcal/g = ${fatGoal}g Fett`)
+        title: t('calculations.fat.title'),
+        description: t('calculations.fat.description'),
+        formula: t('calculations.fat.formula'),
+        example: t('calculations.fat.example', { calorieGoal, fatGoal })
       },
       carbs: {
-        title: t('calculations.carbs.title', 'Kohlenhydratziel'),
-        description: t('calculations.carbs.description', 'Kohlenhydrate sind deine Hauptenergiequelle. Wir berechnen sie als die verbleibenden Kalorien nach Protein und Fett.'),
-        formula: t('calculations.carbs.formula', '(Kalorienziel - Proteinkalorien - Fettkalorien) ÷ 4 kcal/g'),
-        example: t('calculations.carbs.example', `(${calorieGoal} kcal - ${proteinGoal}g × 4 kcal/g - ${fatGoal}g × 9 kcal/g) ÷ 4 kcal/g = ${carbGoal}g Kohlenhydrate`)
+        title: t('calculations.carbs.title'),
+        description: t('calculations.carbs.description'),
+        formula: t('calculations.carbs.formula'),
+        example: t('calculations.carbs.example', { calorieGoal, proteinGoal, fatGoal, carbGoal })
       },
       water: {
-        title: t('calculations.water.title', 'Wasserziel'),
-        description: t('calculations.water.description', 'Ausreichend Wasser ist wichtig für alle Körperfunktionen. Wir berechnen 35ml pro kg Körpergewicht plus einen Aktivitätszuschlag.'),
-        formula: t('calculations.water.formula', '35ml × Körpergewicht in kg'),
-        example: t('calculations.water.example', `35ml × ${inputData.weight} kg = ${Math.round(inputData.weight * 35)}ml ≈ ${waterIntake} Liter`)
+        title: t('calculations.water.title'),
+        description: t('calculations.water.description'),
+        formula: t('calculations.water.formula'),
+        example: t('calculations.water.example', { weight: inputData.weight, waterAmount: Math.round(inputData.weight * 35), waterIntake })
       }
     };
   };
@@ -552,7 +549,6 @@ const NutritionGoalsPage: React.FC = () => {
   const fatPercentage = Math.round((fatCalories / totalCalories) * 100);
   
   const personalizedTips = getPersonalizedTips();
-  const macroExplanations = getMacronutrientExplanations();
   const nutritionRecommendations = getNutritionRecommendations();
   const mealPlanExample = getMealPlanExample();
   const calculationExplanations = getCalculationExplanations();
@@ -591,10 +587,10 @@ const NutritionGoalsPage: React.FC = () => {
     return (
       <Container maxW="container.xl" py={8} textAlign="center">
         <Heading as="h1" size="xl" mb={2}>
-          {t('nutritionGoals.loading', 'Deine Ernährungsdaten werden geladen...')}
+          {t('nutritionGoals.loading')}
         </Heading>
         <Text color="gray.500">
-          {t('nutritionGoals.pleaseWait', 'Bitte warte einen Moment, während wir deine persönlichen Ziele berechnen.')}
+          {t('nutritionGoals.pleaseWait')}
         </Text>
       </Container>
     );
@@ -604,10 +600,10 @@ const NutritionGoalsPage: React.FC = () => {
     <Container maxW="container.xl" py={8}>
       <Box mb={8}>
         <Heading as="h1" size="xl" mb={2}>
-          {t('nutritionGoals.title', 'Ernährungsziele')}
+          {t('nutritionGoals.title')}
         </Heading>
         <Text color="gray.500">
-          {t('nutritionGoals.subtitle', 'Personalisierte Ernährungsziele basierend auf deinen Bedürfnissen.')}
+          {t('nutritionGoals.subtitle')}
         </Text>
       </Box>
       
@@ -624,13 +620,13 @@ const NutritionGoalsPage: React.FC = () => {
             _hover={{ transform: "translateY(-5px)", shadow: "lg" }}
           >
             <Heading size="md" mb={2}>
-              {t('nutritionGoals.bmr', 'Grundumsatz (BMR)')}
+              {t('nutritionGoals.bmr')}
             </Heading>
             <Heading size="xl" mb={2}>
               {Math.round(bmr)} kcal
             </Heading>
             <Text fontSize="sm">
-              {t('nutritionGoals.bmrDescription', 'Kalorien, die dein Körper in Ruhe verbrennt')}
+              {t('nutritionGoals.bmrDescription')}
             </Text>
           </Box>
           
@@ -645,13 +641,13 @@ const NutritionGoalsPage: React.FC = () => {
             _hover={{ transform: "translateY(-5px)", shadow: "lg" }}
           >
             <Heading size="md" mb={2}>
-              {t('nutritionGoals.tdee', 'Gesamtumsatz (TDEE)')}
+              {t('nutritionGoals.tdee')}
             </Heading>
             <Heading size="xl" mb={2}>
               {Math.round(tdee)} kcal
             </Heading>
             <Text fontSize="sm">
-              {t('nutritionGoals.tdeeDescription', 'Kalorien, die du täglich verbrauchst (inkl. Aktivität)')}
+              {t('nutritionGoals.tdeeDescription')}
             </Text>
           </Box>
           
@@ -666,13 +662,13 @@ const NutritionGoalsPage: React.FC = () => {
             _hover={{ transform: "translateY(-5px)", shadow: "lg" }}
           >
             <Heading size="md" mb={2}>
-              {t('nutritionGoals.dailyCalories', 'Tägliches Kalorienziel')}
+              {t('nutritionGoals.dailyCalories')}
             </Heading>
             <Heading size="xl" mb={2}>
               {calorieGoal} kcal
             </Heading>
             <Text fontSize="sm">
-              {t('nutritionGoals.caloriesDescription', 'Deine optimale tägliche Kalorienzufuhr')}
+              {t('nutritionGoals.caloriesDescription')}
             </Text>
           </Box>
         </SimpleGrid>
@@ -693,13 +689,13 @@ const NutritionGoalsPage: React.FC = () => {
           <Flex direction={{ base: "column", sm: "row" }} align="center" justify="space-between">
             <Box textAlign={{ base: "center", sm: "left" }} mb={{ base: 4, sm: 0 }}>
               <Heading size="md" mb={2}>
-                {t('nutritionGoals.waterIntake', 'Tägliche Wasseraufnahme')}
+                {t('nutritionGoals.waterIntake')}
               </Heading>
               <Heading size="xl" mb={2}>
                 {waterIntake} Liter
               </Heading>
               <Text fontSize="sm">
-                {t('nutritionGoals.waterDescription', 'Optimale Hydration für deinen Körper')}
+                {t('nutritionGoals.waterDescription')}
               </Text>
             </Box>
             <Box 
@@ -747,7 +743,7 @@ const NutritionGoalsPage: React.FC = () => {
             </Box>
           </Flex>
           <Text fontSize="sm" mt={4} textAlign="center">
-            {t('nutritionGoals.waterTip', 'Tipp: Verteile deine Wasseraufnahme über den Tag, um optimal hydriert zu bleiben.')}
+            {t('nutritionGoals.waterTip')}
           </Text>
         </Box>
         
@@ -765,7 +761,7 @@ const NutritionGoalsPage: React.FC = () => {
             _hover={{ transform: "translateY(-5px)", shadow: "lg" }}
           >
             <Heading size="md" mb={2}>
-              {t('nutritionGoals.additionalBurn', 'Zusätzlich zu verbrennen')}
+              {t('nutritionGoals.additionalBurn')}
             </Heading>
             <Heading size="xl" mb={2}>
               {additionalBurnRequired} kcal
@@ -788,12 +784,12 @@ const NutritionGoalsPage: React.FC = () => {
             <Heading size="md" mb={4}>
               <Flex align="center">
                 <Icon as={FiTarget} mr={2} />
-                {t('nutritionGoals.macronutrients', 'Makronährstoffe')}
+                {t('nutritionGoals.macronutrients')}
               </Flex>
             </Heading>
             <SimpleGrid columns={3} spacing={4}>
               <Stat>
-                <StatLabel>{t('nutritionGoals.protein', 'Protein')}</StatLabel>
+                <StatLabel>{t('nutritionGoals.protein')}</StatLabel>
                 <StatNumber>{proteinGoal}g</StatNumber>
                 <Text fontSize="sm">{Math.round(proteinGoal * 4)} kcal</Text>
                 <Box 
@@ -814,7 +810,7 @@ const NutritionGoalsPage: React.FC = () => {
                 <Text fontSize="xs" mt={1} textAlign="right">{proteinPercentage}%</Text>
               </Stat>
               <Stat>
-                <StatLabel>{t('nutritionGoals.carbs', 'Kohlenhydrate')}</StatLabel>
+                <StatLabel>{t('nutritionGoals.carbs')}</StatLabel>
                 <StatNumber>{carbGoal}g</StatNumber>
                 <Text fontSize="sm">{Math.round(carbGoal * 4)} kcal</Text>
                 <Box 
@@ -835,7 +831,7 @@ const NutritionGoalsPage: React.FC = () => {
                 <Text fontSize="xs" mt={1} textAlign="right">{carbsPercentage}%</Text>
               </Stat>
               <Stat>
-                <StatLabel>{t('nutritionGoals.fat', 'Fett')}</StatLabel>
+                <StatLabel>{t('nutritionGoals.fat')}</StatLabel>
                 <StatNumber>{fatGoal}g</StatNumber>
                 <Text fontSize="sm">{Math.round(fatGoal * 9)} kcal</Text>
                 <Box 
@@ -858,7 +854,7 @@ const NutritionGoalsPage: React.FC = () => {
             </SimpleGrid>
             <Divider my={4} />
             <Text fontSize="sm">
-              {t('nutritionGoals.macroDescription', 'Diese Verteilung der Makronährstoffe ist optimal für dein Ziel. Proteine helfen beim Muskelerhalt, Kohlenhydrate liefern Energie und Fette sind wichtig für Hormone und Zellgesundheit.')}
+              {t('nutritionGoals.macroDescription')}
             </Text>
           </Box>
           
@@ -866,26 +862,26 @@ const NutritionGoalsPage: React.FC = () => {
             <Heading size="md" mb={4}>
               <Flex align="center">
                 <Icon as={FiInfo} mr={2} />
-                {t('nutritionGoals.otherGoals', 'Weitere Ziele')}
+                {t('nutritionGoals.otherGoals')}
               </Flex>
             </Heading>
             <List spacing={3}>
               <ListItem>
                 <Flex align="center">
                   <ListIcon as={FiDroplet} color="blue.500" />
-                  <Text fontWeight="bold">{t('nutritionGoals.water', 'Wasser')}: {waterIntake} Liter</Text>
+                  <Text fontWeight="bold">{t('nutritionGoals.water')}: {waterIntake} Liter</Text>
                 </Flex>
                 <Text ml={6} fontSize="sm">
-                  {t('nutritionGoals.waterDescription', 'Tägliche Flüssigkeitszufuhr für optimale Hydration')}
+                  {t('nutritionGoals.waterDescription')}
                 </Text>
               </ListItem>
               <ListItem>
                 <Flex align="center">
                   <ListIcon as={FiMenu} color="purple.500" />
-                  <Text fontWeight="bold">{t('nutritionGoals.mealFrequency', 'Mahlzeitenhäufigkeit')}: 3-5</Text>
+                  <Text fontWeight="bold">{t('nutritionGoals.mealFrequency')}: 3-5</Text>
                 </Flex>
                 <Text ml={6} fontSize="sm">
-                  {t('nutritionGoals.mealFrequencyDescription', 'Empfohlene Anzahl Mahlzeiten pro Tag')}
+                  {t('nutritionGoals.mealFrequencyDescription')}
                 </Text>
               </ListItem>
             </List>
@@ -896,7 +892,7 @@ const NutritionGoalsPage: React.FC = () => {
           <Heading size="md" mb={4}>
             <Flex align="center">
               <Icon as={FiInfo} mr={2} />
-              {t('nutritionGoals.macronutrientDetails', 'Über deine Makronährstoffe')}
+              {t('nutritionGoals.macronutrientDetails')}
             </Flex>
           </Heading>
           
@@ -906,7 +902,7 @@ const NutritionGoalsPage: React.FC = () => {
               <Heading size="sm" mb={2}>{macroExplanations.protein.title}</Heading>
               <Text fontSize="sm" mb={3}>{macroExplanations.protein.description}</Text>
               
-              <Text fontWeight="bold" fontSize="sm" mb={1}>{t('nutritionGoals.benefits', 'Vorteile:')}</Text>
+              <Text fontWeight="bold" fontSize="sm" mb={1}>{t('nutritionGoals.benefits')}:</Text>
               <List spacing={1} mb={3}>
                 {macroExplanations.protein.benefits.map((benefit, index) => (
                   <ListItem key={index} fontSize="xs">
@@ -916,7 +912,7 @@ const NutritionGoalsPage: React.FC = () => {
                 ))}
               </List>
               
-              <Text fontWeight="bold" fontSize="sm" mb={1}>{t('nutritionGoals.sources', 'Quellen:')}</Text>
+              <Text fontWeight="bold" fontSize="sm" mb={1}>{t('nutritionGoals.sources')}:</Text>
               <List spacing={1}>
                 {macroExplanations.protein.sources.map((source, index) => (
                   <ListItem key={index} fontSize="xs">
@@ -932,7 +928,7 @@ const NutritionGoalsPage: React.FC = () => {
               <Heading size="sm" mb={2}>{macroExplanations.carbs.title}</Heading>
               <Text fontSize="sm" mb={3}>{macroExplanations.carbs.description}</Text>
               
-              <Text fontWeight="bold" fontSize="sm" mb={1}>{t('nutritionGoals.benefits', 'Vorteile:')}</Text>
+              <Text fontWeight="bold" fontSize="sm" mb={1}>{t('nutritionGoals.benefits')}:</Text>
               <List spacing={1} mb={3}>
                 {macroExplanations.carbs.benefits.map((benefit, index) => (
                   <ListItem key={index} fontSize="xs">
@@ -942,7 +938,7 @@ const NutritionGoalsPage: React.FC = () => {
                 ))}
               </List>
               
-              <Text fontWeight="bold" fontSize="sm" mb={1}>{t('nutritionGoals.sources', 'Quellen:')}</Text>
+              <Text fontWeight="bold" fontSize="sm" mb={1}>{t('nutritionGoals.sources')}:</Text>
               <List spacing={1}>
                 {macroExplanations.carbs.sources.map((source, index) => (
                   <ListItem key={index} fontSize="xs">
@@ -958,7 +954,7 @@ const NutritionGoalsPage: React.FC = () => {
               <Heading size="sm" mb={2}>{macroExplanations.fats.title}</Heading>
               <Text fontSize="sm" mb={3}>{macroExplanations.fats.description}</Text>
               
-              <Text fontWeight="bold" fontSize="sm" mb={1}>{t('nutritionGoals.benefits', 'Vorteile:')}</Text>
+              <Text fontWeight="bold" fontSize="sm" mb={1}>{t('nutritionGoals.benefits')}:</Text>
               <List spacing={1} mb={3}>
                 {macroExplanations.fats.benefits.map((benefit, index) => (
                   <ListItem key={index} fontSize="xs">
@@ -968,7 +964,7 @@ const NutritionGoalsPage: React.FC = () => {
                 ))}
               </List>
               
-              <Text fontWeight="bold" fontSize="sm" mb={1}>{t('nutritionGoals.sources', 'Quellen:')}</Text>
+              <Text fontWeight="bold" fontSize="sm" mb={1}>{t('nutritionGoals.sources')}:</Text>
               <List spacing={1}>
                 {macroExplanations.fats.sources.map((source, index) => (
                   <ListItem key={index} fontSize="xs">
@@ -984,7 +980,7 @@ const NutritionGoalsPage: React.FC = () => {
               <Heading size="sm" mb={2}>{macroExplanations.water.title}</Heading>
               <Text fontSize="sm" mb={3}>{macroExplanations.water.description}</Text>
               
-              <Text fontWeight="bold" fontSize="sm" mb={1}>{t('nutritionGoals.benefits', 'Vorteile:')}</Text>
+              <Text fontWeight="bold" fontSize="sm" mb={1}>{t('nutritionGoals.benefits')}:</Text>
               <List spacing={1} mb={3}>
                 {macroExplanations.water.benefits.map((benefit, index) => (
                   <ListItem key={index} fontSize="xs">
@@ -994,7 +990,7 @@ const NutritionGoalsPage: React.FC = () => {
                 ))}
               </List>
               
-              <Text fontWeight="bold" fontSize="sm" mb={1}>{t('nutritionGoals.sources', 'Quellen:')}</Text>
+              <Text fontWeight="bold" fontSize="sm" mb={1}>{t('nutritionGoals.sources')}:</Text>
               <List spacing={1}>
                 {macroExplanations.water.sources.map((source, index) => (
                   <ListItem key={index} fontSize="xs">
@@ -1011,7 +1007,7 @@ const NutritionGoalsPage: React.FC = () => {
           <Heading size="md" mb={4}>
             <Flex align="center">
               <Icon as={FiTarget} mr={2} />
-              {t('nutritionGoals.recommendations', 'Personalisierte Ernährungsempfehlungen')}
+              {t('nutritionGoals.recommendations')}
             </Flex>
           </Heading>
           
@@ -1052,7 +1048,7 @@ const NutritionGoalsPage: React.FC = () => {
             <Heading size="md" mb={4}>
               <Flex align="center">
                 <Icon as={FiInfo} mr={2} />
-                {t('nutritionGoals.calculationExplanations', 'Wie wir deine Ziele berechnen')}
+                {t('nutritionGoals.calculationExplanations')}
               </Flex>
             </Heading>
             
@@ -1121,7 +1117,7 @@ const NutritionGoalsPage: React.FC = () => {
           <Heading size="md" mb={4}>
             <Flex align="center">
               <Icon as={FiCheckCircle} mr={2} />
-              {t('nutritionGoals.personalizedTips', 'Persönliche Tipps für dich')}
+              {t('nutritionGoals.personalizedTips')}
             </Flex>
           </Heading>
           <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
@@ -1152,7 +1148,7 @@ const NutritionGoalsPage: React.FC = () => {
             leftIcon={<FiCheckCircle />}
             onClick={saveGoals}
           >
-            {t('nutritionGoals.saveGoals', 'Ziele bestätigen')}
+            {t('nutritionGoals.saveGoals')}
           </Button>
         </Box>
       </Flex>

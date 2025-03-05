@@ -43,7 +43,7 @@ const MealsPage: React.FC = () => {
       </Heading>
       
       <Text mb={3} fontSize={{ base: 'sm', md: 'md' }}>
-        {t('meals.pageDescription', 'Plan and track your meals to reach your nutrition goals.')}
+        {t('meals.pageDescription')}
       </Text>
       
       {/* Info-Banner für Rezepte */}
@@ -56,9 +56,9 @@ const MealsPage: React.FC = () => {
       >
         <Flex justifyContent="space-between" alignItems="center" flexWrap={{ base: 'wrap', sm: 'nowrap' }}>
           <Box mb={{ base: 2, sm: 0 }} flex="1">
-            <Heading size="xs" mb={1}>{t('meals.discoverRecipes', 'Entdecke neue Rezepte')}</Heading>
+            <Heading size="xs" mb={1}>{t('meals.discoverRecipes')}</Heading>
             <Text fontSize="xs">
-              {t('meals.discoverRecipesDesc', 'Finde gesunde und leckere Rezepte für deinen Ernährungsplan')}
+              {t('meals.discoverRecipesDesc')}
             </Text>
           </Box>
           <Button 
@@ -70,63 +70,34 @@ const MealsPage: React.FC = () => {
             ml={{ sm: 2 }}
             width={{ base: '100%', sm: 'auto' }}
           >
-            {t('meals.goToRecipes', 'Zu den Rezepten')}
+            {t('meals.goToRecipes')}
           </Button>
         </Flex>
       </Box>
       
       <Tabs variant="enclosed" colorScheme="teal" isLazy>
-        <TabList 
-          mb={3}
-          overflowX="auto" 
-          overflowY="hidden" 
-          css={{
-            scrollbarWidth: 'none',
-            '::-webkit-scrollbar': { display: 'none' },
-            whiteSpace: 'nowrap',
-            flexWrap: 'nowrap'
-          }}
-          pb={1}
-        >
-          <Tab 
-            _selected={{ bg: tabBg, borderBottomColor: tabBg }} 
-            minW="auto" 
-            px={tabPadding}
-            py={1.5}
-            fontSize={{ base: 'xs', md: 'sm' }}
-          >
+        <TabList>
+          <Tab px={tabPadding} _selected={{ bg: tabBg, borderBottomColor: tabBg }}>
             {t('meals.mealPlan')}
           </Tab>
-          <Tab 
-            _selected={{ bg: tabBg, borderBottomColor: tabBg }} 
-            minW="auto" 
-            px={tabPadding}
-            py={1.5}
-            fontSize={{ base: 'xs', md: 'sm' }}
-          >
+          <Tab px={tabPadding} _selected={{ bg: tabBg, borderBottomColor: tabBg }}>
             {t('meals.trackFood')}
           </Tab>
-          <Tab 
-            _selected={{ bg: tabBg, borderBottomColor: tabBg }} 
-            minW="auto" 
-            px={tabPadding}
-            py={1.5}
-            fontSize={{ base: 'xs', md: 'sm' }}
-          >
+          <Tab px={tabPadding} _selected={{ bg: tabBg, borderBottomColor: tabBg }}>
             {t('meals.foodDatabase')}
           </Tab>
         </TabList>
         
-        <TabPanels bg={tabBg} borderRadius="md" shadow="md">
-          <TabPanel p={{ base: 2, md: 4 }}>
+        <TabPanels bg={tabBg} borderWidth="1px" borderTop="none" borderBottomRadius="md">
+          <TabPanel p={{ base: 3, md: 5 }}>
             <MealPlanView />
           </TabPanel>
           
-          <TabPanel p={{ base: 2, md: 4 }}>
+          <TabPanel p={{ base: 3, md: 5 }}>
             <FoodTrackingView />
           </TabPanel>
           
-          <TabPanel p={{ base: 2, md: 4 }}>
+          <TabPanel p={{ base: 3, md: 5 }}>
             <FoodDatabaseView />
           </TabPanel>
         </TabPanels>

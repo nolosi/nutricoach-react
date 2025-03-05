@@ -54,6 +54,7 @@ const AchievementBadge: React.FC<AchievementBadgeProps> = ({
   const bgColor = useColorModeValue('white', 'gray.700');
   const lockedBgColor = useColorModeValue('gray.100', 'gray.800');
   const lockedTextColor = useColorModeValue('gray.400', 'gray.500');
+  const { t } = useTranslation();
   
   return (
     <Tooltip label={description} placement="top" hasArrow>
@@ -96,7 +97,7 @@ const AchievementBadge: React.FC<AchievementBadgeProps> = ({
             
             {isLocked && (
               <Badge colorScheme="gray" mt={1}>
-                {progress === 100 ? "Freischalten" : "In Bearbeitung"}
+                {progress === 100 ? t('achievements.unlock', 'Freischalten') : t('achievements.inProgress', 'In Bearbeitung')}
               </Badge>
             )}
           </VStack>

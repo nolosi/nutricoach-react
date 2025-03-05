@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Spinner, Text } from '@chakra-ui/react';
 import { keyframes } from '@emotion/react';
+import { useTranslation } from 'react-i18next';
 
 const fadeIn = keyframes`
   from { opacity: 0; }
@@ -8,6 +9,8 @@ const fadeIn = keyframes`
 `;
 
 const LoadingSpinner: React.FC = () => {
+  const { t } = useTranslation();
+  
   return (
     <Box
       position="fixed"
@@ -39,7 +42,7 @@ const LoadingSpinner: React.FC = () => {
         opacity={0}
         style={{ animationFillMode: 'forwards' }}
       >
-        Wird geladen...
+        {t('common.loading')}
       </Text>
       <Text
         fontSize="md"
@@ -49,7 +52,7 @@ const LoadingSpinner: React.FC = () => {
         opacity={0}
         style={{ animationFillMode: 'forwards' }}
       >
-        Dein persönlicher Ernährungscoach startet gleich
+        {t('app.slogan')}
       </Text>
     </Box>
   );

@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Text, Link, HStack, useColorModeValue } from '@chakra-ui/react';
 import { useLocation } from 'react-router-dom';
 import { FiGithub } from 'react-icons/fi';
+import { useTranslation } from 'react-i18next';
 
 const Footer: React.FC = () => {
   const textColor = useColorModeValue('gray.600', 'gray.400');
@@ -9,6 +10,7 @@ const Footer: React.FC = () => {
   const borderColor = useColorModeValue('gray.200', 'gray.700');
   const location = useLocation();
   const isOnboarding = location.pathname === '/onboarding';
+  const { t } = useTranslation();
   
   return (
     <Box 
@@ -26,9 +28,9 @@ const Footer: React.FC = () => {
     >
       <HStack spacing={2} justify="center">
         <Text fontSize="xs" color={textColor}>
-          by Marsel Nenaj - Cody by Cursor with Claude 3.7 Sonnet
+          {t('footer.credits')}
         </Text>
-        <Text fontSize="xs" color={textColor}>•</Text>
+        <Text fontSize="xs" color={textColor}>{t('footer.separator')}</Text>
         <Link 
           href="https://github.com/nolosi/nutricoach-react" 
           isExternal 
@@ -38,7 +40,7 @@ const Footer: React.FC = () => {
           alignItems="center"
         >
           <Box as={FiGithub} mr={1} />
-          Open Source Projekt
+          {t('footer.openSource')}
         </Link>
       </HStack>
     </Box>

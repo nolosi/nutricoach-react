@@ -16,6 +16,7 @@ import {
 import { FiSun, FiMoon, FiGlobe } from 'react-icons/fi';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
+import { useUser } from '../../contexts/UserContext';
 
 interface HeaderProps {
   title?: string;
@@ -23,16 +24,25 @@ interface HeaderProps {
 
 const LanguageSelector: React.FC = () => {
   const { i18n, t } = useTranslation();
+  const { user, updateUser } = useUser();
   
   const changeLanguage = (language: string) => {
     i18n.changeLanguage(language);
+    
+    // Aktualisiere die Sprache im Benutzerkontext
+    if (user && user.language !== language) {
+      updateUser({ language });
+      
+      // Lade die Seite neu, um alle Übersetzungen zu aktualisieren
+      window.location.reload();
+    }
   };
   
   return (
     <Menu>
       <MenuButton
         as={IconButton}
-        aria-label={t('ui.languageSelector') || 'Sprache wählen'}
+        aria-label={String(t('ui.languageSelector'))}
         icon={<FiGlobe />}
         variant="ghost"
         size="md"

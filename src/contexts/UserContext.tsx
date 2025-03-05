@@ -606,8 +606,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const missions: Mission[] = [
       { 
         id: 1, 
-        title: 'Frühstück eintragen', 
-        description: 'Trage dein Frühstück ein, um deine Ernährung zu verfolgen',
+        title: 'missions.daily.breakfast.title',
+        description: 'missions.daily.breakfast.description',
         completed: false, 
         type: 'daily',
         xp: 20,
@@ -618,8 +618,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       },
       { 
         id: 2, 
-        title: 'Mittagessen eintragen', 
-        description: 'Trage dein Mittagessen ein, um deine Ernährung zu verfolgen',
+        title: 'missions.daily.lunch.title',
+        description: 'missions.daily.lunch.description',
         completed: false, 
         type: 'daily',
         xp: 20,
@@ -630,8 +630,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       },
       { 
         id: 3, 
-        title: 'Abendessen eintragen', 
-        description: 'Trage dein Abendessen ein, um deine Ernährung zu verfolgen',
+        title: 'missions.daily.dinner.title',
+        description: 'missions.daily.dinner.description',
         completed: false, 
         type: 'daily',
         xp: 20,
@@ -639,15 +639,15 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
           type: 'food'
         },
         iconName: 'FiLayers'
-      },
+      }
     ];
 
     // Wasserziel-Mission basierend auf dem Benutzerziel
     if (userData.waterGoal && userData.waterGoal > 0) {
       missions.push({
         id: 4,
-        title: `${userData.waterGoal / 1000} Liter Wasser trinken`,
-        description: `Trinke ${userData.waterGoal / 1000} Liter Wasser für optimale Hydration`,
+        title: 'missions.daily.water.title',
+        description: 'missions.daily.water.description',
         completed: false,
         type: 'daily',
         xp: 30,
@@ -663,8 +663,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (userData.proteinGoal && userData.proteinGoal > 0) {
       missions.push({
         id: 5,
-        title: `${userData.proteinGoal}g Protein zu dir nehmen`,
-        description: `Erreiche dein Proteinziel von ${userData.proteinGoal}g`,
+        title: 'missions.daily.protein.title',
+        description: 'missions.daily.protein.description',
         completed: false,
         type: 'daily',
         xp: 40,
@@ -680,8 +680,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const activityMinutes = 30; // Standard für moderate Aktivität
     missions.push({
       id: 6,
-      title: `${activityMinutes} Minuten Bewegung`,
-      description: `Bewege dich mindestens ${activityMinutes} Minuten`,
+      title: 'missions.daily.activity.title',
+      description: 'missions.daily.activity.description',
       completed: false,
       type: 'daily',
       xp: 50,
@@ -705,8 +705,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const weeklyMissions: Mission[] = [
         {
           id: 101,
-          title: 'Erreiche deine Proteinziele',
-          description: 'Erreiche 5 Tage lang dein tägliches Proteinziel',
+          title: 'missions.weekly.protein.title',
+          description: 'missions.weekly.protein.description',
           xp: 50,
           completed: false,
           type: 'nutrition',
@@ -716,8 +716,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         },
         {
           id: 102,
-          title: 'Gewicht tracken',
-          description: 'Trage einmal pro Woche dein Gewicht ein, um deinen Fortschritt zu verfolgen',
+          title: 'missions.weekly.weight.title',
+          description: 'missions.weekly.weight.description',
           xp: 100,
           completed: false,
           type: 'weight',
