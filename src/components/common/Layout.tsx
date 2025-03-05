@@ -4,6 +4,7 @@ import Header from './Header';
 import Navigation from './Navigation';
 import Footer from '../Footer';
 import { useLocation, Outlet } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 interface LayoutProps {
   children?: React.ReactNode;
@@ -19,6 +20,7 @@ const Layout: React.FC<LayoutProps> = ({
   const location = useLocation();
   const isOnboarding = location.pathname === '/onboarding';
   const bgColor = useColorModeValue('gray.50', 'gray.900');
+  const { t } = useTranslation();
 
   // Automatisch Navigation während des Onboardings ausblenden
   const shouldHideNavigation = hideNavigation || isOnboarding;
@@ -28,17 +30,17 @@ const Layout: React.FC<LayoutProps> = ({
   if (!pageTitle) {
     const path = location.pathname;
     if (path === '/' || path === '') {
-      pageTitle = 'Start';
+      pageTitle = t('pageTitle.home') || 'Home';
     } else if (path.includes('meals')) {
-      pageTitle = 'Mahlzeiten';
+      pageTitle = t('pageTitle.meals') || 'Mahlzeiten';
     } else if (path.includes('progress')) {
-      pageTitle = 'Fortschritt';
+      pageTitle = t('pageTitle.progress') || 'Fortschritt';
     } else if (path.includes('nutrition-goals')) {
-      pageTitle = 'Ernährungsziele';
+      pageTitle = t('pageTitle.nutritionGoals') || 'Ernährungsziele';
     } else if (path.includes('profile')) {
-      pageTitle = 'Profil';
+      pageTitle = t('pageTitle.profile') || 'Profil';
     } else {
-      pageTitle = 'NutriCoach';
+      pageTitle = t('pageTitle.default') || 'NutriCoach';
     }
   }
 

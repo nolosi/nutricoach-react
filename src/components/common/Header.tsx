@@ -22,7 +22,7 @@ interface HeaderProps {
 }
 
 const LanguageSelector: React.FC = () => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   
   const changeLanguage = (language: string) => {
     i18n.changeLanguage(language);
@@ -32,15 +32,15 @@ const LanguageSelector: React.FC = () => {
     <Menu>
       <MenuButton
         as={IconButton}
-        aria-label="Sprache wählen"
+        aria-label={t('ui.languageSelector') || 'Sprache wählen'}
         icon={<FiGlobe />}
         variant="ghost"
         size="md"
       />
       <MenuList>
-        <MenuItem onClick={() => changeLanguage('de')}>Deutsch</MenuItem>
-        <MenuItem onClick={() => changeLanguage('en')}>English</MenuItem>
-        <MenuItem onClick={() => changeLanguage('sq')}>Shqip</MenuItem>
+        <MenuItem onClick={() => changeLanguage('de')}>{t('language.german')}</MenuItem>
+        <MenuItem onClick={() => changeLanguage('en')}>{t('language.english')}</MenuItem>
+        <MenuItem onClick={() => changeLanguage('sq')}>{t('language.albanian')}</MenuItem>
       </MenuList>
     </Menu>
   );
@@ -51,6 +51,7 @@ const Header: React.FC<HeaderProps> = ({ title = 'NutriCoach' }) => {
   const bg = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.700');
   const location = useLocation();
+  const { t } = useTranslation();
   const isHomePage = location.pathname === '/' || location.pathname === '';
   
   return (
@@ -82,7 +83,7 @@ const Header: React.FC<HeaderProps> = ({ title = 'NutriCoach' }) => {
                 size="md"
                 color="brand.500"
               >
-                NutriCoach
+                {t('app.name')}
               </Heading>
             ) : (
               <Heading
@@ -102,7 +103,7 @@ const Header: React.FC<HeaderProps> = ({ title = 'NutriCoach' }) => {
         <Flex>
           <LanguageSelector />
           <IconButton
-            aria-label={colorMode === 'light' ? 'Dunkles Design' : 'Helles Design'}
+            aria-label={colorMode === 'light' ? t('ui.darkMode') : t('ui.lightMode')}
             icon={colorMode === 'light' ? <FiMoon /> : <FiSun />}
             onClick={toggleColorMode}
             variant="ghost"

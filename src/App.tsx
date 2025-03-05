@@ -23,6 +23,7 @@ import WaterTrackingPage from './pages/WaterTrackingPage';
 import Layout from './components/common/Layout';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import LoadingSpinner from './components/common/LoadingSpinner';
+import UpdateNotification from './components/UpdateNotification';
 
 // Hooks
 import useAutoBackup from './hooks/useAutoBackup';
@@ -34,6 +35,7 @@ import i18n from './i18n';
 const AppContent: React.FC = () => {
   const { user, isLoading: userLoading } = useUser();
   const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [showUpdateNotification, setShowUpdateNotification] = useState(true);
   
   // Automatische Backups
   useAutoBackup();
@@ -56,6 +58,9 @@ const AppContent: React.FC = () => {
 
   return (
     <Router>
+      {showUpdateNotification && (
+        <UpdateNotification onClose={() => setShowUpdateNotification(false)} />
+      )}
       <Routes>
         {/* Onboarding Route */}
         <Route
