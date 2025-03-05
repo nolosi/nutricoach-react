@@ -184,79 +184,88 @@ const MealPlanView: React.FC<MealPlanViewProps> = ({ initialDate }) => {
                 bg={cardBg}
                 boxShadow="sm"
                 height="100%"
+                position="relative"
               >
-                <Box>
-                  <Flex 
-                    justifyContent="space-between" 
-                    alignItems="center" 
-                    p={3}
-                    borderBottomWidth={meal ? "1px" : "0"}
-                    borderColor={borderColor}
-                    bg={headerBg}
-                  >
-                    <Heading size={headingSize}>{t(`meals.${mealType}`)}</Heading>
-                    {meal && (
-                      <IconButton
-                        aria-label={t('common.remove')}
-                        icon={<FiTrash2 />}
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => handleRemoveFromMealPlan(mealType)}
-                      />
-                    )}
-                  </Flex>
-                  
-                  {meal ? (
-                    <VStack align="stretch" spacing={0}>
-                      {meal.recipe.image && (
-                        <Box position="relative" height="160px">
-                          <Image
-                            src={meal.recipe.image}
-                            alt={meal.recipe.title}
-                            objectFit="cover"
-                            width="100%"
-                            height="100%"
-                          />
-                        </Box>
-                      )}
-                      
-                      <Box p={4}>
-                        <Heading size="md" mb={2}>
-                          {meal.recipe.title}
-                        </Heading>
-                        
-                        <HStack spacing={2} mb={3}>
-                          <Badge colorScheme="green">{meal.recipe.prepTime} {t('common.min')}</Badge>
-                          <Badge colorScheme="purple">{t(`recipes.difficulty.${meal.recipe.difficulty}`)}</Badge>
-                        </HStack>
-                        
-                        <Button
-                          size={buttonSize}
-                          variant="outline"
-                          colorScheme="teal"
-                          width="100%"
-                          onClick={() => handleViewRecipe(meal.recipe.id)}
-                        >
-                          {t('common.view')}
-                        </Button>
-                      </Box>
-                    </VStack>
-                  ) : (
-                    <Center p={6} height="200px" bg={emptyCardBg}>
-                      <VStack spacing={3}>
-                        <Text color="gray.500" textAlign="center">{t('meals.noMealPlanned')}</Text>
-                        <Button
-                          size={buttonSize}
-                          leftIcon={<FiPlus />}
-                          onClick={() => handleAddRecipe(mealType)}
-                          colorScheme="teal"
-                        >
-                          {t('meals.addMeal')}
-                        </Button>
-                      </VStack>
-                    </Center>
+                {/* Kopfzeile mit Titel und Löschen-Button */}
+                <Flex 
+                  justifyContent="space-between" 
+                  alignItems="center" 
+                  p={3}
+                  borderBottomWidth="1px"
+                  borderColor={borderColor}
+                  bg={headerBg}
+                >
+                  <Heading size={headingSize}>{t(`meals.${mealType}`)}</Heading>
+                  {meal && (
+                    <IconButton
+                      aria-label={t('common.remove')}
+                      icon={<FiTrash2 />}
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => handleRemoveFromMealPlan(mealType)}
+                    />
                   )}
-                </Box>
+                </Flex>
+                
+                {/* Mahlzeiteninhalt */}
+                {meal ? (
+                  <Box>
+                    {meal.recipe.image && (
+                      <Box height="160px" width="100%">
+                        <Image
+                          src={meal.recipe.image}
+                          alt={meal.recipe.title}
+                          objectFit="cover"
+                          width="100%"
+                          height="100%"
+                        />
+                      </Box>
+                    )}
+                    
+                    <Box p={4}>
+                      <Heading size="md" mb={2}>
+                        {meal.recipe.title}
+                      </Heading>
+                      
+                      <HStack spacing={2} mb={3}>
+                        <Badge colorScheme="green">{meal.recipe.prepTime} {t('common.min')}</Badge>
+                        <Badge colorScheme="purple">{t(`recipes.difficulty.${meal.recipe.difficulty}`)}</Badge>
+                      </HStack>
+                      
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        colorScheme="teal"
+                        width="100%"
+                        onClick={() => handleViewRecipe(meal.recipe.id)}
+                      >
+                        {t('common.view')}
+                      </Button>
+                    </Box>
+                  </Box>
+                ) : (
+                  <Box p={0} height="200px">
+                    <Flex 
+                      direction="column" 
+                      justify="center" 
+                      align="center" 
+                      height="100%" 
+                      p={4}
+                    >
+                      <Text color="gray.500" mb={4} textAlign="center">
+                        {t('meals.noMealPlanned')}
+                      </Text>
+                      <Button
+                        size="sm"
+                        colorScheme="teal"
+                        leftIcon={<FiPlus />}
+                        onClick={() => handleAddRecipe(mealType)}
+                      >
+                        {t('meals.addMeal')}
+                      </Button>
+                    </Flex>
+                  </Box>
+                )}
               </Box>
             );
           })}
