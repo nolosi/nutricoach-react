@@ -208,6 +208,20 @@ const AppContent: React.FC = () => {
 };
 
 const App: React.FC = () => {
+  // Das LocalStorage-Item für den Color Mode lesen
+  React.useEffect(() => {
+    // Prüfe, ob ein gespeicherter Farbmodus existiert
+    const savedColorMode = localStorage.getItem('chakra-ui-color-mode');
+    // Wenn kein gespeicherter Modus existiert, prüfe die System-Einstellung
+    if (!savedColorMode) {
+      const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      // Setze den Farbmodus basierend auf der System-Einstellung
+      if (prefersDarkMode) {
+        localStorage.setItem('chakra-ui-color-mode', 'dark');
+      }
+    }
+  }, []);
+
   return (
     <I18nextProvider i18n={i18n}>
       <ChakraProvider theme={theme}>
