@@ -3,7 +3,6 @@ import {
   Box,
   Heading,
   Text,
-  SimpleGrid,
   VStack,
   HStack,
   Image,
@@ -38,7 +37,6 @@ const MealPlanView: React.FC<MealPlanViewProps> = ({ initialDate }) => {
   const cardPadding = useBreakpointValue({ base: 4, md: 5 });
   const spacing = useBreakpointValue({ base: 4, md: 6 });
   const fontSize = useBreakpointValue({ base: 'sm', md: 'md' });
-  const gridColumns = useBreakpointValue({ base: 1, md: 3 });
   
   // Farben
   const cardBg = useColorModeValue('white', 'gray.700');
@@ -128,7 +126,7 @@ const MealPlanView: React.FC<MealPlanViewProps> = ({ initialDate }) => {
   const mealTypes = ['breakfast', 'lunch', 'dinner', 'snacks'];
   
   return (
-    <Box>
+    <Box maxW="100%" mx="auto">
       {/* Datumsauswahl */}
       <Flex 
         justifyContent="space-between" 
@@ -170,7 +168,7 @@ const MealPlanView: React.FC<MealPlanViewProps> = ({ initialDate }) => {
           <Skeleton height="200px" />
         </VStack>
       ) : (
-        <SimpleGrid columns={gridColumns} spacing={spacing}>
+        <VStack spacing={spacing} align="stretch" width="100%">
           {mealTypes.map(mealType => {
             const meal = mealPlan.find(m => m.mealType === mealType);
             
@@ -183,7 +181,7 @@ const MealPlanView: React.FC<MealPlanViewProps> = ({ initialDate }) => {
                 borderColor={borderColor}
                 bg={cardBg}
                 boxShadow="sm"
-                height="100%"
+                width="100%"
                 position="relative"
               >
                 {/* Kopfzeile mit Titel und Löschen-Button */}
@@ -209,9 +207,9 @@ const MealPlanView: React.FC<MealPlanViewProps> = ({ initialDate }) => {
                 
                 {/* Mahlzeiteninhalt */}
                 {meal ? (
-                  <Box>
+                  <Flex direction={{ base: "column", md: "row" }} width="100%">
                     {meal.recipe.image && (
-                      <Box height="160px" width="100%">
+                      <Box height={{ base: "160px", md: "200px" }} width={{ base: "100%", md: "250px" }} flexShrink={0}>
                         <Image
                           src={meal.recipe.image}
                           alt={meal.recipe.title}
@@ -222,7 +220,7 @@ const MealPlanView: React.FC<MealPlanViewProps> = ({ initialDate }) => {
                       </Box>
                     )}
                     
-                    <Box p={4}>
+                    <Box p={4} flex="1">
                       <Heading size="md" mb={2}>
                         {meal.recipe.title}
                       </Heading>
@@ -236,15 +234,15 @@ const MealPlanView: React.FC<MealPlanViewProps> = ({ initialDate }) => {
                         size="sm"
                         variant="outline"
                         colorScheme="teal"
-                        width="100%"
+                        width={{ base: "100%", md: "auto" }}
                         onClick={() => handleViewRecipe(meal.recipe.id)}
                       >
                         {t('common.view')}
                       </Button>
                     </Box>
-                  </Box>
+                  </Flex>
                 ) : (
-                  <Box p={0} height="200px">
+                  <Box p={0} height="120px">
                     <Flex 
                       direction="column" 
                       justify="center" 
@@ -269,7 +267,7 @@ const MealPlanView: React.FC<MealPlanViewProps> = ({ initialDate }) => {
               </Box>
             );
           })}
-        </SimpleGrid>
+        </VStack>
       )}
     </Box>
   );
